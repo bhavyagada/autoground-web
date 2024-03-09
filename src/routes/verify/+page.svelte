@@ -1,9 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { authStore, confirmationResultStore, phoneVerify } from "../../stores/authStore";
-  import { userStore } from "../../stores/userStore";
+  import { confirmationResultStore, phoneVerify } from "$lib/stores/auth";
+  import { userStore } from "$lib/stores/user";
   import OtpForm from "../../components/OtpForm.svelte";
-  import { browser } from "$app/environment";
   import { onDestroy } from "svelte";
   
   let error: boolean = false;
@@ -12,29 +11,14 @@
 	let value = '';
 	let numberOnly = true;
 
-  // don't allow users to visit directly
-  // if signed in, redirect to home
-  // else, redirect to login
-  $: if (browser) {
-    if ($authStore) {
-      goto("/");
-    } 
-
-    if (!$confirmationResultStore) {
-      goto("/login");
-    }
-  }
-
   async function handleVerify(e: Event) {
     e.preventDefault();
     console.log("Verification Code", value);
     if (/[0-9]{6}/.test(value)) {
       try {
-        const user = await phoneVerify(value);
-        console.log(user);
-        if (user !== undefined) {
-          // update user auth information in authStore
-          authStore.set(user);
+        const newUser = await phoneVerify(value);
+        console.log(newUser);
+        if (newUser !== undefined) {
           goto("/");
         } else {
           error = true;
@@ -42,7 +26,7 @@
         }
       } catch (err) {
         error = true;
-        console.log(err);
+        console.error(err);
         errorMessage = "Internal Error! Please Try Again!"
       } 
     }

@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { user } from "$lib/stores/auth";
   import Card from "../components/Card.svelte";
-  import { authStore } from "../stores/authStore";
 
   const bookEvents = [
     "Purchasing Tickets",
@@ -60,7 +60,7 @@
     </div>
     <p>2020 BMW M4</p>
     <p>1200 points</p>
-    {#if $authStore}
+    {#if $user}
       <button>View My Garage</button>
     {:else}
       <div class="empty"></div>

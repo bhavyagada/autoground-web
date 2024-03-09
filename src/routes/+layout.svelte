@@ -1,15 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { page } from "$app/stores";
-  import { authStore, logout } from "../stores/authStore";
-  import { browser } from "$app/environment";
-  import { userStore } from "../stores/userStore";
-
-  /** Store auth (whether user is logged in) and user information (Firebase User) in session storage */
-  $: if (browser && ($authStore || $userStore)) {
-      window.sessionStorage.setItem("auth", JSON.stringify($authStore))
-      window.sessionStorage.setItem("user", JSON.stringify($userStore))
-  }
+  import { logout, user } from "$lib/stores/auth";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
@@ -39,7 +31,7 @@
         </div>
       </a>
     </li>
-    {#if $authStore}
+    {#if $user}
       <li>
         <a href="/garage">My Garage</a>
       </li>

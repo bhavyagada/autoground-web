@@ -1,18 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import intlTelInput from "intl-tel-input";
-  import { userStore } from "../../stores/userStore";
   import { goto } from "$app/navigation";
   import { 
     confirmationResultStore, 
     phoneSignup, 
     googleSignup, 
-    authStore,
-
     appleSignup
-
-  } from "../../stores/authStore";
-  import { browser } from "$app/environment";
+  } from "$lib/stores/auth";
 
   const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
@@ -21,15 +16,6 @@
   let errorMessage: string = "";
   let phoneElement: Element = undefined!;
   let iti: intlTelInput.Plugin;
-
-  // don't allow users to visit if already signed in
-  // redirect to home
-  $: if (browser) {
-    if ($authStore) {
-      console.log("inside login onMount");
-      goto("/")
-    }
-  }
 
   onMount(() => {
     phoneElement = document.querySelector("#phone")!;
@@ -40,7 +26,6 @@
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.5/build/js/utils.js"
     });
   });
-
 
   $: console.log(phone);
 
@@ -60,17 +45,7 @@
     } else {
       isError = false;
       const phoneNumber = iti.getNumber();
-      const dialCode = iti.getSelectedCountryData().dialCode;
       console.log("Valid Phone Number", phoneNumber);
-      iti.getSelectedCountryData().dialCode
-      // update phone number in user store
-      userStore.update((curr) => {
-        return {
-          ...curr,
-          phone: phoneNumber.replace(dialCode, ""),
-          countryCode: dialCode,
-        }
-      });
 
       // try sign in and goto verification page if it works
       try {
@@ -79,40 +54,34 @@
           goto("/verify");
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
         isError = true;
         errorMessage = "Internal Error! Please try again!"
       }
     }
   }
 
-  async function handleProviderAuth(e: Event, provider: string) {
+  async function handleGoogleAuth(e: Event) {
     console.log("Google auth button clicked");
     e.preventDefault();
 
     try {
-      let user: any;
-      if (provider === "google") {
-        user = await googleSignup();
-      }
-      if (provider === "apple") {
-        user = await appleSignup();
-      }
-      console.log(user);
-      if (user) {
-        // update email in user store
-        userStore.update((curr) => {
-          return {
-            ...curr,
-            email: user.email,
-          }
-        });
-        // update user auth information in authStore
-        authStore.set(user);
-        goto("/");
-      }
+      await googleSignup();
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      isError = true;
+      errorMessage = "Internal Error! Please try again!"
+    }
+  }
+
+  async function handleAppleAuth(e: Event) {
+    console.log("Apple auth button clicked");
+    e.preventDefault();
+
+    try {
+      await appleSignup();
+    } catch (err) {
+      console.error(err);
       isError = true;
       errorMessage = "Internal Error! Please try again!"
     }
@@ -132,10 +101,10 @@
       <button type="button" on:click={handleAuth} class="submit">Continue</button>
       <div class="separator">OR</div>
       <div class="providers">
-        <button type="button" on:click={(event) => handleProviderAuth(event, "google")}>
+        <button type="button" on:click={handleGoogleAuth}>
           <img src="/logo-google.svg" alt="Google Logo">
         </button>
-        <button type="button" on:click={(event) => handleProviderAuth(event, "apple")}>
+        <button type="button" on:click={handleAppleAuth}>
           <img src="/logo-apple.svg" alt="Apple Logo">
         </button>
       </div>
