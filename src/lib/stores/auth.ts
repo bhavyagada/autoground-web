@@ -4,51 +4,61 @@ import {
   RecaptchaVerifier, 
   signInWithPhoneNumber, 
   signOut, 
-  PhoneAuthProvider,
-  signInWithCredential,
   signInWithPopup,
   GoogleAuthProvider,
   OAuthProvider,
-  type ConfirmationResult,
-  type User,
 } from "firebase/auth";
+import type { AuthData, PhoneVerificationData, ToastData } from "../../types";
 
-export const user = writable<User | null>(null);
+// authentication state stores
+export const authData = writable<AuthData>({ user: null, isLoggedIn: false });
+export const cloudError = writable<string | null>(null);
+export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
+export const toast = writable<ToastData | null>(null);
 
-export const confirmationResultStore = writable<ConfirmationResult | null>();
+export const addToast = (type: string, message: string) => {
+  toast.update((curr) => { 
+    return {
+      ...curr,
+      type,
+      message
+    }
+  });
+  setTimeout(() => {
+    dismissToast();
+  }, 5000);
+};
+
+export const dismissToast = () => {
+  toast.update(() => { return null });
+};
 
 export async function phoneSignup(phoneNumber: string) {
-  console.log("In Phone Sign Up");
-  const recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
-
-  console.log(recaptchaVerifier);
-  if (!recaptchaVerifier) return;
-  
-  const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
+  // auth.settings.appVerificationDisabledForTesting = true;
+  const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, new RecaptchaVerifier(auth, "recaptcha-container", {}));
   console.log(confirmationResult);
-  confirmationResultStore.set(confirmationResult);
+  phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
+}
+
+export async function resendCodeSignUp(phoneNumber: string) {
+  // auth.settings.appVerificationDisabledForTesting = true;
+  const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, new RecaptchaVerifier(auth, "verify-recaptcha-container", {}));
+  console.log(confirmationResult);
+  phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
 }
 
 export async function phoneVerify(code: string) {
-  const confirmationResult = get(confirmationResultStore);
-  if (!confirmationResult) return;
-
-  try {
-    await confirmationResult.confirm(code);
-    const userCredential = PhoneAuthProvider.credential(confirmationResult.verificationId, code);
-    const credential = await signInWithCredential(auth, userCredential);
-    return credential.user;
-  } catch (error) {
-    console.error(error);
-  }
+  const confirmationResult = get(phoneConfirmationStore);
+  if (!confirmationResult?.confirmation) return;
+  return confirmationResult.confirmation.confirm(code);
 }
 
 export async function googleSignup() {
-  await signInWithPopup(auth, new GoogleAuthProvider());
+  return await signInWithPopup(auth, new GoogleAuthProvider());
 }
 
 export async function appleSignup() {
-  await signInWithPopup(auth, new OAuthProvider("apple.com"));
+  return await signInWithPopup(auth, new OAuthProvider("apple.com"));
 }
 
 export async function logout() {

@@ -16,6 +16,7 @@ export const defaultUser = {
   points: 0,
   specialTag: "",
   privacy: {
+    hideModificationCount: true,
     hideModifications: true,
     hidePoints: true
   },

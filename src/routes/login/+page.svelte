@@ -1,19 +1,24 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import intlTelInput from "intl-tel-input";
-  import { goto } from "$app/navigation";
+  // import intlTelInput from "intl-tel-input";
   import { 
-    confirmationResultStore, 
+    phoneConfirmationStore, 
     phoneSignup, 
     googleSignup, 
-    appleSignup
+    appleSignup,
+    cloudError,
+    authData,
+    addToast,
   } from "$lib/stores/auth";
+  import { callFunction } from "$lib/functions/util";
+  import { cloudFunctions } from "$lib/functions/all";
+  import VerifyPhoneForm from "../../components/VerifyPhoneForm.svelte"
+  import CreateUserForm from "../../components/CreateUserForm.svelte"
+  import { goto } from "$app/navigation";
 
-  const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+  const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];
 
-  let phone: string = ""
-  let isError: boolean = false;
-  let errorMessage: string = "";
+  let form: string = "create";
   let phoneElement: Element = undefined!;
   let iti: intlTelInput.Plugin;
 
@@ -27,89 +32,95 @@
     });
   });
 
-  $: console.log(phone);
-
-  function init(el: HTMLElement){
-    el.focus()
-  }
-
-  async function handleAuth(e: Event) {
-    console.log("Phone auth continue button clicked!");
-    e.preventDefault();
-
-    // validate phone number before submitting
+  async function handleAuth() {
+    const phoneNumber = iti.getNumber();
     if (!iti.isValidNumber()) {
-      isError = true;
       const errorCode = iti.getValidationError();
-      errorMessage = errorMap[errorCode] || "Invalid number";
+      addToast("error", errorMap[errorCode] || "Invalid number");
     } else {
-      isError = false;
-      const phoneNumber = iti.getNumber();
-      console.log("Valid Phone Number", phoneNumber);
-
       // try sign in and goto verification page if it works
       try {
         await phoneSignup(phoneNumber);
-        if ($confirmationResultStore) {
-          goto("/verify");
+        if ($phoneConfirmationStore?.confirmation) {
+          addToast("success", "Great! Now please verify your contact!");
+          form = "verify"
         }
       } catch (err) {
-        console.error(err);
-        isError = true;
-        errorMessage = "Internal Error! Please try again!"
+        addToast("error", "Server Error! Please try again!");
       }
     }
   }
 
-  async function handleGoogleAuth(e: Event) {
-    console.log("Google auth button clicked");
-    e.preventDefault();
-
+  async function handleGoogleAuth() {
     try {
-      await googleSignup();
+      const newUser = await googleSignup();
+      console.log(`Google new sign in: ${JSON.stringify(newUser)}`);
+      $authData = { user: newUser?.user, isLoggedIn: false };
+      console.log($authData.user);
+      await getUserProfile();
     } catch (err) {
-      console.error(err);
-      isError = true;
-      errorMessage = "Internal Error! Please try again!"
+      addToast("error", "Server Error! Please try again!");
     }
   }
 
-  async function handleAppleAuth(e: Event) {
-    console.log("Apple auth button clicked");
-    e.preventDefault();
-
+  async function handleAppleAuth() {
     try {
-      await appleSignup();
+      const newUser = await appleSignup();
+      console.log(`Apple new sign in: ${JSON.stringify(newUser)}`);
+      $authData = { user: newUser?.user, isLoggedIn: false };
+      await getUserProfile();
     } catch (err) {
-      console.error(err);
-      isError = true;
-      errorMessage = "Internal Error! Please try again!"
+      addToast("error", "Server Error! Please try again!");
+    }
+  }
+
+  async function getUserProfile() {
+    try {
+      const result = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
+      console.log(result);
+      if (result?.isError) {
+        $cloudError = result.errorType;
+        if ($cloudError === "[user_not_exists]") {
+          form = "create";
+        } else {
+          addToast("error", "Server Error! Please try again!");
+          form = "login";
+        }
+      } else {
+        $authData = { user: result?.result.data, isLoggedIn: true }
+        goto("/");
+      }
+    } catch (err) {
+      addToast("error", "Server Error! Please try again!");
     }
   }
 </script>
 
 <div class="background home">
-  <div class="login">
-    <h1>Sign In/Up</h1>
-    <form method="POST" action="">
-      <label for="phone">Phone</label>
-      <input bind:value={phone} use:init id="phone" name="phone" type="tel" placeholder="8005550101" required>
-      <div id="recaptcha-container" class="recaptcha"></div>
-      {#if isError}
-        <p class="error">{errorMessage}</p>
-      {/if}
-      <button type="button" on:click={handleAuth} class="submit">Continue</button>
-      <div class="separator">OR</div>
-      <div class="providers">
-        <button type="button" on:click={handleGoogleAuth}>
-          <img src="/logo-google.svg" alt="Google Logo">
-        </button>
-        <button type="button" on:click={handleAppleAuth}>
-          <img src="/logo-apple.svg" alt="Apple Logo">
-        </button>
-      </div>
-    </form>
-  </div>
+  {#if form === "login"}
+    <div class="login">
+      <h1>Sign In/Up</h1>
+      <form>
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="tel" placeholder="8005550101" required>
+        <div id="recaptcha-container" class="recaptcha"></div>
+        <button type="button" on:click|preventDefault={handleAuth} class="submit">Continue</button>
+        <div class="separator">OR</div>
+        <div class="providers">
+          <button type="button" on:click|preventDefault={handleGoogleAuth}>
+            <img src="/logo-google.svg" alt="Google Logo">
+          </button>
+          <button type="button" on:click|preventDefault={handleAppleAuth}>
+            <img src="/logo-apple.svg" alt="Apple Logo">
+          </button>
+        </div>
+      </form>
+    </div>
+  {:else if form === "verify"}
+    <svelte:component this={VerifyPhoneForm} bind:form />
+  {:else if form === "create"}
+    <svelte:component this={CreateUserForm} />
+  {/if}
 </div>
 
 <style>
@@ -140,6 +151,7 @@
   h1 {
     font-size: 2.25rem;
     line-height: 2.5rem;
+    color: white;
   }
   form {
     display: flex;
@@ -152,6 +164,7 @@
   form label {
     font-size: 1.5rem;
     line-height: 2rem;
+    color: white;
   }
   form input {
     background-color: white;
@@ -163,13 +176,6 @@
   .recaptcha {
     display: flex;
     justify-content: center;
-  }
-  .error {
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.75rem;
-    text-align: center;
-    color: rgb(239, 68, 68);
   }
   .submit {
     align-self: center;

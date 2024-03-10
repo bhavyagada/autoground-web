@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { user } from "$lib/stores/auth";
-  import Card from "../components/Card.svelte";
+  import { authData } from "$lib/stores/auth";
+  import Card from "../components/WhatWeDoCard.svelte";
 
   const bookEvents = [
     "Purchasing Tickets",
@@ -60,7 +60,7 @@
     </div>
     <p>2020 BMW M4</p>
     <p>1200 points</p>
-    {#if $user}
+    {#if $authData.isLoggedIn}
       <button>View My Garage</button>
     {:else}
       <div class="empty"></div>
@@ -136,6 +136,7 @@
     height: var(--bgheight);
     position: relative;
     z-index: 1; 
+    color: white;
   }
   .home {
     background: var(--homebg1) center / var(--bgsize) var(--bgrepeat);
@@ -248,6 +249,7 @@
   }
   .footer {
     background-color: black;
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

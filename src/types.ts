@@ -1,3 +1,11 @@
+import type { ConfirmationResult, User } from "firebase/auth"
+
+export enum AuthProviderId {
+  PHONE = "phone",
+  GOOGLE = "google.com",
+  APPLE = "apple.com"
+}
+
 export enum AuthenticationType {
   phone = "Phone",
   email = "Email",
@@ -14,6 +22,11 @@ export enum VehicleType {
   car = "car",
   truck = "truck",
   bike = "bike"
+}
+
+export interface AuthData {
+  user: User | null,
+  isLoggedIn: boolean,
 }
 
 export interface PrivacyData {
@@ -39,4 +52,14 @@ export interface UserData {
   rights: string[] | null,
   cars: string[] | null,
   badges: string[] | null
+}
+
+export interface ToastData {
+  type: string,
+  message: string
+}
+
+export interface PhoneVerificationData {
+  confirmation: ConfirmationResult,
+  phoneNumber: string
 }

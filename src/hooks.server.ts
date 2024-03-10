@@ -1,13 +1,6 @@
 import { auth } from "$lib/firebase/admin";
-import { type Handle } from "@sveltejs/kit";
+import { redirect, type Handle } from "@sveltejs/kit";
 import type { DecodedIdToken } from "firebase-admin/auth";
-
-function redirect(location: string, body?: string) {
-  return new Response(body, {
-    status: 303,
-    headers: { location }
-  })
-}
 
 async function decodeToken(token?: string): Promise<DecodedIdToken | null> {
   if (!token || token === "null" || token === "undefined") return null
@@ -27,20 +20,26 @@ export const handle: Handle = async ({ event, resolve }) => {
   const token = event.cookies.get("token");
   const decodedToken = await decodeToken(token);
   console.log(decodedToken);
+  
+  // if (decodedToken) {
+  //   event.cookies.serialize("user", JSON.stringify(decodedToken) ?? "", {
+  //     path: "/",
+  //     maxAge: decodedToken ? undefined : 0,
+  //   });
+  // }
 
-  if (decodedToken) {
-    // Add the decoded token as custom data to the request,
-		// which is passed to handlers in +server.js and server load functions
-    event.locals.user = decodedToken.uid;
-  }
+  // If not authorized, do not allow to visit application routes
+  // if (!access && (event.route.id?.startsWith("/(app)") || event.route.id?.startsWith("/(auth)"))) {
+  //   throw redirect(303, "/login");
+  // }
 
-  // Check if the request is trying to access restricted routes without authorization
-  if (!decodedToken && (event.url.pathname === "/garage" || event.url.pathname === "/profile")) {
-    return redirect("/login");
-  }
+  // If authorized, do not allow to visit authentication routes
+  // if (access && event.route.id?.startsWith("/(auth)")) {
+  //   return redirect(303, "/");
+  // }
 
   // Load page as normal
-  console.log(event);
+  // console.log(event);
   console.log(`Page is ready. Sending the response.`);
   const response = resolve(event);
   return response;

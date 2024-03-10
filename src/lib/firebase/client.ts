@@ -14,7 +14,7 @@ import {
   PUBLIC_FIREBASE_MEASUREMENT_ID
 } from "$env/static/public"
 import { browser } from "$app/environment";
-import { user } from "$lib/stores/auth";
+import { authData } from "$lib/stores/auth";
 
 function makeApp() {
   const apps: FirebaseApp[] = getApps();
@@ -47,14 +47,24 @@ if (browser) {
 	// This is triggered on sign-in, sign-out, and token refresh events
   auth.onIdTokenChanged(async (newUser) => {
     const token = await newUser?.getIdToken();
+    const uid = newUser?.uid;
 
     // Create a cookie for the token or delete it if token is undefined
     document.cookie = cookie.serialize("token", token ?? "", {
       path: "/",
       maxAge: token ? undefined : 0,
     });
+    document.cookie = cookie.serialize("uid", uid ?? "", {
+      path: "/",
+      maxAge: uid ? undefined : 0,
+    });
 
-    user.set(newUser);
+    authData.update((curr) => { 
+      return {
+        ...curr,
+        user: newUser
+      }
+    });
   });
 
   // refresh the ID token every 10 minutes

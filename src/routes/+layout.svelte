@@ -1,13 +1,20 @@
 <script lang="ts">
   import "../app.css";
   import { page } from "$app/stores";
-  import { logout, user } from "$lib/stores/auth";
+  import { logout, authData, toast, addToast } from "$lib/stores/auth";
+  import Toast from "../components/Toast.svelte";
+  import { goto } from "$app/navigation";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
-  function toggleNav(e: Event) {
-    e.preventDefault();
+  function toggleNav() {
     clicked = !clicked;
+  }
+
+  const hangleSignOut = async () => {
+    await logout();
+    goto("/login");
+    addToast("success", "Do visit us again :)")
   }
 </script>
 
@@ -31,7 +38,7 @@
         </div>
       </a>
     </li>
-    {#if $user}
+    {#if $authData.isLoggedIn}
       <li>
         <a href="/garage">My Garage</a>
       </li>
@@ -39,7 +46,7 @@
         <a href="/events">Events</a>
       </li>
       <li> 
-        <a href="/" on:click={logout}>Logout</a>
+        <a href="/" on:click|preventDefault={hangleSignOut}>Logout</a>
       </li>
     {:else}
       <li>
@@ -50,10 +57,14 @@
       </li>
     {/if}
   </ul>
-  <button class="icon" on:click={toggleNav}>
+  <button class="icon" on:click|preventDefault={toggleNav}>
     <img alt="Menu Icon" src="/menu-icon.svg">
   </button>
 </nav>
+
+{#if $toast}
+  <Toast type={$toast.type}>{$toast.message}</Toast>
+{/if}
 
 <!-- Page Content will be automatically filled in the slot -->
 <slot />
