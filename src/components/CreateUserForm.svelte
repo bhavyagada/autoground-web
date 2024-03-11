@@ -1,25 +1,34 @@
 <script lang="ts">
   import { addToast, authData } from "$lib/stores/auth";
   import { onMount } from "svelte";
-  import { AuthProviderId } from "../types";
+  import { AuthProviderId, AuthenticationType } from "../types";
+  import { userStore } from "$lib/stores/user";
+  import { callFunction } from "$lib/functions/util";
+  import { cloudFunctions } from "$lib/functions/all";
+  import { goto } from "$app/navigation";
+  import Loading from "./Loading.svelte";
+
+	let size = '60';
+  let form: string = "login";
+  let isLoading: boolean = false;
 
   const errorMap = ["Invalid Phone Number", "Invalid Country Code", "Phone Number is too short", "Phone Number is too long", "Invalid Phone Number"];
-  const usernameRegex = /^[a-zA-Z0-9]+/;
+  const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,20}$/igm;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
+  let userPhoto: any = $authData.user?.photoURL ? $authData.user?.photoURL : "/default-photo.svg";
   let name: string = $authData.user?.displayName ? $authData.user?.displayName : "";
-  let username: string = "";
+  let userName: string = "";
   let phoneNumber: string = $authData.user?.phoneNumber ? $authData.user?.phoneNumber : "";
   let email: string = $authData.user?.email ? $authData.user?.email : "" ;
   let bio: string = "";
-  let selectedUsername: boolean = false;
+  let selectedUserName: boolean = false;
   let isValidName: boolean = false;
   let isValidUsername: boolean = false;
-  let isValidPhone: boolean = false;
   let isValidEmail: boolean = false;
   let isValidBio: boolean = false;
-
   let phoneElement: Element = undefined!;
+
   let iti: intlTelInput.Plugin;
   onMount(() => {
     phoneElement = document.querySelector("#phone")!;
@@ -32,41 +41,96 @@
   });
 
   let profilePhoto: HTMLElement;
-  const handleFileUpload = (e: Event) => {
+  const handleFileUpload = () => {
     profilePhoto.click();
   }
 
-  $: isValidName = name.trim().length > 0 && name.trim().length < 50;
-  $: isValidUsername = username.length > 2 && username.length < 21 && usernameRegex.test(username);
-  $: isValidEmail = email.trim().length === 0 || emailRegex.test(email);
+  const loadFile = (e: any) => {
+    const file: any = e.target.files[0]
+    userPhoto = URL.createObjectURL(file);
+  }
+
+  $: isValidName = name.trim().length > 0 && name.trim().length < 51;
+  $: isValidUsername = userName.trim().length > 2 && userName.trim().length < 21 && usernameRegex.test(userName);
+  $: isValidEmail = email.trim().length > 0 && emailRegex.test(email);
   $: isValidBio = bio.length < 1000;
 
-  const handleSubmit = () => {
+  // generate a unique username if the user doesn't provide one
+  const createUniqueUsername = () => {
+    const dateTime: number = new Date().getTime();
+    const randomNumber: number = Math.floor(Math.random() * 100);
+    const userName: string = `user${dateTime}${randomNumber}`;
+    console.log(userName);
+  }
+  createUniqueUsername();
+
+  const handleSubmit = async () => {
+    if (userName && !(isValidUsername)) {
+      addToast("error", "Username required with 3-20 characters & no whitespace!");
+      return false;
+    }
+
+    console.log(email);
+    if (email.length > 0) {
+      if (!isValidEmail) {
+        addToast("error", "Invalid Email!");
+        return false;
+      }
+    } else if (phoneNumber) {
+      if (!iti.isValidNumber()) {
+        const errorCode = iti.getValidationError();
+        addToast("error", errorMap[errorCode] || "Invalid number");
+        return false;
+      }
+    }
+
     if (!isValidName) {
       addToast("error", "Name required with less than 50 characters!");
-    }
-    if (!isValidUsername) {
-      addToast("error", "Username required with 3 - 20 characters & no whitespace!");
-    }
-    if (!isValidEmail && !iti.isValidNumber()) {
-      isValidPhone = false;
-      const errorCode = iti.getValidationError();
-      addToast("error", errorMap[errorCode] || "Invalid Phone Number"); 
+      return false;
+    } else if (!isValidBio) {
+      addToast("error", "Bio should be less than 1000 characters!");
     } else {
-      isValidPhone = true;
-    }
-    if (!isValidEmail) {
-      addToast("error", "Invalid Email");
-    }
-    if (!isValidBio) {
-      addToast("error", "Bio should be less than 1000 characters");
-    }
-    if (isValidName && isValidUsername && (isValidPhone || isValidEmail) && isValidBio) {
-      if (isValidUsername) {
-        selectedUsername = true;
+      if (userName.length > 0) {
+        selectedUserName = true;
       }
-      console.log("valid form");
-      return;
+      let authenticationType = "";
+      if ($authData.user?.providerData[0].providerId === AuthProviderId.PHONE) {
+        authenticationType = AuthenticationType.phone;
+      } else if ($authData.user?.providerData[0].providerId === AuthProviderId.GOOGLE) {
+        authenticationType = AuthenticationType.google;
+      } else {
+        authenticationType = AuthenticationType.email;
+      }
+      $userStore = { 
+        ...$userStore,
+        userPhoto,
+        name,
+        userName,
+        email,
+        bio,
+        authenticationType,
+        phone: iti.getNumber(),
+        countryCode: iti.getSelectedCountryData().dialCode,
+      };
+      const createUserData = { user: $userStore, selectedUserName: selectedUserName };
+      console.log(createUserData);
+      try {
+        isLoading = true;
+        const result = await callFunction(cloudFunctions.CREATE_USER_PROFILE, createUserData);
+        if (result?.isError) {
+          addToast("error", "Server Error! Please Try Again!");
+          isLoading = false;
+          return false;
+        } else {
+          addToast("success", "Account Created Successfully!");
+          isLoading = false;
+          goto("/");
+          return true;
+        }
+      } catch (err) {
+        addToast("error", "Server Error! Please Try Again!");
+        return false;
+      }
     }
   }
 </script>
@@ -76,8 +140,8 @@
     <h1>Create Account</h1>
     <div class="form-top">
       <button on:click={handleFileUpload} class="photo">
-        <input bind:this={profilePhoto} type="file" class="hidden" name="photo" accept="image/png, image/jpeg">
-        <img alt="Upload Profile" src={$authData.user?.photoURL ? $authData.user?.photoURL : "/profile-photo.svg"}>
+        <input bind:this={profilePhoto} bind:value={userPhoto} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
+        <img alt="Upload Profile" src={$authData.user?.photoURL || userPhoto ? $authData.user?.photoURL || userPhoto : "/default-photo.svg"}>
       </button>
       <div class="name-phone-container">
         <label for="name">Name</label>
@@ -85,7 +149,7 @@
         <div class="name-phone">
           <div class="username">
             <label for="">Username</label>
-            <input bind:value={username} type="text" name="username" minlength="3" maxlength="20">
+            <input bind:value={userName} type="text" name="username" minlength="3" maxlength="20">
           </div>
           <div class="phonenumber">
             <label for="phone">Phone Number</label>
@@ -100,9 +164,13 @@
     </div>
     <div class="bio">
       <label for="bio">Bio</label>
-      <textarea bind:value={bio} name="bio"></textarea>
+      <textarea bind:value={bio} name="bio" maxlength="1000"></textarea>
     </div>
-    <input on:click|preventDefault={handleSubmit} class="submit" type="submit" name="submit" value="Create">
+    {#if isLoading}
+      <Loading {size} />
+    {:else}
+      <input on:click|preventDefault={handleSubmit} class="submit" type="submit" name="submit" value="Create">
+    {/if}
   </form>
 </div>
 
@@ -155,9 +223,10 @@
     flex-direction: column;
     width: 100%;
   }
-  .photo {
+  .photo img {
     width: 6rem;
     height: 6rem;
+    border-radius: 3rem;
     align-self: center;
   }
   .name-phone-container label * {

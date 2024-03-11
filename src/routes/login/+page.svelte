@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  // import intlTelInput from "intl-tel-input";
   import { 
     phoneConfirmationStore, 
     phoneSignup, 
@@ -15,10 +14,14 @@
   import VerifyPhoneForm from "../../components/VerifyPhoneForm.svelte"
   import CreateUserForm from "../../components/CreateUserForm.svelte"
   import { goto } from "$app/navigation";
+  import Loading from "../../components/Loading.svelte";
 
   const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];
 
-  let form: string = "create";
+	let size = '60';
+  let form: string = "login";
+  let isLoading: boolean = false;
+
   let phoneElement: Element = undefined!;
   let iti: intlTelInput.Plugin;
 
@@ -53,11 +56,13 @@
 
   async function handleGoogleAuth() {
     try {
+      isLoading = true;
       const newUser = await googleSignup();
       console.log(`Google new sign in: ${JSON.stringify(newUser)}`);
       $authData = { user: newUser?.user, isLoggedIn: false };
       console.log($authData.user);
       await getUserProfile();
+      isLoading = false;
     } catch (err) {
       addToast("error", "Server Error! Please try again!");
     }
@@ -104,16 +109,20 @@
         <label for="phone">Phone</label>
         <input id="phone" name="phone" type="tel" placeholder="8005550101" required>
         <div id="recaptcha-container" class="recaptcha"></div>
-        <button type="button" on:click|preventDefault={handleAuth} class="submit">Continue</button>
-        <div class="separator">OR</div>
-        <div class="providers">
-          <button type="button" on:click|preventDefault={handleGoogleAuth}>
-            <img src="/logo-google.svg" alt="Google Logo">
-          </button>
-          <button type="button" on:click|preventDefault={handleAppleAuth}>
-            <img src="/logo-apple.svg" alt="Apple Logo">
-          </button>
-        </div>
+        {#if isLoading}
+          <Loading {size} />
+        {:else}
+          <button type="button" on:click|preventDefault={handleAuth} class="submit">Continue</button>
+          <div class="separator">OR</div>
+          <div class="providers">
+            <button type="button" on:click|preventDefault={handleGoogleAuth}>
+              <img src="/logo-google.svg" alt="Google Logo">
+            </button>
+            <button type="button" on:click|preventDefault={handleAppleAuth}>
+              <img src="/logo-apple.svg" alt="Apple Logo">
+            </button>
+          </div>
+        {/if}
       </form>
     </div>
   {:else if form === "verify"}
