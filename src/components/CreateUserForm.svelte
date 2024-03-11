@@ -3,20 +3,19 @@
   import { onMount } from "svelte";
   import { AuthProviderId, AuthenticationType } from "../types";
   import { userStore } from "$lib/stores/user";
-  import { callFunction } from "$lib/functions/util";
+  import { callFunction, uploadPic } from "$lib/functions/util";
   import { cloudFunctions } from "$lib/functions/all";
   import { goto } from "$app/navigation";
   import Loading from "./Loading.svelte";
 
 	let size = '60';
-  let form: string = "login";
   let isLoading: boolean = false;
 
   const errorMap = ["Invalid Phone Number", "Invalid Country Code", "Phone Number is too short", "Phone Number is too long", "Invalid Phone Number"];
   const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,20}$/igm;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
-  let userPhoto: any = $authData.user?.photoURL ? $authData.user?.photoURL : "/default-photo.svg";
+  let userPhoto: any = "/default-photo.svg";
   let name: string = $authData.user?.displayName ? $authData.user?.displayName : "";
   let userName: string = "";
   let phoneNumber: string = $authData.user?.phoneNumber ? $authData.user?.phoneNumber : "";
@@ -61,38 +60,51 @@
     const randomNumber: number = Math.floor(Math.random() * 100);
     const userName: string = `user${dateTime}${randomNumber}`;
     console.log(userName);
+    return userName;
   }
   createUniqueUsername();
 
+  const handleClientSideError = (errorMessage: string): boolean => {
+    addToast("error", errorMessage);
+    return false;
+  };
+
+  const handleServerSideError = (errorMessage: string): boolean => {
+    addToast("error", errorMessage);
+    isLoading = false;
+    return false;
+  };
+
   const handleSubmit = async () => {
     if (userName && !(isValidUsername)) {
-      addToast("error", "Username required with 3-20 characters & no whitespace!");
-      return false;
+      return handleClientSideError("Username required with 3-20 characters & no whitespace!");
     }
 
-    console.log(email);
     if (email.length > 0) {
       if (!isValidEmail) {
-        addToast("error", "Invalid Email!");
-        return false;
+        return handleClientSideError("Invalid Email!");
       }
     } else if (phoneNumber) {
       if (!iti.isValidNumber()) {
         const errorCode = iti.getValidationError();
-        addToast("error", errorMap[errorCode] || "Invalid number");
-        return false;
+        return handleClientSideError(errorMap[errorCode] || "Invalid number");
       }
     }
 
     if (!isValidName) {
-      addToast("error", "Name required with less than 50 characters!");
-      return false;
+      return handleClientSideError("Name required with less than 50 characters!");
     } else if (!isValidBio) {
-      addToast("error", "Bio should be less than 1000 characters!");
+      return handleClientSideError("Bio should be less than 1000 characters!");
     } else {
       if (userName.length > 0) {
         selectedUserName = true;
       }
+      if (userPhoto) {
+        const newURL = await uploadPic(userPhoto, `UsersProfilePhoto/${$authData?.user?.uid}`);
+        userPhoto = newURL;
+        $userStore = { ...$userStore, userPhoto };
+      }
+
       let authenticationType = "";
       if ($authData.user?.providerData[0].providerId === AuthProviderId.PHONE) {
         authenticationType = AuthenticationType.phone;
@@ -101,9 +113,33 @@
       } else {
         authenticationType = AuthenticationType.email;
       }
-      $userStore = { 
+
+      const checkUniqueFields = { userName, phoneNumber, email };
+      console.log(checkUniqueFields);
+      try {
+        isLoading = true;
+        const result = await callFunction(cloudFunctions.CHECK_UNIQUE_USER_FIELDS, checkUniqueFields);
+        console.log(`unique fields result ${JSON.stringify(result)}`);
+        if (result?.isError) {
+          return handleServerSideError("Server Error! Please Try Again!");
+        } 
+        if (userName && !result?.result.data.uniqueUserName) {
+          return handleServerSideError("Username alreasy exists!");
+        } else if (!userName && !result?.result.data.uniqueUserName) {
+          userName = createUniqueUsername();
+        }
+        if (phoneNumber && !result?.result.data.uniquePhone) {
+          return handleServerSideError("Phone Number alreasy exists!");
+        }
+        if (email.trim().length > 0 && !result?.result.data.uniqueEmail) {
+          return handleServerSideError("Email alreasy exists!");
+        }
+      } catch (err) {
+        return handleServerSideError("Server Error! Please Try Again!");
+      }
+
+      $userStore = {
         ...$userStore,
-        userPhoto,
         name,
         userName,
         email,
@@ -115,21 +151,18 @@
       const createUserData = { user: $userStore, selectedUserName: selectedUserName };
       console.log(createUserData);
       try {
-        isLoading = true;
         const result = await callFunction(cloudFunctions.CREATE_USER_PROFILE, createUserData);
         if (result?.isError) {
-          addToast("error", "Server Error! Please Try Again!");
-          isLoading = false;
-          return false;
+          return handleServerSideError("Server Error! Please Try Again!");
         } else {
           addToast("success", "Account Created Successfully!");
+          $authData = { ...$authData, isLoggedIn: true };
           isLoading = false;
           goto("/");
           return true;
         }
       } catch (err) {
-        addToast("error", "Server Error! Please Try Again!");
-        return false;
+        return handleServerSideError("Server Error! Please Try Again!");
       }
     }
   }
@@ -141,7 +174,7 @@
     <div class="form-top">
       <button on:click={handleFileUpload} class="photo">
         <input bind:this={profilePhoto} bind:value={userPhoto} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
-        <img alt="Upload Profile" src={$authData.user?.photoURL || userPhoto ? $authData.user?.photoURL || userPhoto : "/default-photo.svg"}>
+        <img alt="Upload Profile" src={userPhoto ? userPhoto : "/default-photo.svg"}>
       </button>
       <div class="name-phone-container">
         <label for="name">Name</label>

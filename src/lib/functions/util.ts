@@ -1,7 +1,8 @@
 import { authData } from '$lib/stores/auth';
-import { functions } from '$lib/firebase/client';
+import { functions, storage } from '$lib/firebase/client';
 import { httpsCallable } from 'firebase/functions';
 import { get } from 'svelte/store';
+import { getDownloadURL, ref, uploadBytes, type UploadResult } from 'firebase/storage';
 
 const cloudResponse = {
   isError: false,
@@ -44,4 +45,14 @@ export async function callFunction(functionKey: string, sendData: Object) {
     console.error(`error for ${functionKey} with ${code} => ${message}`);
     console.error(`error detials: ${details}`);
   }
+}
+
+export async function uploadPic(imageAddress: string, uploadLocation: string) {
+  const image: File = new File([imageAddress], "userPhoto.jpg");
+  const reference = ref(storage, uploadLocation);
+  const uploadResult: UploadResult = await uploadBytes(reference, image);
+  console.log(uploadResult);
+  const newURL = await getDownloadURL(reference);
+  console.log(newURL);
+  return newURL;
 }

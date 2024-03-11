@@ -13,6 +13,7 @@
 
   const hangleSignOut = async () => {
     await logout();
+    $authData = { user: null, isLoggedIn: false };
     goto("/login");
     addToast("success", "Do visit us again :)")
   }
