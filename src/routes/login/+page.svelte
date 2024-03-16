@@ -15,6 +15,7 @@
   import CreateUserForm from "../../components/CreateUserForm.svelte"
   import { goto } from "$app/navigation";
   import Loading from "../../components/Loading.svelte";
+  import { userStore } from "$lib/stores/user";
 
   const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];
 
@@ -92,8 +93,13 @@
           form = "login";
         }
       } else {
-        $authData = { user: result?.result.data, isLoggedIn: true }
-        goto("/");
+        $authData = { ...$authData, isLoggedIn: true }
+        $userStore = result?.result.data;
+        sessionStorage.setItem("user", JSON.stringify($userStore));
+        sessionStorage.setItem("loggedin", "true");
+        console.log(`logged in user data ${JSON.stringify($userStore)}`);
+        console.log(`logged in user auth data ${JSON.stringify($authData)}`);
+        goto("/account");
       }
     } catch (err) {
       addToast("error", "Server Error! Please try again!");

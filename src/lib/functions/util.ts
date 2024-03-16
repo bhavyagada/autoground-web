@@ -47,10 +47,9 @@ export async function callFunction(functionKey: string, sendData: Object) {
   }
 }
 
-export async function uploadPic(imageAddress: string, uploadLocation: string) {
-  const image: File = new File([imageAddress], "userPhoto.jpg");
+export async function uploadPic(imageFile: any, uploadLocation: string) {
   const reference = ref(storage, uploadLocation);
-  const uploadResult: UploadResult = await uploadBytes(reference, image);
+  const uploadResult: UploadResult = await uploadBytes(reference, imageFile);
   console.log(uploadResult);
   const newURL = await getDownloadURL(reference);
   console.log(newURL);

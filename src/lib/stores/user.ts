@@ -1,5 +1,6 @@
 import { writable } from "svelte/store"
 import { AuthenticationType, type UserData } from "../../types"
+import { browser } from "$app/environment";
 
 export const defaultUser = {
   created: 0,
@@ -25,4 +26,9 @@ export const defaultUser = {
   badges: []
 }
 
-export const userStore = writable<UserData>(defaultUser);
+let user: any;
+if (browser) {
+  const oldData: any = sessionStorage.getItem("user");
+  user = JSON.parse(oldData);
+}
+export const userStore = writable<UserData>(user ? user : defaultUser);

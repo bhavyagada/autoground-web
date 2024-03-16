@@ -44,9 +44,10 @@
     profilePhoto.click();
   }
 
-  const loadFile = (e: any) => {
-    const file: any = e.target.files[0]
-    userPhoto = URL.createObjectURL(file);
+  const loadFile = async (e: any) => {
+    const imageFile: any = e.target.files[0];
+    userPhoto = await uploadPic(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
+    $userStore = { ...$userStore, userPhoto };
   }
 
   $: isValidName = name.trim().length > 0 && name.trim().length < 51;
@@ -157,8 +158,10 @@
         } else {
           addToast("success", "Account Created Successfully!");
           $authData = { ...$authData, isLoggedIn: true };
+          sessionStorage.setItem("user", JSON.stringify($userStore));
+          sessionStorage.setItem("loggedin", "true");
           isLoading = false;
-          goto("/");
+          goto("/account");
           return true;
         }
       } catch (err) {
@@ -185,8 +188,8 @@
             <input bind:value={userName} type="text" name="username" minlength="3" maxlength="20">
           </div>
           <div class="phonenumber">
-            <label for="phone">Phone Number</label>
-            <input bind:value={phoneNumber} id="phone" class="phone" type="tel" name="phonenumber" disabled={$authData.user?.providerData[0].providerId === AuthProviderId.PHONE}>
+            <label for="phonenumber">Phone Number</label>
+            <input bind:value={phoneNumber} id="phone" type="tel" name="phonenumber" disabled={$authData.user?.providerData[0].providerId === AuthProviderId.PHONE}>
           </div>
         </div>
       </div>

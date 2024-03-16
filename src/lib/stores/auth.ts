@@ -9,9 +9,14 @@ import {
   OAuthProvider,
 } from "firebase/auth";
 import type { AuthData, PhoneVerificationData, ToastData } from "../../types";
+import { browser } from "$app/environment";
 
 // authentication state stores
-export const authData = writable<AuthData>({ user: null, isLoggedIn: false });
+let isLoggedIn;
+if (browser) {
+  isLoggedIn = sessionStorage.getItem("loggedin");
+}
+export const authData = writable<AuthData>({ user: null, isLoggedIn: isLoggedIn && isLoggedIn === "true" ? true : false });
 export const cloudError = writable<string | null>(null);
 export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 export const toast = writable<ToastData | null>(null);
@@ -34,14 +39,12 @@ export const dismissToast = () => {
 };
 
 export async function phoneSignup(phoneNumber: string) {
-  // auth.settings.appVerificationDisabledForTesting = true;
   const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, new RecaptchaVerifier(auth, "recaptcha-container", {}));
   console.log(confirmationResult);
   phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
 }
 
 export async function resendCodeSignUp(phoneNumber: string) {
-  // auth.settings.appVerificationDisabledForTesting = true;
   const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, new RecaptchaVerifier(auth, "verify-recaptcha-container", {}));
   console.log(confirmationResult);
   phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
