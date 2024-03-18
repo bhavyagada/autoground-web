@@ -34,9 +34,14 @@
               form = "login";
             }
           } else {
-            $authData = { user: result?.result.data, isLoggedIn: true };
+            $authData = { ...$authData, isLoggedIn: true }
+            $userStore = result?.result.data;
+            sessionStorage.setItem("user", JSON.stringify($userStore));
+            sessionStorage.setItem("loggedin", "true");
+            console.log(`logged in user data ${JSON.stringify($userStore)}`);
+            console.log(`logged in user auth data ${JSON.stringify($authData)}`);
+            goto("/account");
             addToast("success", "Successfully Signed In!");
-            goto("/");
           }
         } catch (err) {
           addToast("error", "Server Error! Please try again!");

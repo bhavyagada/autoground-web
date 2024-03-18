@@ -12,11 +12,14 @@ import type { AuthData, PhoneVerificationData, ToastData } from "../../types";
 import { browser } from "$app/environment";
 
 // authentication state stores
+let user;
 let isLoggedIn;
 if (browser) {
+  const oldData: any = sessionStorage.getItem("user");
+  user = JSON.parse(oldData);
   isLoggedIn = sessionStorage.getItem("loggedin");
 }
-export const authData = writable<AuthData>({ user: null, isLoggedIn: isLoggedIn && isLoggedIn === "true" ? true : false });
+export const authData = writable<AuthData>({ user: user ? user : null, isLoggedIn: isLoggedIn && isLoggedIn === "true" ? true : false });
 export const cloudError = writable<string | null>(null);
 export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 export const toast = writable<ToastData | null>(null);

@@ -90,7 +90,7 @@
           if (input === "name") $userStore = { ...$userStore, name };
           else if (input === "userName") $userStore = { ...$userStore, userName };
           else if (input === "bio") $userStore = { ...$userStore, bio };
-          else if (input === "phone") $userStore = { ...$userStore, phone };
+          else if (input === "phone") $userStore = { ...$userStore, phone: iti.getNumber(), countryCode: iti.getSelectedCountryData().dialCode };
           else if (input === "email") $userStore = { ...$userStore, email };
           updateStorageToggleModal(input.charAt(0).toUpperCase() + input.slice(1));
         }

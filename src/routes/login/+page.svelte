@@ -87,6 +87,7 @@
       if (result?.isError) {
         $cloudError = result.errorType;
         if ($cloudError === "[user_not_exists]") {
+          addToast("success", "Welcome! Please create your account!");
           form = "create";
         } else {
           addToast("error", "Server Error! Please try again!");
@@ -100,6 +101,7 @@
         console.log(`logged in user data ${JSON.stringify($userStore)}`);
         console.log(`logged in user auth data ${JSON.stringify($authData)}`);
         goto("/account");
+        addToast("success", "Successfully Signed In!");
       }
     } catch (err) {
       addToast("error", "Server Error! Please try again!");
