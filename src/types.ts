@@ -63,3 +63,32 @@ export interface PhoneVerificationData {
   confirmation: ConfirmationResult,
   phoneNumber: string
 }
+
+export interface CarModificationData {
+  modificationId: string | null,
+  category: string | null,
+  subCategory: string | null,
+  part: string | null,
+  brand: string | null,
+  points: number | null,
+  categories: string[] | null,
+  coverPhoto: string | null
+}
+
+export interface CarData {
+  created: number | null,
+  modified: number | null,
+  carId: string | null,
+  userId: string | null,
+  userName: string | null,
+  coverPhoto: string | null,
+  name: string | null,
+  vehicleType: VehicleType,
+  year: number | null,
+  points: number | null,
+  totalPoints: number | null,
+  make: string | null,
+  model: string | null,
+  photos: string[] | null,
+  modifications: CarModificationData[] | null
+}
