@@ -3,7 +3,7 @@
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
-  import { carStore } from "$lib/stores/car";
+  import { allCarsStore } from "$lib/stores/car";
   import { onMount } from "svelte";
   import Loading from "../../components/Loading.svelte";
 
@@ -27,17 +27,18 @@
           if (result.isError) {
             addToast("error", "Server Error! Try reloading the page!");
           } else {
-            $carStore = result.result.data.cars;
-            $carStore.forEach(car => coverPhotos.push(car.coverPhoto));
-            $carStore.forEach(car => years.push(car.year));
-            $carStore.forEach(car => makes.push(car.make));
-            $carStore.forEach(car => models.push(car.model));
-            $carStore.forEach(car => modificationCounts.push(car.modifications?.length));
-            $carStore.forEach(car => points.push(car.points));
+            $allCarsStore = result.result.data.cars;
+            sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
+            $allCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
+            $allCarsStore.forEach(car => years.push(car.year));
+            $allCarsStore.forEach(car => makes.push(car.make));
+            $allCarsStore.forEach(car => models.push(car.model));
+            $allCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
+            $allCarsStore.forEach(car => points.push(car.points));
             console.log(`cover photos ${coverPhotos}`);
             photosLength = coverPhotos.length;
             console.log(`cover photos length ${photosLength}`);
-            sessionStorage.setItem("user", JSON.stringify($carStore));
+            sessionStorage.setItem("user", JSON.stringify($allCarsStore));
           }
         }
       } catch (err) {

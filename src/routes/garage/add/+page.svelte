@@ -1,92 +1,345 @@
 <script lang="ts">
-  import { uploadPic } from "$lib/functions/util";
+  import { callFunction, uploadPic } from "$lib/functions/util";
+  import cars from "/src/data/cars.json";
+  import bikes from "/src/data/bikes.json";
+  import trucks from "/src/data/trucks.json";
+  import Cropper from 'svelte-easy-crop';
+  import { addToast, authData } from "$lib/stores/auth";
+  import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
+  import { cloudFunctions } from "$lib/functions/all";
+  import Loading from "../../../components/Loading.svelte";
+  import { VehicleType } from "../../../types";
+  import { userStore } from "$lib/stores/user";
 
-  let selectedType: any = "car";
-  let vehicleImage: any = "";
-  let selectedYear: any;
-  let years: any = [{id: 0, text: ""}, {id: 1, text: 2024}, {id: 2, text: 2023}, {id: 2, text: 2022}];
-  let selectedMake: any;
-  let makes: any = [{id: 0, text: ""}, {id: 1, text: 2024}, {id: 2, text: 2023}, {id: 2, text: 2022}];
-  let selectedModel: any;
-  let models: any = [{id: 0, text: ""}, {id: 1, text: 2024}, {id: 2, text: 2023}, {id: 2, text: 2022}];
+  let size: string = "60"; 
+  let isLoading: boolean = false;
+
+  let photos: string[] = [];
+  let otherPhoto1: any = null;
+  let otherPhoto2: any = null;
+  let otherPhoto3: any = null;
+  let coverPhoto: any = null;
+  let pixelCrop: any;
+  let image: any;
+  let crop = { x: 0, y: 0 };
+  let zoom = 1;
+
+  let selectedType: string = "car";
+  let selectedYear: string | number = "";
+  let selectedMake: string = "";
+  let selectedModel: string = "";
+  let name: string = "";
+
+  const getYears = () => {
+    const startYear = 1900;
+    let currentYear = new Date().getFullYear();
+    let yearList: Array<number> = [];
+    while (currentYear >= startYear) {
+      yearList.push(currentYear--);
+    }
+    return yearList;
+  }
+
+  let years: number[] = getYears();
+
+  let makes: { [key: string]: string[]; };
+  $: makes = {
+    "bike": Object.keys(bikes),
+    "car": Object.keys(cars),
+    "truck": Object.keys(trucks)
+  }
+
+  let models: { [key: string]: any; };
+  $: models = {
+    "bike": bikes[selectedMake],
+    "car": cars[selectedMake],
+    "truck": trucks[selectedMake]
+  };
+
+  const resetSelectedModel = () => {
+    selectedModel = "";
+  }
 
   $: console.log(selectedYear);
   $: console.log(selectedMake);
   $: console.log(selectedModel);
 
-  let profilePhoto: HTMLElement;
-  const handleFileUpload = () => {
-    console.log("add vehicle clicked");
-    profilePhoto.click();
-  }
+  let mainPhotoElement: HTMLElement;
+  const handleMainFileUpload = () => mainPhotoElement.click();
+  let otherPhotoElement1: HTMLElement;
+  const handleOtherFileUpload1 = () => otherPhotoElement1.click();
+  let otherPhotoElement2: HTMLElement;
+  const handleOtherFileUpload2 = () => otherPhotoElement2.click();
+  let otherPhotoElement3: HTMLElement;
+  const handleOtherFileUpload3 = () => otherPhotoElement3.click();
 
   const loadFile = async (e: any) => {
     const imageFile: any = e.target.files[0];
-    vehicleImage = await uploadPic(imageFile, `UsersProfilePhoto/uid`);
-    // $userStore = { ...$userStore, userPhoto };
+    let reader = new FileReader();
+		reader.onload = e => {
+      if (!e.target) return null;
+			image = e.target.result;
+		};
+		reader.readAsDataURL(imageFile);
+  }
+
+  const previewCrop = (e: any) => {
+		pixelCrop = e.detail.pixels;
+  }
+
+  const cropImage = (imageSrc: any, pixelCrop: { x: number, y: number, width: number, height: number }) => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = imageSrc;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(null);
+          return;
+        }
+        canvas.width = pixelCrop.width;
+        canvas.height = pixelCrop.height;
+
+        // Draw cropped image on the canvas
+        ctx.drawImage(image, pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height, 0, 0, pixelCrop.width, pixelCrop.height);
+
+        const dataURL = canvas.toDataURL('image/jpeg');
+        if (coverPhoto !== null && otherPhoto1 === null && otherPhoto2 === null && otherPhoto3 === null) coverPhoto = dataURL;
+        if (otherPhoto1 !== null && otherPhoto2 === null && otherPhoto3 === null) otherPhoto1 = dataURL;
+        if (otherPhoto2 !== null && otherPhoto3 === null) otherPhoto2 = dataURL;
+        if (otherPhoto3 !== null) otherPhoto3 = dataURL;
+        resolve(dataURItoFile(dataURL));
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+    });
+  }
+
+  const dataURItoFile = (dataURI: string) => {
+    var byteString = atob(dataURI.split(',')[1]);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    image = null;
+    const blob = new Blob([ab], { type: mimeString });
+    return new File([blob], "image.jpeg", { type: mimeString });
+  }
+
+  $: console.log(photos);
+  $: console.log($carStore);
+
+  const handleTypeChange = (type: string) => {
+    selectedType = type;
+    selectedYear = "";
+    selectedMake = "";
+    selectedModel = "";
+  }
+
+  const handleClientSideError = (errorMessage: string): boolean => {
+    addToast("error", errorMessage);
+    return false;
+  };
+
+  const handleServerSideError = (errorMessage: string): boolean => {
+    addToast("error", errorMessage);
+    isLoading = false;
+    return false;
+  };
+
+  const handleCloudUploadPhoto = async (photo: any) => {
+    const imageFile = dataURItoFile(photo);
+    return await uploadPic(imageFile, `Users/${$authData.user?.uid}/CarPhotos/${Date.now()}`);
+  }
+
+  const handleSubmit = async () => {
+    if (!selectedYear || (typeof Number(selectedYear) !== "number") || (Number(selectedYear) < 1900 && Number(selectedYear) > new Date().getFullYear())) {
+      return handleClientSideError("Enter a valid year!");
+    } else if (!selectedMake) {
+      return handleClientSideError("Enter a car make!");
+    } else if (!selectedModel) {
+      return handleClientSideError("Enter a car model!");
+    }
+
+    if (coverPhoto) {
+      coverPhoto = await handleCloudUploadPhoto(coverPhoto);
+      $carStore = { ...$carStore, coverPhoto };
+    }
+    if (otherPhoto1) {
+      otherPhoto1 = await handleCloudUploadPhoto(otherPhoto1);
+      photos.push(otherPhoto1);
+    }
+    if (otherPhoto2) {
+      otherPhoto2 = await handleCloudUploadPhoto(otherPhoto2);
+      photos.push(otherPhoto2);
+    }
+    if (otherPhoto3) {
+      otherPhoto3 = await handleCloudUploadPhoto(otherPhoto3);
+      photos.push(otherPhoto3);
+    }
+    if (photos.length > 0) {
+      $carStore = { ...$carStore, photos };
+    }
+
+    if (selectedYear && selectedMake && selectedModel) {
+      let vehicleType: VehicleType = VehicleType.car;
+      if (selectedType === "bike") vehicleType = VehicleType.bike;
+      else if (selectedType === "car") vehicleType = VehicleType.car;
+      else if (selectedType === "truck") vehicleType = VehicleType.truck;
+      const year = Number(selectedYear);
+      const make = selectedMake;
+      const model = selectedModel;
+      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName }
+    }
+    try {
+      isLoading = true;
+      const result = await callFunction(cloudFunctions.ADD_CAR_TO_GARAGE, { carData: $carStore });
+      if (result?.isError) {
+        return handleServerSideError("Server Error! Please Try Again!");
+      } else {
+        addToast("success", "Vehicle Added Successfully!");
+        $carStore = defaultCar;
+        $allCarsStore.push(result?.result.data);
+        sessionStorage.setItem("car", JSON.stringify($carStore));
+        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
+        isLoading = false;
+        return true;
+      }
+    } catch (err) {
+      return handleServerSideError("Server Error! Please Try Again!");
+    }
   }
 </script>
 
 <div class="background">
   <h1>Add Vehicle to Garage</h1>
   <div class="types">
-    <button class={selectedType === "car" ? "car selected" : "car"} on:click={() => selectedType = "car"}>
+    <button class={selectedType === "car" ? "car selected" : "car"} on:click={() => handleTypeChange("car")}>
       <img alt="Car Icon Type" src="/car.svg">
       <p>Car</p>
     </button>
-    <button class={selectedType === "truck" ? "truck selected" : "truck"} on:click={() => selectedType = "truck"}>
+    <button class={selectedType === "truck" ? "truck selected" : "truck"} on:click={() => handleTypeChange("truck")}>
       <img alt="Truck Icon Type" src="/truck.svg">
       <p>Truck</p>
     </button>
-    <button class={selectedType === "bike" ? "bike selected" : "bike"} on:click={() => selectedType = "bike"}>
+    <button class={selectedType === "bike" ? "bike selected" : "bike"} on:click={() => handleTypeChange("bike")}>
       <img alt="Bike Icon Type" src="/bike.svg">
       <p>Bike</p>
     </button>
   </div>
   <form>
-    <button on:click={handleFileUpload} class="photo">
-      <input bind:this={profilePhoto} bind:value={vehicleImage} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
-      <img alt="" src={vehicleImage}>
-      <p>Add Cover Photo</p>
-      <p>+</p>
-    </button>
+    {#if image}
+      <div class="crop-container">
+        <div class="cropper">
+          <Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} />
+        </div>
+        <button class="crop-submit" type="submit" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set as Cover Photo</button>
+      </div>
+    {/if}
+    <div class="photos">
+      <button on:click={handleMainFileUpload} class={coverPhoto ? "photo" : ""}>
+        <input bind:this={mainPhotoElement} bind:value={coverPhoto} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
+        <img alt="" src={coverPhoto} class={coverPhoto ? "photo" : ""}>
+        <p class={coverPhoto ? "none" : ""}>Add Cover Photo</p>
+        <p class={coverPhoto ? "none" : ""}>+</p> 
+      </button>
+        <button on:click={handleOtherFileUpload1} class={otherPhoto1 ? "photo" : ""}>
+          <input bind:this={otherPhotoElement1} bind:value={otherPhoto1} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
+          <img alt="" src={otherPhoto1} class={otherPhoto1 ? "photo" : ""}>
+          <p class={otherPhoto1 ? "none" : ""}>Add Photo</p>
+          <p class={otherPhoto1 ? "none" : ""}>+</p> 
+        </button>
+        <button on:click={handleOtherFileUpload2} class={otherPhoto2 ? "photo" : ""}>
+          <input bind:this={otherPhotoElement2} bind:value={otherPhoto2} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
+          <img alt="" src={otherPhoto2} class={otherPhoto2 ? "photo" : ""}>
+          <p class={otherPhoto2 ? "none" : ""}>Add Photo</p>
+          <p class={otherPhoto2 ? "none" : ""}>+</p> 
+        </button>
+        <button on:click={handleOtherFileUpload3} class={otherPhoto3 ? "photo" : ""}>
+          <input bind:this={otherPhotoElement3} bind:value={otherPhoto3} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
+          <img alt="" src={otherPhoto3} class={otherPhoto3 ? "photo" : ""}>
+          <p class={otherPhoto3 ? "none" : ""}>Add Photo</p>
+          <p class={otherPhoto3 ? "none" : ""}>+</p> 
+        </button>
+      
+    </div>
     <div class="details">
       <div class="year">
         <label for="year">Select Year</label>
-        <select bind:value={selectedYear} name="year">
-          {#each years as year}
-            <option value={year}>
-              {year.text}
-            </option>
-          {/each}
-        </select>
+        <div>
+          <input type="text" list="year" placeholder="Search or Select below" bind:value={selectedYear}>
+          <datalist id="year">
+            {#each years as year}
+              <option>{year}</option>
+            {/each}
+          </datalist>
+          <select bind:value={selectedYear} name="year">
+            <option value={selectedYear}></option>
+            {#each years as year}
+              <option value={year}>{year}</option>
+            {/each}
+          </select>
+        </div>
       </div>
+
       <div class="make">
         <label for="make">Select Make</label>
-        <select bind:value={selectedMake} name="make">
-          {#each makes as make}
-            <option value={make}>
-              {make.text}
-            </option>
-          {/each}
-        </select>
+        <div>
+          <input type="text" list="makes" placeholder="Search or Select below" bind:value={selectedMake} on:change={resetSelectedModel}>
+          <datalist id="makes">
+            {#each makes[selectedType] as make}
+              <option>{make}</option>
+            {/each}
+          </datalist>
+          <select bind:value={selectedMake} name="make" on:change={resetSelectedModel}>
+            <option value={selectedMake}></option>
+            {#each makes[selectedType] as make}
+              <option value={make}>{make}</option>
+            {/each}
+          </select>
+        </div>
       </div>
+
       <div class="model">
         <label for="model">Select Model</label>
-        <select bind:value={selectedModel} name="model">
-          {#each models as model}
-            <option value={model}>
-              {model.text}
-            </option>
-          {/each}
-        </select>
+        <div>
+          <input type="text" list="models" placeholder="Search or Select below" bind:value={selectedModel}>
+          <datalist id="models">
+            {#if models[selectedType]}
+              {#each models[selectedType] as model}
+                <option>{model.model}</option>
+              {/each}
+            {/if}
+          </datalist>
+          <select bind:value={selectedModel} name="model">
+            <option value={selectedModel}></option>
+            {#if models[selectedType]}
+              {#each models[selectedType] as model}
+                <option value={model.model}>{model.model}</option>
+              {/each}
+            {/if}
+          </select>
+        </div>
       </div>
     </div>
     <div class="nickname">
       <label for="nickname">Vehicle Nickname</label>
-      <input type="text" name="nickname">
+      <input bind:value={name} type="text" name="nickname">
     </div>
-    <input type="submit" name="submit" value="Add Vehicle">
+    {#if isLoading}
+      <Loading {size} />
+    {:else}
+      <input on:click|preventDefault={handleSubmit} type="submit" name="submit" value="Add Vehicle">
+    {/if}
   </form>
 </div>
 
@@ -119,6 +372,35 @@
     align-items: center;
     border-radius: 1rem;
   }
+  .crop-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .cropper {
+    background-color: black;
+    position: absolute;
+    width: 100%;
+    height: 95%;
+    z-index: 2;
+  }
+  .crop-submit {
+    position: absolute;
+    background-color: white;
+    color: black;
+    width: 100%;
+    height: 8%;
+    font-size: 1.125rem;
+    line-height: 2.25rem;
+    bottom: 0;
+    z-index: 2;
+    padding: 0;
+    margin: 0;
+  }
   .types img {
     width: 5rem;
     height: 3rem;
@@ -138,29 +420,46 @@
     padding: 0.5rem 1rem;
   }
   form {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
   }
+  .photos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .photos > button {
+    flex: 20%;
+    margin: 0.5rem;
+  }
   form button {
     background-color: rgb(51, 55, 64);
     color: white;
     border-radius: 0.5rem;
-    padding: 2.5rem;
+    width: 160px;
+    height: 120px;
+  }
+  .photo {
+    width: 160px;
+    height: 120px;
+    border-radius: 0.5rem;
+    padding: 0;
+  }
+  .none {
+    display: none;
   }
   .details {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
   .year, .make, .model {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 90%;
     margin: 0.125rem 0;
   }
   form label {
@@ -172,6 +471,7 @@
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem;
     margin: 0.125rem 0;
+    width: 47%;
   }
   input[type="submit"] {
     background-color: white;
@@ -223,13 +523,6 @@
     }
     form button {
       align-self: flex-start;
-      margin-left: 2rem;
-      margin-bottom: 0.5rem;
-    }
-  }
-  @media all and (min-width:700px) {
-    form button {
-      margin-left: 2.5rem;
     }
   }
   @media all and (min-width:1200px) {
@@ -244,25 +537,52 @@
       width: 65%;
     }
     form button {
+      width: 200px;
+      height: 150px;
+    }
+    .photos {
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+    }
+    .photos button:first-child {
       margin-left: 0;
-      padding: 3.75rem;
-      font-size: 1.5rem;
+    }
+    .photos button:last-child {
+      margin-right: 0;
+    }
+    .photo {
+      align-self: flex-start;
+      width: 200px;
+      height: 150px;
+      border-radius: 0.5rem;
+      padding: 0;
     }
     .details {
       flex-direction: row;
       justify-content: space-between;
+      width: 100%;
     }
     .year, .make, .model {
       margin: 2rem 0;
+      width: 90%;
+    }
+    .year div, .make div, .model div {
+      width: 90%;
     }
     form label {
       margin-bottom: 0.25rem;
+      width: 90%;
     }
-    form select {
+    form select, form input {
       padding: 0.5rem 0.5rem;
+      width: 100%;
     }
     .nickname {
       width: 100%
+    }
+    .nickname input {
+      width: 100%;
     }
     input[type="submit"] {
       margin-top: 5rem;

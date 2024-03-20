@@ -1,0 +1,266 @@
+{
+  "Chevrolet": [
+    {
+      "model": "Advance Design",
+      "msrp": 13890
+    },
+    {
+      "model": "Avalanche",
+      "msrp": 12390
+    },
+    {
+      "model": "C/K",
+      "msrp": 16390
+    },
+    {
+      "model": "Colorado",
+      "msrp": 14640
+    },
+    {
+      "model": "El Camino",
+      "msrp": 11230
+    },
+    {
+      "model": "LUV",
+      "msrp": 15400
+    },
+    {
+      "model": "S10",
+      "msrp": 14290
+    },
+    {
+      "model": "Silverado",
+      "msrp": 19230
+    },
+    {
+      "model": "Task Force",
+      "msrp": 17300
+    }
+  ],
+  "Datsun": [
+    {
+      "model": "Truck",
+      "msrp": 22400
+    }
+  ],
+  "Dodge": [
+    {
+      "model": "D-Series",
+      "msrp": 17500
+    },
+    {
+      "model": "D50",
+      "msrp": 12300
+    },
+    {
+      "model": "Dakota",
+      "msrp": 19700
+    },
+    {
+      "model": "Ram 50",
+      "msrp": 14500
+    },
+    {
+      "model": "Rampage",
+      "msrp": 18600
+    }
+  ],
+  "Ford": [
+    {
+      "model": "Explorer Sport Trac",
+      "msrp": 14930
+    },
+    {
+      "model": "F150",
+      "msrp": 52450
+    },
+    {
+      "model": "F250",
+      "msrp": 80940
+    },
+    {
+      "model": "F350",
+      "msrp": 124380
+    },
+    {
+      "model": "F450",
+      "msrp": 153840
+    },
+    {
+      "model": "Ranger",
+      "msrp": 18480
+    },
+    {
+      "model": "Rapter",
+      "msrp": 81340
+    },
+    {
+      "model": "Super Duty F250",
+      "msrp": 123540
+    },
+    {
+      "model": "Super Duty F350",
+      "msrp": 145320
+    },
+    {
+      "model": "Super Duty F450",
+      "msrp": 154880
+    }
+  ],
+  "GMC": [
+    {
+      "model": "C/K",
+      "msrp": 24580
+    },
+    {
+      "model": "Caballero",
+      "msrp": 13570
+    },
+    {
+      "model": "Canyon",
+      "msrp": 22550
+    },
+    {
+      "model": "S-15",
+      "msrp": 16450
+    },
+    {
+      "model": "Sierra",
+      "msrp": 26540
+    },
+    {
+      "model": "Sonoma",
+      "msrp": 23490
+    },
+    {
+      "model": "Spirit",
+      "msrp": 5740
+    },
+    {
+      "model": "Syclone",
+      "msrp": 31240
+    }
+  ],
+  "Honda": [
+    {
+      "model": "Ridgeline",
+      "msrp": 13480
+    }
+  ],
+  "Hyundai": [
+    {
+      "model": "Santa Cruz",
+      "msrp": 26650
+    }
+  ],
+  "Jeep": [
+    {
+      "model": "Gladiator",
+      "msrp": 36540
+    }
+  ],
+  "Lincoln": [
+    {
+      "model": "Blackwood",
+      "msrp": 8400
+    },
+    {
+      "model": "Mark LT",
+      "msrp": 10340
+    }
+  ],
+  "Mazda": [
+    {
+      "model": "B-Series",
+      "msrp": 20240
+    }
+  ],
+  "Mitsubishi": [
+    {
+      "model": "Mighty Max",
+      "msrp": 13460
+    },
+    {
+      "model": "Raider",
+      "msrp": 14530
+    }
+  ],
+  "Nissan": [
+    {
+      "model": "Frontier",
+      "msrp": 22340
+    },
+    {
+      "model": "Hardbody Truck",
+      "msrp": 8050
+    },
+    {
+      "model": "Titan",
+      "msrp": 28790
+    }
+  ],
+  "RAM": [
+    {
+      "model": "1500",
+      "msrp": 39420
+    },
+    {
+      "model": "2500",
+      "msrp": 47740
+    },
+    {
+      "model": "3500",
+      "msrp": 49980
+    },
+    {
+      "model": "Dakota",
+      "msrp": 29650
+    }
+  ],
+  "Rivian": [
+    {
+      "model": "R1T",
+      "msrp": 80430
+    }
+  ],
+  "Subaru": [
+    {
+      "model": "BRAT",
+      "msrp": 22400
+    },
+    {
+      "model": "Baja",
+      "msrp": 5430
+    }
+  ],
+  "Suzuki": [
+    {
+      "model": "Equator",
+      "msrp": 13890
+    }
+  ],
+  "Tesla": [
+    {
+      "model": "Cybertruck",
+      "msrp": 206700
+    }
+  ],
+  "Toyota": [
+    {
+      "model": "Hilux",
+      "msrp": 55700
+    },
+    {
+      "model": "T100",
+      "msrp": 13040
+    },
+    {
+      "model": "Tacoma",
+      "msrp": 32450
+    },
+    {
+      "model": "Tundra",
+      "msrp": 43240
+    }
+  ]
+}

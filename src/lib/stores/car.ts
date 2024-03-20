@@ -33,8 +33,12 @@ export const defaultCar = {
 }
 
 let car: any;
+let cars: any;
 if (browser) {
-  const oldData: any = sessionStorage.getItem("car");
-  car = JSON.parse(oldData);
+  const oldCarData: any = sessionStorage.getItem("car");
+  const oldCarListData: any = sessionStorage.getItem("cars");
+  car = JSON.parse(oldCarData);
+  cars = JSON.parse(oldCarListData);
 }
-export const carStore = writable<CarData[]>(car ? car : defaultCar);
+export const carStore = writable<CarData>(car ? car : defaultCar);
+export const allCarsStore = writable<CarData[]>(cars ? cars : [defaultCar]);

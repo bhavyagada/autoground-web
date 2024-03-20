@@ -37,6 +37,7 @@
 		"firebase": "^10.8.1",
 		"firebase-admin": "^12.0.0",
 		"intl-tel-input": "^19.5.5",
-		"save-dev": "0.0.1-security"
+		"save-dev": "0.0.1-security",
+		"svelte-easy-crop": "^2.0.3"
 	}
 }

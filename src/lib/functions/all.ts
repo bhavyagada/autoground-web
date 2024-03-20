@@ -11,4 +11,10 @@ export enum cloudFunctions {
   UPDATE_USER_EMAIL = "updateUserEmail",
   UPDATE_USER_PHONE = "updateUserPhone",
   GET_GARAGE_DATA = "getGarageData",
+  ADD_CAR_TO_GARAGE = "addCarToGarage",
+  UPDATE_CAR_IN_GARAGE = "updateCarInGarage",
+  DELETE_CAR_IN_GARAGE = "deleteCarInGarage",
+  ADD_MODIFICATION_IN_CAR = "addModificationInCar",
+  UPDATE_MODIFICATION_IN_CAR = "updateModificationInCar",
+  DELETE_MODIFICATION_IN_CAR = "deleteModificationInCar",
 }

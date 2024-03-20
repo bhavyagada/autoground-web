@@ -1,0 +1,4760 @@
+{
+  "Acura": [
+    {
+      "model": "CL",
+      "msrp": 30500
+    },
+    {
+      "model": "CSX",
+      "msrp": 24000
+    },
+    {
+      "model": "EL",
+      "msrp": 17800
+    },
+    {
+      "model": "ILX",
+      "msrp": 27300
+    },
+    {
+      "model": "Integra",
+      "msrp": 31500
+    },
+    {
+      "model": "Legend",
+      "msrp": 29900
+    },
+    {
+      "model": "MDX",
+      "msrp": 49800
+    },
+    {
+      "model": "NSX",
+      "msrp": 130000
+    },
+    {
+      "model": "RDX",
+      "msrp": 44000
+    },
+    {
+      "model": "RL",
+      "msrp": 49600
+    },
+    {
+      "model": "RLX",
+      "msrp": 55400
+    },
+    {
+      "model": "RSX",
+      "msrp": 21540
+    },
+    {
+      "model": "SLX",
+      "msrp": 33900
+    },
+    {
+      "model": "TL",
+      "msrp": 39500
+    },
+    {
+      "model": "TLX",
+      "msrp": 46450
+    },
+    {
+      "model": "TSX",
+      "msrp": 30500
+    },
+    {
+      "model": "ZDX",
+      "msrp": 46900
+    }
+  ],
+  "Alfa Romeo": [
+    {
+      "model": "4C",
+      "msrp": 68700
+    },
+    {
+      "model": "Giulia",
+      "msrp": 43300
+    },
+    {
+      "model": "Spider",
+      "msrp": 66050
+    }
+  ],
+  "Ariel": [
+    {
+      "model": "Atom",
+      "msrp": 55814
+    }
+  ],
+  "Aston Martin": [
+    {
+      "model": "DB11",
+      "msrp": 217600
+    },
+    {
+      "model": "DB2",
+      "msrp": 193500
+    },
+    {
+      "model": "DB2/4",
+      "msrp": 239500
+    },
+    {
+      "model": "DB2/4 Mark III",
+      "msrp": 229600
+    },
+    {
+      "model": "DB4",
+      "msrp": 1078000
+    },
+    {
+      "model": "DB5",
+      "msrp": 1304500
+    },
+    {
+      "model": "DB6",
+      "msrp": 323800
+    },
+    {
+      "model": "DB7",
+      "msrp": 133700
+    },
+    {
+      "model": "DB9",
+      "msrp": 182700
+    },
+    {
+      "model": "DBS",
+      "msrp": 334600
+    },
+    {
+      "model": "Rapide",
+      "msrp": 205300
+    },
+    {
+      "model": "V12 Vanquish",
+      "msrp": 261000
+    },
+    {
+      "model": "V12 Vantage",
+      "msrp": 186400
+    },
+    {
+      "model": "V8 Vantage",
+      "msrp": 146300
+    },
+    {
+      "model": "Vanquish",
+      "msrp": 137000
+    },
+    {
+      "model": "Virage",
+      "msrp": 208500
+    }
+  ],
+  "Audi": [
+    {
+      "model": "100",
+      "msrp": 35500
+    },
+    {
+      "model": "200",
+      "msrp": 24500
+    },
+    {
+      "model": "4000",
+      "msrp": 21500
+    },
+    {
+      "model": "5000",
+      "msrp": 35520
+    },
+    {
+      "model": "80",
+      "msrp": 23340
+    },
+    {
+      "model": "90",
+      "msrp": 27590
+    },
+    {
+      "model": "A3",
+      "msrp": 35400
+    },
+    {
+      "model": "A4",
+      "msrp": 34600
+    },
+    {
+      "model": "A5",
+      "msrp": 44690
+    },
+    {
+      "model": "A6",
+      "msrp": 52100
+    },
+    {
+      "model": "A7",
+      "msrp": 71200
+    },
+    {
+      "model": "A8",
+      "msrp": 88900
+    },
+    {
+      "model": "Cabriolet",
+      "msrp": 18470
+    },
+    {
+      "model": "Coupé",
+      "msrp": 25350
+    },
+    {
+      "model": "Fox",
+      "msrp": 23100
+    },
+    {
+      "model": "Q2",
+      "msrp": 52300
+    },
+    {
+      "model": "Q3",
+      "msrp": 37000
+    },
+    {
+      "model": "Q5",
+      "msrp": 45350
+    },
+    {
+      "model": "Q7",
+      "msrp": 59500
+    },
+    {
+      "model": "Q8",
+      "msrp": 73700
+    },
+    {
+      "model": "Quattro",
+      "msrp": 28040
+    },
+    {
+      "model": "R8",
+      "msrp": 160500
+    },
+    {
+      "model": "RS3",
+      "msrp": 51320
+    },
+    {
+      "model": "RS4",
+      "msrp": 66540
+    },
+    {
+      "model": "RS5",
+      "msrp": 78400
+    },
+    {
+      "model": "RS6",
+      "msrp": 125000
+    },
+    {
+      "model": "RS7",
+      "msrp": 127500
+    },
+    {
+      "model": "S3",
+      "msrp": 47400
+    },
+    {
+      "model": "S4",
+      "msrp": 51320
+    },
+    {
+      "model": "S5",
+      "msrp": 56600
+    },
+    {
+      "model": "S6",
+      "msrp": 72000
+    },
+    {
+      "model": "S7",
+      "msrp": 84500
+    },
+    {
+      "model": "S8",
+      "msrp": 120300
+    },
+    {
+      "model": "TT",
+      "msrp": 51200
+    },
+    {
+      "model": "V8",
+      "msrp": 29450
+    },
+    {
+      "model": "e-tron",
+      "msrp": 74400
+    }
+  ],
+  "BMW": [
+    {
+      "model": "3200 CS",
+      "msrp": 92560
+    },
+    {
+      "model": "507",
+      "msrp": 2037062
+    },
+    {
+      "model": "E10",
+      "msrp": 20450
+    },
+    {
+      "model": "E12",
+      "msrp": 18390
+    },
+    {
+      "model": "E20",
+      "msrp": 19540
+    },
+    {
+      "model": "E21",
+      "msrp": 20860
+    },
+    {
+      "model": "E23",
+      "msrp": 18960
+    },
+    {
+      "model": "E24",
+      "msrp": 28790
+    },
+    {
+      "model": "E26",
+      "msrp": 30210
+    },
+    {
+      "model": "E28",
+      "msrp": 29540
+    },
+    {
+      "model": "E3",
+      "msrp": 9800
+    },
+    {
+      "model": "E30",
+      "msrp": 27900
+    },
+    {
+      "model": "E31",
+      "msrp": 37890
+    },
+    {
+      "model": "E32",
+      "msrp": 40670
+    },
+    {
+      "model": "E34",
+      "msrp": 38560
+    },
+    {
+      "model": "E36",
+      "msrp": 39600
+    },
+    {
+      "model": "E38",
+      "msrp": 37890
+    },
+    {
+      "model": "E39",
+      "msrp": 41280
+    },
+    {
+      "model": "E46",
+      "msrp": 39650
+    },
+    {
+      "model": "E52",
+      "msrp": 48560
+    },
+    {
+      "model": "E53",
+      "msrp": 47890
+    },
+    {
+      "model": "E6",
+      "msrp": 11760
+    },
+    {
+      "model": "E60",
+      "msrp": 49880
+    },
+    {
+      "model": "E61",
+      "msrp": 50670
+    },
+    {
+      "model": "E63",
+      "msrp": 59320
+    },
+    {
+      "model": "E64",
+      "msrp": 58970
+    },
+    {
+      "model": "E65",
+      "msrp": 57890
+    },
+    {
+      "model": "E66",
+      "msrp": 56780
+    },
+    {
+      "model": "E70",
+      "msrp": 58970
+    },
+    {
+      "model": "E71",
+      "msrp": 59800
+    },
+    {
+      "model": "E72",
+      "msrp": 60880
+    },
+    {
+      "model": "E83",
+      "msrp": 59890
+    },
+    {
+      "model": "E84",
+      "msrp": 60780
+    },
+    {
+      "model": "E85",
+      "msrp": 66780
+    },
+    {
+      "model": "E86",
+      "msrp": 68990
+    },
+    {
+      "model": "E89",
+      "msrp": 69890
+    },
+    {
+      "model": "E9",
+      "msrp": 15230
+    },
+    {
+      "model": "E90",
+      "msrp": 70660
+    },
+    {
+      "model": "E91",
+      "msrp": 67830
+    },
+    {
+      "model": "E92",
+      "msrp": 69320
+    },
+    {
+      "model": "E93",
+      "msrp": 67850
+    },
+    {
+      "model": "F01",
+      "msrp": 77580
+    },
+    {
+      "model": "F02",
+      "msrp": 79700
+    },
+    {
+      "model": "F07",
+      "msrp": 76570
+    },
+    {
+      "model": "F10",
+      "msrp": 78560
+    },
+    {
+      "model": "F11",
+      "msrp": 80500
+    },
+    {
+      "model": "F12",
+      "msrp": 78930
+    },
+    {
+      "model": "F13",
+      "msrp": 75660
+    },
+    {
+      "model": "F15",
+      "msrp": 79890
+    },
+    {
+      "model": "F16",
+      "msrp": 80650
+    },
+    {
+      "model": "F20",
+      "msrp": 29890
+    },
+    {
+      "model": "F21",
+      "msrp": 28670
+    },
+    {
+      "model": "F22",
+      "msrp": 27970
+    },
+    {
+      "model": "F23",
+      "msrp": 30550
+    },
+    {
+      "model": "F25",
+      "msrp": 49860
+    },
+    {
+      "model": "F26",
+      "msrp": 47890
+    },
+    {
+      "model": "F30",
+      "msrp": 39870
+    },
+    {
+      "model": "F31",
+      "msrp": 37890
+    },
+    {
+      "model": "F32",
+      "msrp": 50670
+    },
+    {
+      "model": "F33",
+      "msrp": 49870
+    },
+    {
+      "model": "F34",
+      "msrp": 39650
+    },
+    {
+      "model": "F36",
+      "msrp": 48780
+    },
+    {
+      "model": "F39",
+      "msrp": 51990
+    },
+    {
+      "model": "F44",
+      "msrp": 40670
+    },
+    {
+      "model": "F45",
+      "msrp": 39860
+    },
+    {
+      "model": "F46",
+      "msrp": 37320
+    },
+    {
+      "model": "F48",
+      "msrp": 49870
+    },
+    {
+      "model": "F52",
+      "msrp": 52340
+    },
+    {
+      "model": "F80",
+      "msrp": 59780
+    },
+    {
+      "model": "F82",
+      "msrp": 69780
+    },
+    {
+      "model": "F83",
+      "msrp": 70560
+    },
+    {
+      "model": "F85",
+      "msrp": 59340
+    },
+    {
+      "model": "F86",
+      "msrp": 57430
+    },
+    {
+      "model": "F87",
+      "msrp": 48970
+    },
+    {
+      "model": "G01",
+      "msrp": 49870
+    },
+    {
+      "model": "G02",
+      "msrp": 49320
+    },
+    {
+      "model": "G05",
+      "msrp": 60390
+    },
+    {
+      "model": "G06",
+      "msrp": 59830
+    },
+    {
+      "model": "G07",
+      "msrp": 59410
+    },
+    {
+      "model": "G10",
+      "msrp": 60350
+    },
+    {
+      "model": "G11",
+      "msrp": 61230
+    },
+    {
+      "model": "G14",
+      "msrp": 70500
+    },
+    {
+      "model": "G15",
+      "msrp": 69440
+    },
+    {
+      "model": "G16",
+      "msrp": 69050
+    },
+    {
+      "model": "G20",
+      "msrp": 49750
+    },
+    {
+      "model": "G21",
+      "msrp": 48270
+    },
+    {
+      "model": "G22",
+      "msrp": 56900
+    },
+    {
+      "model": "G23",
+      "msrp": 57960
+    },
+    {
+      "model": "G26",
+      "msrp": 59800
+    },
+    {
+      "model": "G30",
+      "msrp": 56780
+    },
+    {
+      "model": "G31",
+      "msrp": 60600
+    },
+    {
+      "model": "G32",
+      "msrp": 70050
+    },
+    {
+      "model": "G42",
+      "msrp": 48790
+    },
+    {
+      "model": "G70",
+      "msrp": 78810
+    },
+    {
+      "model": "M",
+      "msrp": 45700
+    },
+    {
+      "model": "M2",
+      "msrp": 63200
+    },
+    {
+      "model": "M3",
+      "msrp": 76300
+    },
+    {
+      "model": "M4",
+      "msrp": 78100
+    },
+    {
+      "model": "M5",
+      "msrp": 109900
+    },
+    {
+      "model": "M6",
+      "msrp": 121800
+    },
+    {
+      "model": "M8",
+      "msrp": 149500
+    },
+    {
+      "model": "New Six",
+      "msrp": 76300
+    },
+    {
+      "model": "X1",
+      "msrp": 40500
+    },
+    {
+      "model": "X2",
+      "msrp": 42500
+    },
+    {
+      "model": "X3",
+      "msrp": 46900
+    },
+    {
+      "model": "X4",
+      "msrp": 55600
+    },
+    {
+      "model": "X5",
+      "msrp": 65200
+    },
+    {
+      "model": "X6",
+      "msrp": 73900
+    },
+    {
+      "model": "X7",
+      "msrp": 81900
+    },
+    {
+      "model": "Z3",
+      "msrp": 48600
+    },
+    {
+      "model": "Z4",
+      "msrp": 53600
+    },
+    {
+      "model": "Z8",
+      "msrp": 205000
+    },
+    {
+      "model": "i3",
+      "msrp": 45400
+    },
+    {
+      "model": "i8",
+      "msrp": 102060
+    }
+  ],
+  "Bentley": [
+    {
+      "model": "Arnage",
+      "msrp": 267000
+    },
+    {
+      "model": "Azure",
+      "msrp": 102400
+    },
+    {
+      "model": "Bentayga",
+      "msrp": 184340
+    },
+    {
+      "model": "Brooklands",
+      "msrp": 82300
+    },
+    {
+      "model": "Continental",
+      "msrp": 149050
+    },
+    {
+      "model": "Continental Flying Spur",
+      "msrp": 184340
+    },
+    {
+      "model": "Continental GT",
+      "msrp": 235600
+    },
+    {
+      "model": "Flying Spur",
+      "msrp": 218300
+    },
+    {
+      "model": "Mulsanne",
+      "msrp": 189400
+    },
+    {
+      "model": "Turbo R, RT",
+      "msrp": 168340
+    }
+  ],
+  "Bugatti": [
+    {
+      "model": "Centodieci",
+      "msrp": 9000000
+    },
+    {
+      "model": "Chiron",
+      "msrp": 3000000
+    },
+    {
+      "model": "Divo",
+      "msrp": 5800000
+    },
+    {
+      "model": "EB 16.4 Veyron",
+      "msrp": 1500000
+    },
+    {
+      "model": "EB110",
+      "msrp": 1000000
+    },
+    {
+      "model": "EB112",
+      "msrp": 6000000
+    },
+    {
+      "model": "La Voiture Noire",
+      "msrp": 18700000
+    }
+  ],
+  "Buick": [
+    {
+      "model": "Apollo",
+      "msrp": 14860
+    },
+    {
+      "model": "Cascada",
+      "msrp": 15250
+    },
+    {
+      "model": "Centurion",
+      "msrp": 14220
+    },
+    {
+      "model": "Century",
+      "msrp": 14820
+    },
+    {
+      "model": "Electra",
+      "msrp": 13230
+    },
+    {
+      "model": "Enclave",
+      "msrp": 11900
+    },
+    {
+      "model": "Encore",
+      "msrp": 13290
+    },
+    {
+      "model": "Envision",
+      "msrp": 13020
+    },
+    {
+      "model": "Estate",
+      "msrp": 12430
+    },
+    {
+      "model": "Invicta",
+      "msrp": 13200
+    },
+    {
+      "model": "LaCrosse",
+      "msrp": 13050
+    },
+    {
+      "model": "LeSabre",
+      "msrp": 15230
+    },
+    {
+      "model": "Lucerne",
+      "msrp": 17320
+    },
+    {
+      "model": "Park Avenue",
+      "msrp": 16390
+    },
+    {
+      "model": "Rainier",
+      "msrp": 17940
+    },
+    {
+      "model": "Reatta",
+      "msrp": 13020
+    },
+    {
+      "model": "Regal",
+      "msrp": 11620
+    },
+    {
+      "model": "Rendezvous",
+      "msrp": 15020
+    },
+    {
+      "model": "Riviera",
+      "msrp": 15390
+    },
+    {
+      "model": "Roadmaster",
+      "msrp": 10230
+    },
+    {
+      "model": "Roadmaster Estate",
+      "msrp": 14900
+    },
+    {
+      "model": "Skyhawk",
+      "msrp": 11250
+    },
+    {
+      "model": "Skylark",
+      "msrp": 13470
+    },
+    {
+      "model": "Somerset",
+      "msrp": 12400
+    },
+    {
+      "model": "Special",
+      "msrp": 10530
+    },
+    {
+      "model": "Super",
+      "msrp": 16380
+    },
+    {
+      "model": "Terraza",
+      "msrp": 10120
+    },
+    {
+      "model": "Verano",
+      "msrp": 13490
+    },
+    {
+      "model": "Wildcat",
+      "msrp": 12540
+    }
+  ],
+  "Cadillac": [
+    {
+      "model": "6200",
+      "msrp": 15450
+    },
+    {
+      "model": "ATS",
+      "msrp": 39990
+    },
+    {
+      "model": "Allanté",
+      "msrp": 61650
+    },
+    {
+      "model": "Brougham",
+      "msrp": 15500
+    },
+    {
+      "model": "CT4",
+      "msrp": 34500
+    },
+    {
+      "model": "CT5",
+      "msrp": 41960
+    },
+    {
+      "model": "CT6",
+      "msrp": 58900
+    },
+    {
+      "model": "CTS",
+      "msrp": 48900
+    },
+    {
+      "model": "Calais",
+      "msrp": 24040
+    },
+    {
+      "model": "Catera",
+      "msrp": 31900
+    },
+    {
+      "model": "Cimarron",
+      "msrp": 10240
+    },
+    {
+      "model": "Coupe de Ville",
+      "msrp": 45050
+    },
+    {
+      "model": "DTS",
+      "msrp": 41960
+    },
+    {
+      "model": "ELR",
+      "msrp": 75900
+    },
+    {
+      "model": "Eldorado",
+      "msrp": 43400
+    },
+    {
+      "model": "Escalade",
+      "msrp": 81840
+    },
+    {
+      "model": "Fleetwood",
+      "msrp": 14920
+    },
+    {
+      "model": "Fleetwood 75",
+      "msrp": 14590
+    },
+    {
+      "model": "Fleetwood Brougham",
+      "msrp": 13400
+    },
+    {
+      "model": "Fleetwood Limousine",
+      "msrp": 16360
+    },
+    {
+      "model": "SRX",
+      "msrp": 38620
+    },
+    {
+      "model": "STS",
+      "msrp": 47990
+    },
+    {
+      "model": "Sedan de Ville",
+      "msrp": 46400
+    },
+    {
+      "model": "Series 60",
+      "msrp": 12930
+    },
+    {
+      "model": "Series 60 (Sixty Special)",
+      "msrp": 28359
+    },
+    {
+      "model": "Series 61",
+      "msrp": 17290
+    },
+    {
+      "model": "Series 62",
+      "msrp": 14320
+    },
+    {
+      "model": "Series 65",
+      "msrp": 11290
+    },
+    {
+      "model": "Series 75",
+      "msrp": 15240
+    },
+    {
+      "model": "Seville",
+      "msrp": 20600
+    },
+    {
+      "model": "XLR",
+      "msrp": 35090
+    },
+    {
+      "model": "XT4",
+      "msrp": 37850
+    },
+    {
+      "model": "XT5",
+      "msrp": 43880
+    },
+    {
+      "model": "XT6",
+      "msrp": 48800
+    },
+    {
+      "model": "XTS",
+      "msrp": 47840
+    }
+  ],
+  "Chevrolet": [
+    {
+      "model": "150",
+      "msrp": 33320
+    },
+    {
+      "model": "210",
+      "msrp": 35450
+    },
+    {
+      "model": "Alero",
+      "msrp": 20750
+    },
+    {
+      "model": "Beauville",
+      "msrp": 102340
+    },
+    {
+      "model": "Bel Air",
+      "msrp": 28250
+    },
+    {
+      "model": "Beretta",
+      "msrp": 18620
+    },
+    {
+      "model": "Blazer",
+      "msrp": 12730
+    },
+    {
+      "model": "Bolt",
+      "msrp": 26500
+    },
+    {
+      "model": "Brookwood",
+      "msrp": 29950
+    },
+    {
+      "model": "Byscaine",
+      "msrp": 21200
+    },
+    {
+      "model": "Camaro",
+      "msrp": 30950
+    },
+    {
+      "model": "Camaro LS",
+      "msrp": 32050
+    },
+    {
+      "model": "Camaro LT",
+      "msrp": 30900
+    },
+    {
+      "model": "Camaro RS",
+      "msrp": 32495
+    },
+    {
+      "model": "Camaro SS",
+      "msrp": 45320
+    },
+    {
+      "model": "Camaro ZL1",
+      "msrp": 72190
+    },
+    {
+      "model": "Caprice",
+      "msrp": 19280
+    },
+    {
+      "model": "Cavalier",
+      "msrp": 15800
+    },
+    {
+      "model": "Celebrity",
+      "msrp": 14050
+    },
+    {
+      "model": "Chevelle Malibu",
+      "msrp": 25300
+    },
+    {
+      "model": "Chevette",
+      "msrp": 21390
+    },
+    {
+      "model": "Chevy II Nova",
+      "msrp": 46460
+    },
+    {
+      "model": "Citation",
+      "msrp": 21340
+    },
+    {
+      "model": "Cobalt",
+      "msrp": 14590
+    },
+    {
+      "model": "Corsica",
+      "msrp": 14800
+    },
+    {
+      "model": "Corvair",
+      "msrp": 16700
+    },
+    {
+      "model": "Corvette ",
+      "msrp": 68300
+    },
+    {
+      "model": "Corvette Stingray",
+      "msrp": 94370
+    },
+    {
+      "model": "Corvette Z06",
+      "msrp": 110100
+    },
+    {
+      "model": "Cruze",
+      "msrp": 18050
+    },
+    {
+      "model": "Delray",
+      "msrp": 15400
+    },
+    {
+      "model": "Fleetline",
+      "msrp": 25030
+    },
+    {
+      "model": "HHR",
+      "msrp": 22940
+    },
+    {
+      "model": "Impala",
+      "msrp": 27030
+    },
+    {
+      "model": "K5 Blazer",
+      "msrp": 14390
+    },
+    {
+      "model": "Kingswood",
+      "msrp": 20400
+    },
+    {
+      "model": "Lakewood",
+      "msrp": 23060
+    },
+    {
+      "model": "Lumina",
+      "msrp": 19350
+    },
+    {
+      "model": "Malibu (North America)",
+      "msrp": 24770
+    },
+    {
+      "model": "Monte Carlo",
+      "msrp": 15020
+    },
+    {
+      "model": "Monza",
+      "msrp": 19380
+    },
+    {
+      "model": "Nomad",
+      "msrp": 24380
+    },
+    {
+      "model": "Parkwood",
+      "msrp": 23940
+    },
+    {
+      "model": "Sonic",
+      "msrp": 20190
+    },
+    {
+      "model": "Styleline",
+      "msrp": 24300
+    },
+    {
+      "model": "Suburban",
+      "msrp": 14300
+    },
+    {
+      "model": "Tahoe",
+      "msrp": 17480
+    },
+    {
+      "model": "Townsman",
+      "msrp": 29450
+    },
+    {
+      "model": "Trailblazer",
+      "msrp": 11240
+    },
+    {
+      "model": "Van",
+      "msrp": 11290
+    },
+    {
+      "model": "Volt",
+      "msrp": 34270
+    },
+    {
+      "model": "Yeoman",
+      "msrp": 18090
+    }
+  ],
+  "Chrysler": [
+    {
+      "model": "200",
+      "msrp": 5640
+    },
+    {
+      "model": "300",
+      "msrp": 19280
+    },
+    {
+      "model": "300M",
+      "msrp": 5790
+    },
+    {
+      "model": "Airflow",
+      "msrp": 102390
+    },
+    {
+      "model": "Airstream",
+      "msrp": 12830
+    },
+    {
+      "model": "Aspen",
+      "msrp": 14890
+    },
+    {
+      "model": "Cirrus",
+      "msrp": 5840
+    },
+    {
+      "model": "Concorde",
+      "msrp": 5060
+    },
+    {
+      "model": "Crossfire",
+      "msrp": 13490
+    },
+    {
+      "model": "Fifth Avenue",
+      "msrp": 14580
+    },
+    {
+      "model": "Imperial",
+      "msrp": 24980
+    },
+    {
+      "model": "LHS",
+      "msrp": 5430
+    },
+    {
+      "model": "LeBaron",
+      "msrp": 14340
+    },
+    {
+      "model": "Neon",
+      "msrp": 5520
+    },
+    {
+      "model": "New Yorker",
+      "msrp": 13290
+    },
+    {
+      "model": "Newport",
+      "msrp": 12540
+    },
+    {
+      "model": "PT Cruiser",
+      "msrp": 15340
+    },
+    {
+      "model": "Pacifica",
+      "msrp": 5630
+    },
+    {
+      "model": "Prowler",
+      "msrp": 15390
+    },
+    {
+      "model": "Saratoga (America)",
+      "msrp": 13490
+    },
+    {
+      "model": "Sebring",
+      "msrp": 5380
+    },
+    {
+      "model": "TC by Maserati",
+      "msrp": 16430
+    },
+    {
+      "model": "Town and Country",
+      "msrp": 5790
+    },
+    {
+      "model": "Voyager",
+      "msrp": 5280
+    },
+    {
+      "model": "Windsor",
+      "msrp": 13920
+    }
+  ],
+  "Datsun": [
+    {
+      "model": "1000",
+      "msrp": 12560
+    },
+    {
+      "model": "1200",
+      "msrp": 8750
+    },
+    {
+      "model": "180SX",
+      "msrp": 23450
+    },
+    {
+      "model": "200SX",
+      "msrp": 33630
+    },
+    {
+      "model": "210",
+      "msrp": 4530
+    },
+    {
+      "model": "210/211",
+      "msrp": 4560
+    },
+    {
+      "model": "240Z",
+      "msrp": 26760
+    },
+    {
+      "model": "260Z",
+      "msrp": 34090
+    },
+    {
+      "model": "280Z",
+      "msrp": 32630
+    },
+    {
+      "model": "510",
+      "msrp": 12350
+    },
+    {
+      "model": "710",
+      "msrp": 5640
+    },
+    {
+      "model": "810 Maxima",
+      "msrp": 4600
+    },
+    {
+      "model": "Bluebird",
+      "msrp": 7900
+    },
+    {
+      "model": "Silvia",
+      "msrp": 55430
+    }
+  ],
+  "DeLorean": [
+    {
+      "model": "DMC-12",
+      "msrp": 57375
+    }
+  ],
+  "Dodge": [
+    {
+      "model": "330",
+      "msrp": 12300
+    },
+    {
+      "model": "400",
+      "msrp": 16430
+    },
+    {
+      "model": "440",
+      "msrp": 16700
+    },
+    {
+      "model": "600",
+      "msrp": 17770
+    },
+    {
+      "model": "880",
+      "msrp": 10500
+    },
+    {
+      "model": "Aries",
+      "msrp": 15450
+    },
+    {
+      "model": "Aspen",
+      "msrp": 17000
+    },
+    {
+      "model": "Avenger",
+      "msrp": 24670
+    },
+    {
+      "model": "Caliber",
+      "msrp": 21300
+    },
+    {
+      "model": "Challenger",
+      "msrp": 35670
+    },
+    {
+      "model": "Challenger GT",
+      "msrp": 45980
+    },
+    {
+      "model": "Challenger R/T",
+      "msrp": 45980
+    },
+    {
+      "model": "Challenger SRT Demon",
+      "msrp": 98240
+    },
+    {
+      "model": "Challenger SRT Hellcat",
+      "msrp": 88350
+    },
+    {
+      "model": "Challenger Scat Pack",
+      "msrp": 55700
+    },
+    {
+      "model": "Challenger Super Stock",
+      "msrp": 67570
+    },
+    {
+      "model": "Charger",
+      "msrp": 35670
+    },
+    {
+      "model": "Charger Daytona",
+      "msrp": 42350
+    },
+    {
+      "model": "Charger GT",
+      "msrp": 45980
+    },
+    {
+      "model": "Charger R/T",
+      "msrp": 45980
+    },
+    {
+      "model": "Charger SRT Hellcat",
+      "msrp": 88350
+    },
+    {
+      "model": "Charger Scat Pack",
+      "msrp": 55700
+    },
+    {
+      "model": "Charger Super Bee",
+      "msrp": 28600
+    },
+    {
+      "model": "Colt",
+      "msrp": 18420
+    },
+    {
+      "model": "Colt Vista",
+      "msrp": 14500
+    },
+    {
+      "model": "Coronet",
+      "msrp": 14450
+    },
+    {
+      "model": "Custom Royal",
+      "msrp": 15450
+    },
+    {
+      "model": "Dart",
+      "msrp": 24300
+    },
+    {
+      "model": "Daytona",
+      "msrp": 42350
+    },
+    {
+      "model": "Diplomat",
+      "msrp": 14600
+    },
+    {
+      "model": "Durango",
+      "msrp": 23460
+    },
+    {
+      "model": "Dynasty",
+      "msrp": 18700
+    },
+    {
+      "model": "Intrepid",
+      "msrp": 13300
+    },
+    {
+      "model": "La Femme",
+      "msrp": 17800
+    },
+    {
+      "model": "Magnum",
+      "msrp": 15440
+    },
+    {
+      "model": "Matador",
+      "msrp": 9800
+    },
+    {
+      "model": "Meadowbrook",
+      "msrp": 14500
+    },
+    {
+      "model": "Mirada",
+      "msrp": 14300
+    },
+    {
+      "model": "Monaco",
+      "msrp": 16580
+    },
+    {
+      "model": "Neon",
+      "msrp": 14300
+    },
+    {
+      "model": "Nitro",
+      "msrp": 19750
+    },
+    {
+      "model": "Omni",
+      "msrp": 16750
+    },
+    {
+      "model": "Omni 024",
+      "msrp": 17800
+    },
+    {
+      "model": "Polara",
+      "msrp": 9500
+    },
+    {
+      "model": "Ramcharger",
+      "msrp": 24500
+    },
+    {
+      "model": "Royal",
+      "msrp": 13400
+    },
+    {
+      "model": "Shadow",
+      "msrp": 16750
+    },
+    {
+      "model": "Spirit",
+      "msrp": 15490
+    },
+    {
+      "model": "St. Regis",
+      "msrp": 14500
+    },
+    {
+      "model": "Stealth",
+      "msrp": 21450
+    },
+    {
+      "model": "Stratus",
+      "msrp": 16790
+    },
+    {
+      "model": "Super Bee",
+      "msrp": 28600
+    },
+    {
+      "model": "Viper",
+      "msrp": 130500
+    }
+  ],
+  "Ferrari": [
+    {
+      "model": "208 / 308 GTB, GTS",
+      "msrp": 79600
+    },
+    {
+      "model": "208 / 328",
+      "msrp": 98640
+    },
+    {
+      "model": "250 GTO",
+      "msrp": 70249000
+    },
+    {
+      "model": "288 GTO",
+      "msrp": 3404800
+    },
+    {
+      "model": "348",
+      "msrp": 72619
+    },
+    {
+      "model": "360",
+      "msrp": 110600
+    },
+    {
+      "model": "400 GT",
+      "msrp": 130400
+    },
+    {
+      "model": "400i GT",
+      "msrp": 96240
+    },
+    {
+      "model": "416 GT",
+      "msrp": 408640
+    },
+    {
+      "model": "456 GT",
+      "msrp": 82340
+    },
+    {
+      "model": "456 M GT",
+      "msrp": 114340
+    },
+    {
+      "model": "458 Italia",
+      "msrp": 244300
+    },
+    {
+      "model": "488",
+      "msrp": 526600
+    },
+    {
+      "model": "512 BB (Berlinetta)",
+      "msrp": 323040
+    },
+    {
+      "model": "512 TR",
+      "msrp": 265360
+    },
+    {
+      "model": "512i BB (Berlinetta)",
+      "msrp": 281090
+    },
+    {
+      "model": "550 M Maranello",
+      "msrp": 165890
+    },
+    {
+      "model": "575 M Maranello",
+      "msrp": 106740
+    },
+    {
+      "model": "599 GTB Fiorano",
+      "msrp": 385630
+    },
+    {
+      "model": "612 Scaglietti",
+      "msrp": 123340
+    },
+    {
+      "model": "California",
+      "msrp": 142370
+    },
+    {
+      "model": "California T",
+      "msrp": 180300
+    },
+    {
+      "model": "Dino 206 GT",
+      "msrp": 651030
+    },
+    {
+      "model": "Dino 246 GT, GTS",
+      "msrp": 481800
+    },
+    {
+      "model": "Enzo Ferrari",
+      "msrp": 3209300
+    },
+    {
+      "model": "F12 Berlinetta",
+      "msrp": 325450
+    },
+    {
+      "model": "F355",
+      "msrp": 106900
+    },
+    {
+      "model": "F40",
+      "msrp": 1604920
+    },
+    {
+      "model": "F430",
+      "msrp": 143400
+    },
+    {
+      "model": "F50",
+      "msrp": 4012300
+    },
+    {
+      "model": "F512 M",
+      "msrp": 496590
+    },
+    {
+      "model": "F8 Tributo",
+      "msrp": 331300
+    },
+    {
+      "model": "FF",
+      "msrp": 132590
+    },
+    {
+      "model": "FXX",
+      "msrp": 2602400
+    },
+    {
+      "model": "GTC4Lusso",
+      "msrp": 235240
+    },
+    {
+      "model": "LaFerrari",
+      "msrp": 3024030
+    },
+    {
+      "model": "Mondial",
+      "msrp": 48540
+    },
+    {
+      "model": "Portofino",
+      "msrp": 252530
+    },
+    {
+      "model": "Testarossa / 512",
+      "msrp": 265340
+    }
+  ],
+  "Fiat": [
+    {
+      "model": "124 Spider",
+      "msrp": 30340
+    },
+    {
+      "model": "500L",
+      "msrp": 20350
+    },
+    {
+      "model": "500X",
+      "msrp": 19490
+    },
+    {
+      "model": "Nuova 500",
+      "msrp": 19530
+    }
+  ],
+  "Ford": [
+    {
+      "model": "300",
+      "msrp": 14830
+    },
+    {
+      "model": "Bronco",
+      "msrp": 22740
+    },
+    {
+      "model": "Bronco II",
+      "msrp": 22600
+    },
+    {
+      "model": "Bronco Sport",
+      "msrp": 34500
+    },
+    {
+      "model": "Contour",
+      "msrp": 12390
+    },
+    {
+      "model": "Country Squire",
+      "msrp": 14380
+    },
+    {
+      "model": "Crown Victoria",
+      "msrp": 24310
+    },
+    {
+      "model": "Custom 500",
+      "msrp": 23470
+    },
+    {
+      "model": "Durango",
+      "msrp": 16800
+    },
+    {
+      "model": "EXP",
+      "msrp": 21400
+    },
+    {
+      "model": "Edge",
+      "msrp": 21350
+    },
+    {
+      "model": "Escape",
+      "msrp": 19780
+    },
+    {
+      "model": "Escort",
+      "msrp": 5890
+    },
+    {
+      "model": "Excursion",
+      "msrp": 23500
+    },
+    {
+      "model": "Expedition",
+      "msrp": 20800
+    },
+    {
+      "model": "Explorer",
+      "msrp": 21420
+    },
+    {
+      "model": "Fairlane",
+      "msrp": 15390
+    },
+    {
+      "model": "Fairmont",
+      "msrp": 11200
+    },
+    {
+      "model": "Falcon",
+      "msrp": 18650
+    },
+    {
+      "model": "Falcon Ranchero",
+      "msrp": 15630
+    },
+    {
+      "model": "Fastback",
+      "msrp": 49420
+    },
+    {
+      "model": "Festiva",
+      "msrp": 16430
+    },
+    {
+      "model": "Fiesta",
+      "msrp": 32560
+    },
+    {
+      "model": "Fiesta ST",
+      "msrp": 35220
+    },
+    {
+      "model": "Five Hundred",
+      "msrp": 13490
+    },
+    {
+      "model": "Flex",
+      "msrp": 19400
+    },
+    {
+      "model": "Focus",
+      "msrp": 24390
+    },
+    {
+      "model": "Focus Acrive",
+      "msrp": 21340
+    },
+    {
+      "model": "Focus RS",
+      "msrp": 32400
+    },
+    {
+      "model": "Focus ST",
+      "msrp": 31320
+    },
+    {
+      "model": "Freestyle",
+      "msrp": 17430
+    },
+    {
+      "model": "Fusion",
+      "msrp": 16530
+    },
+    {
+      "model": "Fusion Energy",
+      "msrp": 17380
+    },
+    {
+      "model": "GT",
+      "msrp": 234300
+    },
+    {
+      "model": "Galaxie",
+      "msrp": 24380
+    },
+    {
+      "model": "Gran Torino",
+      "msrp": 14930
+    },
+    {
+      "model": "Granada",
+      "msrp": 14730
+    },
+    {
+      "model": "LTD",
+      "msrp": 21340
+    },
+    {
+      "model": "LTD Fox",
+      "msrp": 13490
+    },
+    {
+      "model": "LTD II",
+      "msrp": 17540
+    },
+    {
+      "model": "Maverick",
+      "msrp": 16700
+    },
+    {
+      "model": "Mustang",
+      "msrp": 35670
+    },
+    {
+      "model": "Mustang Boss",
+      "msrp": 53400
+    },
+    {
+      "model": "Mustang Bullitt",
+      "msrp": 48000
+    },
+    {
+      "model": "Mustang California Special",
+      "msrp": 45980
+    },
+    {
+      "model": "Mustang Cobra",
+      "msrp": 41230
+    },
+    {
+      "model": "Mustang Dark Horse",
+      "msrp": 55700
+    },
+    {
+      "model": "Mustang Ecoboost",
+      "msrp": 35670
+    },
+    {
+      "model": "Mustang GT",
+      "msrp": 45980
+    },
+    {
+      "model": "Mustang Mach 1",
+      "msrp": 54620
+    },
+    {
+      "model": "Mustang Mach-E",
+      "msrp": 19870
+    },
+    {
+      "model": "Mustang Roush",
+      "msrp": 47140
+    },
+    {
+      "model": "Mustang Saleen",
+      "msrp": 47460
+    },
+    {
+      "model": "Pinto",
+      "msrp": 14380
+    },
+    {
+      "model": "Probe",
+      "msrp": 19870
+    },
+    {
+      "model": "Ranchero",
+      "msrp": 15670
+    },
+    {
+      "model": "Shelby GT350",
+      "msrp": 59420
+    },
+    {
+      "model": "Shelby GT500",
+      "msrp": 63410
+    },
+    {
+      "model": "Taurus",
+      "msrp": 16430
+    },
+    {
+      "model": "Taurus X",
+      "msrp": 18880
+    },
+    {
+      "model": "Tempo",
+      "msrp": 8430
+    },
+    {
+      "model": "Thunderbird",
+      "msrp": 53480
+    },
+    {
+      "model": "Torino",
+      "msrp": 16450
+    },
+    {
+      "model": "Transit",
+      "msrp": 19900
+    }
+  ],
+  "GMC": [
+    {
+      "model": "Acadia",
+      "msrp": 30380
+    },
+    {
+      "model": "Jimmy",
+      "msrp": 13420
+    },
+    {
+      "model": "Suburban",
+      "msrp": 14320
+    },
+    {
+      "model": "Terrain",
+      "msrp": 25340
+    },
+    {
+      "model": "Typhoon",
+      "msrp": 23940
+    },
+    {
+      "model": "Yukon",
+      "msrp": 23910
+    },
+    {
+      "model": "Yukon XL",
+      "msrp": 42490
+    }
+  ],
+  "Genesis": [
+    {
+      "model": "G80",
+      "msrp": 45890
+    },
+    {
+      "model": "G90",
+      "msrp": 82340
+    }
+  ],
+  "Hennessey": [
+    {
+      "model": "Venom 650R",
+      "msrp": 585500
+    },
+    {
+      "model": "Venom F5",
+      "msrp": 1804500
+    },
+    {
+      "model": "Venom GT",
+      "msrp": 1204600
+    }
+  ],
+  "Honda": [
+    {
+      "model": "Accord",
+      "msrp": 26370
+    },
+    {
+      "model": "CR-V",
+      "msrp": 25310
+    },
+    {
+      "model": "CR-X",
+      "msrp": 24450
+    },
+    {
+      "model": "CR-Z",
+      "msrp": 26490
+    },
+    {
+      "model": "Civic",
+      "msrp": 26590
+    },
+    {
+      "model": "Civic Coupe",
+      "msrp": 26590
+    },
+    {
+      "model": "Civic Hatchback",
+      "msrp": 26590
+    },
+    {
+      "model": "Civic Sedan",
+      "msrp": 26590
+    },
+    {
+      "model": "Civic Si Coupe",
+      "msrp": 32190
+    },
+    {
+      "model": "Civic Si Sedan",
+      "msrp": 32190
+    },
+    {
+      "model": "Civic Type R",
+      "msrp": 51230
+    },
+    {
+      "model": "Crosstour",
+      "msrp": 13790
+    },
+    {
+      "model": "Element",
+      "msrp": 16290
+    },
+    {
+      "model": "Fit",
+      "msrp": 16490
+    },
+    {
+      "model": "HR-V",
+      "msrp": 23450
+    },
+    {
+      "model": "Insight",
+      "msrp": 21230
+    },
+    {
+      "model": "Integra",
+      "msrp": 23190
+    },
+    {
+      "model": "NSX",
+      "msrp": 82390
+    },
+    {
+      "model": "Odyssey",
+      "msrp": 14380
+    },
+    {
+      "model": "Passport",
+      "msrp": 13290
+    },
+    {
+      "model": "Pilot",
+      "msrp": 14560
+    },
+    {
+      "model": "Prelude",
+      "msrp": 23420
+    },
+    {
+      "model": "S2000",
+      "msrp": 54380
+    },
+    {
+      "model": "Vamos",
+      "msrp": 102380
+    }
+  ],
+  "Hummer": [
+    {
+      "model": "H1",
+      "msrp": 82169
+    },
+    {
+      "model": "H2",
+      "msrp": 35670
+    },
+    {
+      "model": "H3",
+      "msrp": 31400
+    }
+  ],
+  "Hyundai": [
+    {
+      "model": "Elantra",
+      "msrp": 16590
+    },
+    {
+      "model": "Genesis Coupe BK1",
+      "msrp": 32450
+    },
+    {
+      "model": "Grandeur",
+      "msrp": 14380
+    },
+    {
+      "model": "Ioniq",
+      "msrp": 14380
+    },
+    {
+      "model": "Pony",
+      "msrp": 5840
+    },
+    {
+      "model": "Sonata",
+      "msrp": 20340
+    },
+    {
+      "model": "Tucson",
+      "msrp": 14380
+    },
+    {
+      "model": "Veloster",
+      "msrp": 30280
+    },
+    {
+      "model": "Veloster N",
+      "msrp": 37220
+    },
+    {
+      "model": "Veloster Turbo",
+      "msrp": 34500
+    }
+  ],
+  "Infiniti": [
+    {
+      "model": "EX 35",
+      "msrp": 10320
+    },
+    {
+      "model": "EX 37",
+      "msrp": 12390
+    },
+    {
+      "model": "FX 35",
+      "msrp": 14670
+    },
+    {
+      "model": "FX 37",
+      "msrp": 12460
+    },
+    {
+      "model": "FX 45",
+      "msrp": 16320
+    },
+    {
+      "model": "FX 50",
+      "msrp": 15870
+    },
+    {
+      "model": "G20",
+      "msrp": 12380
+    },
+    {
+      "model": "G35",
+      "msrp": 34280
+    },
+    {
+      "model": "G37",
+      "msrp": 40380
+    },
+    {
+      "model": "I30",
+      "msrp": 5430
+    },
+    {
+      "model": "I35",
+      "msrp": 5650
+    },
+    {
+      "model": "JX 35",
+      "msrp": 17890
+    },
+    {
+      "model": "M30",
+      "msrp": 5930
+    },
+    {
+      "model": "M35",
+      "msrp": 14340
+    },
+    {
+      "model": "M37",
+      "msrp": 19300
+    },
+    {
+      "model": "M45",
+      "msrp": 26460
+    },
+    {
+      "model": "M56",
+      "msrp": 23890
+    },
+    {
+      "model": "Q40",
+      "msrp": 13260
+    },
+    {
+      "model": "Q45",
+      "msrp": 24520
+    },
+    {
+      "model": "Q50",
+      "msrp": 36780
+    },
+    {
+      "model": "Q60",
+      "msrp": 45630
+    },
+    {
+      "model": "Q70",
+      "msrp": 43580
+    },
+    {
+      "model": "QX 4",
+      "msrp": 13570
+    },
+    {
+      "model": "QX 56",
+      "msrp": 18350
+    },
+    {
+      "model": "QX30",
+      "msrp": 13590
+    },
+    {
+      "model": "QX50",
+      "msrp": 14560
+    },
+    {
+      "model": "QX60",
+      "msrp": 17650
+    },
+    {
+      "model": "QX70",
+      "msrp": 15690
+    },
+    {
+      "model": "QX80",
+      "msrp": 14680
+    }
+  ],
+  "Jaguar": [
+    {
+      "model": "E-PACE",
+      "msrp": 49500
+    },
+    {
+      "model": "F-PACE",
+      "msrp": 89500
+    },
+    {
+      "model": "F-Type",
+      "msrp": 89900
+    },
+    {
+      "model": "I-PACE",
+      "msrp": 73490
+    },
+    {
+      "model": "S-Type",
+      "msrp": 50450
+    },
+    {
+      "model": "X-Type",
+      "msrp": 29950
+    },
+    {
+      "model": "XE",
+      "msrp": 43350
+    },
+    {
+      "model": "XF",
+      "msrp": 51460
+    },
+    {
+      "model": "XJ",
+      "msrp": 94060
+    },
+    {
+      "model": "XJS",
+      "msrp": 14830
+    },
+    {
+      "model": "XK",
+      "msrp": 73890
+    }
+  ],
+  "Jeep": [
+    {
+      "model": "Cherokee",
+      "msrp": 41200
+    },
+    {
+      "model": "Comanche",
+      "msrp": 13450
+    },
+    {
+      "model": "Commander",
+      "msrp": 14380
+    },
+    {
+      "model": "Compass",
+      "msrp": 27490
+    },
+    {
+      "model": "Grand Cherokee",
+      "msrp": 54390
+    },
+    {
+      "model": "Grand Wagoneer",
+      "msrp": 94380
+    },
+    {
+      "model": "Patriot",
+      "msrp": 13450
+    },
+    {
+      "model": "Renegade",
+      "msrp": 32350
+    },
+    {
+      "model": "Wrangler",
+      "msrp": 63290
+    }
+  ],
+  "Kia": [
+    {
+      "model": "Amanti",
+      "msrp": 14930
+    },
+    {
+      "model": "Borrego",
+      "msrp": 13890
+    },
+    {
+      "model": "Cadenza",
+      "msrp": 14560
+    },
+    {
+      "model": "Forte",
+      "msrp": 23290
+    },
+    {
+      "model": "K900",
+      "msrp": 66780
+    },
+    {
+      "model": "Niro",
+      "msrp": 24560
+    },
+    {
+      "model": "Optima",
+      "msrp": 24590
+    },
+    {
+      "model": "Rio",
+      "msrp": 17280
+    },
+    {
+      "model": "Rondo",
+      "msrp": 10290
+    },
+    {
+      "model": "Sedona",
+      "msrp": 34540
+    },
+    {
+      "model": "Seltos",
+      "msrp": 22370
+    },
+    {
+      "model": "Sephia",
+      "msrp": 12340
+    },
+    {
+      "model": "Sorento",
+      "msrp": 30210
+    },
+    {
+      "model": "Soul",
+      "msrp": 16940
+    },
+    {
+      "model": "Spectra",
+      "msrp": 11250
+    },
+    {
+      "model": "Sportage",
+      "msrp": 21340
+    },
+    {
+      "model": "Stinger",
+      "msrp": 43290
+    },
+    {
+      "model": "Telluride",
+      "msrp": 36270
+    }
+  ],
+  "Koenigsegg": [
+    {
+      "model": "Agera",
+      "msrp": 3550400
+    },
+    {
+      "model": "CC8S",
+      "msrp": 1204500
+    },
+    {
+      "model": "CCR",
+      "msrp": 2023400
+    },
+    {
+      "model": "CCRX",
+      "msrp": 4030400
+    },
+    {
+      "model": "CCX",
+      "msrp": 2504090
+    },
+    {
+      "model": "Gemera",
+      "msrp": 2075060
+    },
+    {
+      "model": "Jesko",
+      "msrp": 3055060
+    },
+    {
+      "model": "Regera",
+      "msrp": 5050600
+    }
+  ],
+  "Lamborghini": [
+    {
+      "model": "350GT",
+      "msrp": 604460
+    },
+    {
+      "model": "400GT",
+      "msrp": 745600
+    },
+    {
+      "model": "Aventador",
+      "msrp": 504550
+    },
+    {
+      "model": "Ceetah LM002",
+      "msrp": 1004500
+    },
+    {
+      "model": "Centenario",
+      "msrp": 5503400
+    },
+    {
+      "model": "Countach",
+      "msrp": 805900
+    },
+    {
+      "model": "Diablo",
+      "msrp": 553040
+    },
+    {
+      "model": "Espada",
+      "msrp": 350540
+    },
+    {
+      "model": "Gallardo",
+      "msrp": 154500
+    },
+    {
+      "model": "Huracán",
+      "msrp": 305500
+    },
+    {
+      "model": "Islero",
+      "msrp": 1205600
+    },
+    {
+      "model": "Jalpa",
+      "msrp": 455070
+    },
+    {
+      "model": "Jarama",
+      "msrp": 509300
+    },
+    {
+      "model": "Miura",
+      "msrp": 1556000
+    },
+    {
+      "model": "Murciélago",
+      "msrp": 406600
+    },
+    {
+      "model": "Reventón",
+      "msrp": 1952500
+    },
+    {
+      "model": "Sesto Elemento",
+      "msrp": 2700500
+    },
+    {
+      "model": "Silhouette",
+      "msrp": 340500
+    },
+    {
+      "model": "Sián",
+      "msrp": 3604000
+    },
+    {
+      "model": "Urraco",
+      "msrp": 350500
+    },
+    {
+      "model": "Urus",
+      "msrp": 230560
+    },
+    {
+      "model": "Veneno",
+      "msrp": 11007500
+    }
+  ],
+  "Land Rover": [
+    {
+      "model": "Defender",
+      "msrp": 73930
+    },
+    {
+      "model": "Discovery",
+      "msrp": 54730
+    },
+    {
+      "model": "Discovery Sport",
+      "msrp": 37480
+    },
+    {
+      "model": "LR2",
+      "msrp": 23490
+    },
+    {
+      "model": "LR3",
+      "msrp": 23780
+    },
+    {
+      "model": "LR4",
+      "msrp": 32120
+    },
+    {
+      "model": "Range Rover",
+      "msrp": 106950
+    },
+    {
+      "model": "Range Rover Evoque",
+      "msrp": 43490
+    },
+    {
+      "model": "Range Rover Sport",
+      "msrp": 63470
+    },
+    {
+      "model": "Range Rover Velar",
+      "msrp": 52370
+    }
+  ],
+  "Lexus": [
+    {
+      "model": "CT",
+      "msrp": 23560
+    },
+    {
+      "model": "ES",
+      "msrp": 43290
+    },
+    {
+      "model": "GS",
+      "msrp": 24320
+    },
+    {
+      "model": "GX",
+      "msrp": 47040
+    },
+    {
+      "model": "HS",
+      "msrp": 14390
+    },
+    {
+      "model": "IS",
+      "msrp": 22340
+    },
+    {
+      "model": "IS F",
+      "msrp": 45620
+    },
+    {
+      "model": "IS200",
+      "msrp": 24350
+    },
+    {
+      "model": "IS250",
+      "msrp": 37890
+    },
+    {
+      "model": "IS300",
+      "msrp": 43230
+    },
+    {
+      "model": "IS350",
+      "msrp": 59760
+    },
+    {
+      "model": "IS500",
+      "msrp": 55450
+    },
+    {
+      "model": "LC",
+      "msrp": 81700
+    },
+    {
+      "model": "LFA",
+      "msrp": 403440
+    },
+    {
+      "model": "LS",
+      "msrp": 81430
+    },
+    {
+      "model": "LS400",
+      "msrp": 21370
+    },
+    {
+      "model": "LS430",
+      "msrp": 26780
+    },
+    {
+      "model": "LS460",
+      "msrp": 34500
+    },
+    {
+      "model": "LS500",
+      "msrp": 79860
+    },
+    {
+      "model": "LX",
+      "msrp": 80230
+    },
+    {
+      "model": "NX",
+      "msrp": 40220
+    },
+    {
+      "model": "RC",
+      "msrp": 34560
+    },
+    {
+      "model": "RC F",
+      "msrp": 45340
+    },
+    {
+      "model": "RC200",
+      "msrp": 34560
+    },
+    {
+      "model": "RC300",
+      "msrp": 36170
+    },
+    {
+      "model": "RC350",
+      "msrp": 39840
+    },
+    {
+      "model": "RX",
+      "msrp": 43430
+    },
+    {
+      "model": "SC",
+      "msrp": 23400
+    },
+    {
+      "model": "UX",
+      "msrp": 32730
+    }
+  ],
+  "Lincoln": [
+    {
+      "model": "Aviator",
+      "msrp": 47640
+    },
+    {
+      "model": "Capri",
+      "msrp": 50450
+    },
+    {
+      "model": "Continental",
+      "msrp": 24390
+    },
+    {
+      "model": "Continental Mark I-VIII",
+      "msrp": 46840
+    },
+    {
+      "model": "Corsair",
+      "msrp": 34740
+    },
+    {
+      "model": "Cosmopolitan",
+      "msrp": 19330
+    },
+    {
+      "model": "Custom",
+      "msrp": 54390
+    },
+    {
+      "model": "EL-Series",
+      "msrp": 21840
+    },
+    {
+      "model": "H-Series",
+      "msrp": 27430
+    },
+    {
+      "model": "K-Series",
+      "msrp": 21360
+    },
+    {
+      "model": "L-Series",
+      "msrp": 23290
+    },
+    {
+      "model": "LS",
+      "msrp": 11390
+    },
+    {
+      "model": "Lincoln-Zephyr",
+      "msrp": 62340
+    },
+    {
+      "model": "MKC",
+      "msrp": 17970
+    },
+    {
+      "model": "MKS",
+      "msrp": 17630
+    },
+    {
+      "model": "MKT",
+      "msrp": 18640
+    },
+    {
+      "model": "MKX",
+      "msrp": 20460
+    },
+    {
+      "model": "MKZ",
+      "msrp": 15680
+    },
+    {
+      "model": "Nautilus",
+      "msrp": 39790
+    },
+    {
+      "model": "Navigator",
+      "msrp": 76550
+    },
+    {
+      "model": "Premiere",
+      "msrp": 27600
+    },
+    {
+      "model": "Town Car",
+      "msrp": 19050
+    },
+    {
+      "model": "Versailles",
+      "msrp": 14340
+    },
+    {
+      "model": "Zephyr",
+      "msrp": 64370
+    }
+  ],
+  "Lotus": [
+    {
+      "model": "Eclat",
+      "msrp": 12490
+    },
+    {
+      "model": "Elan",
+      "msrp": 32450
+    },
+    {
+      "model": "Elan +2",
+      "msrp": 15430
+    },
+    {
+      "model": "Elise",
+      "msrp": 49830
+    },
+    {
+      "model": "Elite",
+      "msrp": 43620
+    },
+    {
+      "model": "Elite Type 75/83",
+      "msrp": 25320
+    },
+    {
+      "model": "Esprit",
+      "msrp": 34630
+    },
+    {
+      "model": "Europa",
+      "msrp": 19820
+    },
+    {
+      "model": "Evora",
+      "msrp": 58790
+    },
+    {
+      "model": "Exige",
+      "msrp": 54080
+    },
+    {
+      "model": "Seven",
+      "msrp": 60450
+    }
+  ],
+  "Make name": [
+    {
+      "model": "Model name",
+      "msrp": "MSRP"
+    }
+  ],
+  "Maserati": [
+    {
+      "model": "3500 GT",
+      "msrp": 97800
+    },
+    {
+      "model": "Biturbo",
+      "msrp": 24340
+    },
+    {
+      "model": "Bora",
+      "msrp": 64590
+    },
+    {
+      "model": "Coupé / Spyder GT",
+      "msrp": 65460
+    },
+    {
+      "model": "Ghibli I",
+      "msrp": 60550
+    },
+    {
+      "model": "Ghibli III",
+      "msrp": 57980
+    },
+    {
+      "model": "GranTurismo / GranCabrio",
+      "msrp": 88950
+    },
+    {
+      "model": "Indy",
+      "msrp": 74300
+    },
+    {
+      "model": "Khamsin",
+      "msrp": 103430
+    },
+    {
+      "model": "Kyalami",
+      "msrp": 150430
+    },
+    {
+      "model": "Levante",
+      "msrp": 79350
+    },
+    {
+      "model": "Merak",
+      "msrp": 56060
+    },
+    {
+      "model": "Mexico",
+      "msrp": 69420
+    },
+    {
+      "model": "Mistral",
+      "msrp": 101210
+    },
+    {
+      "model": "Quattroporte I",
+      "msrp": 73450
+    },
+    {
+      "model": "Quattroporte III",
+      "msrp": 46790
+    },
+    {
+      "model": "Quattroporte V",
+      "msrp": 64230
+    },
+    {
+      "model": "Sebring",
+      "msrp": 80630
+    }
+  ],
+  "Mazda": [
+    {
+      "model": "2",
+      "msrp": 21560
+    },
+    {
+      "model": "3",
+      "msrp": 22250
+    },
+    {
+      "model": "323",
+      "msrp": 10540
+    },
+    {
+      "model": "5",
+      "msrp": 12390
+    },
+    {
+      "model": "6",
+      "msrp": 27800
+    },
+    {
+      "model": "626",
+      "msrp": 10690
+    },
+    {
+      "model": "929",
+      "msrp": 5670
+    },
+    {
+      "model": "CX-3",
+      "msrp": 22640
+    },
+    {
+      "model": "CX-5",
+      "msrp": 27690
+    },
+    {
+      "model": "CX-7",
+      "msrp": 25040
+    },
+    {
+      "model": "CX-9",
+      "msrp": 40430
+    },
+    {
+      "model": "MPV",
+      "msrp": 24560
+    },
+    {
+      "model": "MX-3",
+      "msrp": 12450
+    },
+    {
+      "model": "MX-6",
+      "msrp": 12340
+    },
+    {
+      "model": "Miata NA",
+      "msrp": 20650
+    },
+    {
+      "model": "Miata NB",
+      "msrp": 22340
+    },
+    {
+      "model": "Miata NC",
+      "msrp": 24540
+    },
+    {
+      "model": "Miata ND",
+      "msrp": 29870
+    },
+    {
+      "model": "Navajo",
+      "msrp": 15630
+    },
+    {
+      "model": "RX-7 FB",
+      "msrp": 28750
+    },
+    {
+      "model": "RX-7 FC",
+      "msrp": 45620
+    },
+    {
+      "model": "RX-7 FD",
+      "msrp": 55670
+    },
+    {
+      "model": "RX-7 SA",
+      "msrp": 24560
+    },
+    {
+      "model": "RX-8",
+      "msrp": 24320
+    }
+  ],
+  "McLaren": [
+    {
+      "model": "540C",
+      "msrp": 184540
+    },
+    {
+      "model": "570GT",
+      "msrp": 210400
+    },
+    {
+      "model": "570S",
+      "msrp": 191100
+    },
+    {
+      "model": "600LT",
+      "msrp": 230450
+    },
+    {
+      "model": "625C",
+      "msrp": 256700
+    },
+    {
+      "model": "650S",
+      "msrp": 280760
+    },
+    {
+      "model": "675LT",
+      "msrp": 250340
+    },
+    {
+      "model": "720S",
+      "msrp": 305050
+    },
+    {
+      "model": "Elva",
+      "msrp": 1695530
+    },
+    {
+      "model": "F1",
+      "msrp": 20073000
+    },
+    {
+      "model": "GT",
+      "msrp": 208490
+    },
+    {
+      "model": "MP4-12C",
+      "msrp": 117230
+    },
+    {
+      "model": "P1",
+      "msrp": 1300400
+    },
+    {
+      "model": "Senna",
+      "msrp": 1100500
+    },
+    {
+      "model": "Speedtail",
+      "msrp": 2946500
+    }
+  ],
+  "Mercedes": [
+    {
+      "model": "190 SL",
+      "msrp": 250530
+    },
+    {
+      "model": "300 SLR",
+      "msrp": 150045000
+    },
+    {
+      "model": "300SL",
+      "msrp": 1505400
+    },
+    {
+      "model": "A-Class",
+      "msrp": 34500
+    },
+    {
+      "model": "AMG GT",
+      "msrp": 110430
+    },
+    {
+      "model": "C-Class",
+      "msrp": 106500
+    },
+    {
+      "model": "CL-Class",
+      "msrp": 75040
+    },
+    {
+      "model": "CLA-Class",
+      "msrp": 36340
+    },
+    {
+      "model": "CLK-Class",
+      "msrp": 23130
+    },
+    {
+      "model": "CLS-Class",
+      "msrp": 92630
+    },
+    {
+      "model": "E-Class",
+      "msrp": 57850
+    },
+    {
+      "model": "EQC-Class",
+      "msrp": 76050
+    },
+    {
+      "model": "G-Class",
+      "msrp": 144600
+    },
+    {
+      "model": "GL-Class",
+      "msrp": 107400
+    },
+    {
+      "model": "GLA-Class",
+      "msrp": 38400
+    },
+    {
+      "model": "GLB-Class",
+      "msrp": 43490
+    },
+    {
+      "model": "GLC-Class",
+      "msrp": 36500
+    },
+    {
+      "model": "GLE-Class",
+      "msrp": 62350
+    },
+    {
+      "model": "GLK-Class",
+      "msrp": 45250
+    },
+    {
+      "model": "GLS-Class",
+      "msrp": 108450
+    },
+    {
+      "model": "M-Class",
+      "msrp": 30230
+    },
+    {
+      "model": "Metris",
+      "msrp": 34600
+    },
+    {
+      "model": "R-Class",
+      "msrp": 20430
+    },
+    {
+      "model": "R107 SL",
+      "msrp": 45040
+    },
+    {
+      "model": "R129 SL",
+      "msrp": 70450
+    },
+    {
+      "model": "S-Class",
+      "msrp": 114070
+    },
+    {
+      "model": "SL-Class",
+      "msrp": 137500
+    },
+    {
+      "model": "SLC",
+      "msrp": 44200
+    },
+    {
+      "model": "SLK",
+      "msrp": 50040
+    },
+    {
+      "model": "SLR McLaren",
+      "msrp": 750430
+    },
+    {
+      "model": "SLS AMG",
+      "msrp": 305900
+    },
+    {
+      "model": "Sprinter",
+      "msrp": 40470
+    },
+    {
+      "model": "Type 170V",
+      "msrp": 134090
+    },
+    {
+      "model": "Type 300",
+      "msrp": 507600
+    },
+    {
+      "model": "V-Class",
+      "msrp": 86040
+    },
+    {
+      "model": "W105 \"Ponton\"",
+      "msrp": 25020
+    },
+    {
+      "model": "W108, W109",
+      "msrp": 50340
+    },
+    {
+      "model": "W110, W111, W112 \"Fintail\"",
+      "msrp": 43050
+    },
+    {
+      "model": "W113 SL",
+      "msrp": 150400
+    },
+    {
+      "model": "W114, W115",
+      "msrp": 34560
+    },
+    {
+      "model": "W116",
+      "msrp": 50300
+    },
+    {
+      "model": "W120, W121 \"Ponton\"",
+      "msrp": 50340
+    },
+    {
+      "model": "W123 E",
+      "msrp": 26430
+    },
+    {
+      "model": "W124 E",
+      "msrp": 14320
+    },
+    {
+      "model": "W126 SE, SEL, SEC",
+      "msrp": 102400
+    },
+    {
+      "model": "W128 \"Ponton\"",
+      "msrp": 21400
+    },
+    {
+      "model": "W140 SE, SEL, SEC",
+      "msrp": 104050
+    },
+    {
+      "model": "W180 \"Ponton\"",
+      "msrp": 24040
+    },
+    {
+      "model": "W201 190",
+      "msrp": 23450
+    }
+  ],
+  "Mini": [
+    {
+      "model": "Cabrio",
+      "msrp": 23640
+    },
+    {
+      "model": "Clubman",
+      "msrp": 25060
+    },
+    {
+      "model": "Countryman",
+      "msrp": 26890
+    },
+    {
+      "model": "Coupé",
+      "msrp": 23520
+    },
+    {
+      "model": "Hatch",
+      "msrp": 33400
+    },
+    {
+      "model": "Paceman",
+      "msrp": 21340
+    },
+    {
+      "model": "Roadster",
+      "msrp": 24570
+    }
+  ],
+  "Mitsubishi": [
+    {
+      "model": "3000GT",
+      "msrp": 14590
+    },
+    {
+      "model": "Cordia",
+      "msrp": 13460
+    },
+    {
+      "model": "Diamante",
+      "msrp": 12460
+    },
+    {
+      "model": "Eclipse",
+      "msrp": 21350
+    },
+    {
+      "model": "Eclipse Cross",
+      "msrp": 24500
+    },
+    {
+      "model": "Endeavor",
+      "msrp": 24390
+    },
+    {
+      "model": "Galant",
+      "msrp": 14560
+    },
+    {
+      "model": "Lancer EVO I",
+      "msrp": 13120
+    },
+    {
+      "model": "Lancer EVO II",
+      "msrp": 17670
+    },
+    {
+      "model": "Lancer EVO III",
+      "msrp": 14980
+    },
+    {
+      "model": "Lancer EVO IV",
+      "msrp": 16500
+    },
+    {
+      "model": "Lancer EVO IX",
+      "msrp": 38150
+    },
+    {
+      "model": "Lancer EVO V",
+      "msrp": 16540
+    },
+    {
+      "model": "Lancer EVO VI",
+      "msrp": 19720
+    },
+    {
+      "model": "Lancer EVO VII",
+      "msrp": 22340
+    },
+    {
+      "model": "Lancer EVO VIII",
+      "msrp": 29770
+    },
+    {
+      "model": "Lancer EVO X",
+      "msrp": 46730
+    },
+    {
+      "model": "Mirage",
+      "msrp": 21350
+    },
+    {
+      "model": "Montero",
+      "msrp": 21450
+    },
+    {
+      "model": "Montero Sport",
+      "msrp": 23490
+    },
+    {
+      "model": "Outlander",
+      "msrp": 24560
+    },
+    {
+      "model": "Precis",
+      "msrp": 12360
+    },
+    {
+      "model": "Sigma",
+      "msrp": 16750
+    },
+    {
+      "model": "Space Wagon",
+      "msrp": 12190
+    },
+    {
+      "model": "Starion",
+      "msrp": 14560
+    },
+    {
+      "model": "Tredia",
+      "msrp": 12450
+    },
+    {
+      "model": "i-MiEV",
+      "msrp": 14560
+    }
+  ],
+  "Nissan": [
+    {
+      "model": "200SX",
+      "msrp": 37560
+    },
+    {
+      "model": "240SX",
+      "msrp": 45070
+    },
+    {
+      "model": "300Z",
+      "msrp": 26980
+    },
+    {
+      "model": "350Z",
+      "msrp": 36790
+    },
+    {
+      "model": "350Z Nismo",
+      "msrp": 46720
+    },
+    {
+      "model": "370Z",
+      "msrp": 39860
+    },
+    {
+      "model": "370Z Nismo",
+      "msrp": 49780
+    },
+    {
+      "model": "Altima",
+      "msrp": 18930
+    },
+    {
+      "model": "Armada",
+      "msrp": 31040
+    },
+    {
+      "model": "Axxes",
+      "msrp": 8450
+    },
+    {
+      "model": "Cedric",
+      "msrp": 12340
+    },
+    {
+      "model": "Cube",
+      "msrp": 8900
+    },
+    {
+      "model": "Juke",
+      "msrp": 17870
+    },
+    {
+      "model": "Kicks",
+      "msrp": 13390
+    },
+    {
+      "model": "Maxima",
+      "msrp": 12900
+    },
+    {
+      "model": "NV",
+      "msrp": 21970
+    },
+    {
+      "model": "NV200",
+      "msrp": 22040
+    },
+    {
+      "model": "Pathfinder",
+      "msrp": 25690
+    },
+    {
+      "model": "R32",
+      "msrp": 44940
+    },
+    {
+      "model": "R33",
+      "msrp": 53820
+    },
+    {
+      "model": "R34",
+      "msrp": 204350
+    },
+    {
+      "model": "R35",
+      "msrp": 140670
+    },
+    {
+      "model": "Rogue",
+      "msrp": 22350
+    },
+    {
+      "model": "Rogue Sport",
+      "msrp": 14350
+    },
+    {
+      "model": "Sentra",
+      "msrp": 14590
+    },
+    {
+      "model": "Stanza",
+      "msrp": 5650
+    },
+    {
+      "model": "Terrano",
+      "msrp": 20350
+    },
+    {
+      "model": "Vanette",
+      "msrp": 4560
+    },
+    {
+      "model": "Versa",
+      "msrp": 13450
+    },
+    {
+      "model": "Versa Note",
+      "msrp": 11230
+    },
+    {
+      "model": "Xterra",
+      "msrp": 12560
+    },
+    {
+      "model": "Z",
+      "msrp": 67020
+    }
+  ],
+  "Pagani": [
+    {
+      "model": "Huayra",
+      "msrp": 3504070
+    },
+    {
+      "model": "Zonda",
+      "msrp": 2190560
+    }
+  ],
+  "Pontiac": [
+    {
+      "model": "2+2",
+      "msrp": 23110
+    },
+    {
+      "model": "6000",
+      "msrp": 18290
+    },
+    {
+      "model": "Astre",
+      "msrp": 20530
+    },
+    {
+      "model": "Aztek",
+      "msrp": 19330
+    },
+    {
+      "model": "Bonneville",
+      "msrp": 21900
+    },
+    {
+      "model": "Catalina",
+      "msrp": 20380
+    },
+    {
+      "model": "Chieftrain",
+      "msrp": 18720
+    },
+    {
+      "model": "Custom S",
+      "msrp": 19280
+    },
+    {
+      "model": "Executive",
+      "msrp": 23480
+    },
+    {
+      "model": "Fiero",
+      "msrp": 17630
+    },
+    {
+      "model": "Firebird",
+      "msrp": 23110
+    },
+    {
+      "model": "G3",
+      "msrp": 29450
+    },
+    {
+      "model": "G5",
+      "msrp": 20290
+    },
+    {
+      "model": "G6",
+      "msrp": 21900
+    },
+    {
+      "model": "G8",
+      "msrp": 18740
+    },
+    {
+      "model": "GTO",
+      "msrp": 17950
+    },
+    {
+      "model": "Grand Am",
+      "msrp": 18930
+    },
+    {
+      "model": "Grand Prix",
+      "msrp": 24990
+    },
+    {
+      "model": "Grand Safari",
+      "msrp": 17390
+    },
+    {
+      "model": "Grand Ville",
+      "msrp": 18060
+    },
+    {
+      "model": "LeMans",
+      "msrp": 23450
+    },
+    {
+      "model": "Montana",
+      "msrp": 21200
+    },
+    {
+      "model": "Montana SV6",
+      "msrp": 17280
+    },
+    {
+      "model": "Parisienne",
+      "msrp": 25430
+    },
+    {
+      "model": "Pathfinder",
+      "msrp": 21340
+    },
+    {
+      "model": "Phoenix",
+      "msrp": 24560
+    },
+    {
+      "model": "Safari",
+      "msrp": 21510
+    },
+    {
+      "model": "Solstice",
+      "msrp": 18640
+    },
+    {
+      "model": "Star Chief",
+      "msrp": 20830
+    },
+    {
+      "model": "Star Chief Executive",
+      "msrp": 21430
+    },
+    {
+      "model": "Streamliner",
+      "msrp": 19820
+    },
+    {
+      "model": "Sunbird",
+      "msrp": 26720
+    },
+    {
+      "model": "Sunfire",
+      "msrp": 21190
+    },
+    {
+      "model": "Tempest",
+      "msrp": 21390
+    },
+    {
+      "model": "Torpedo",
+      "msrp": 19820
+    },
+    {
+      "model": "Torrent",
+      "msrp": 23310
+    },
+    {
+      "model": "Trans Sport",
+      "msrp": 24990
+    },
+    {
+      "model": "Ventura",
+      "msrp": 23450
+    },
+    {
+      "model": "Vibe",
+      "msrp": 19540
+    }
+  ],
+  "Porsche": [
+    {
+      "model": "356",
+      "msrp": 450760
+    },
+    {
+      "model": "718 Boxster",
+      "msrp": 79440
+    },
+    {
+      "model": "718 Cayman",
+      "msrp": 84390
+    },
+    {
+      "model": "911 Carrera",
+      "msrp": 124450
+    },
+    {
+      "model": "911 GT1",
+      "msrp": 5050600
+    },
+    {
+      "model": "911 GT2",
+      "msrp": 305060
+    },
+    {
+      "model": "911 GT3",
+      "msrp": 254500
+    },
+    {
+      "model": "911 Targa",
+      "msrp": 173470
+    },
+    {
+      "model": "911 Turbo",
+      "msrp": 204500
+    },
+    {
+      "model": "914",
+      "msrp": 22350
+    },
+    {
+      "model": "918 Spyder",
+      "msrp": 1504600
+    },
+    {
+      "model": "924",
+      "msrp": 27540
+    },
+    {
+      "model": "928",
+      "msrp": 36760
+    },
+    {
+      "model": "944",
+      "msrp": 23520
+    },
+    {
+      "model": "968",
+      "msrp": 24500
+    },
+    {
+      "model": "Boxster",
+      "msrp": 67940
+    },
+    {
+      "model": "Carrera GT",
+      "msrp": 789650
+    },
+    {
+      "model": "Cayenne",
+      "msrp": 89030
+    },
+    {
+      "model": "Cayman",
+      "msrp": 77900
+    },
+    {
+      "model": "Macan",
+      "msrp": 68960
+    },
+    {
+      "model": "Panamera",
+      "msrp": 110890
+    },
+    {
+      "model": "Taycan",
+      "msrp": 179660
+    }
+  ],
+  "RAM": [
+    {
+      "model": "C/V",
+      "msrp": 11450
+    },
+    {
+      "model": "ProMaster City",
+      "msrp": 34590
+    }
+  ],
+  "Renault": [
+    {
+      "model": "Alliance",
+      "msrp": 14780
+    },
+    {
+      "model": "Caravelle",
+      "msrp": 16550
+    },
+    {
+      "model": "Dauphine",
+      "msrp": 16590
+    },
+    {
+      "model": "Encore",
+      "msrp": 15040
+    },
+    {
+      "model": "Frégate",
+      "msrp": 14860
+    },
+    {
+      "model": "Fuego",
+      "msrp": 16230
+    },
+    {
+      "model": "LeCar",
+      "msrp": 15890
+    },
+    {
+      "model": "Medallion",
+      "msrp": 14250
+    },
+    {
+      "model": "R10",
+      "msrp": 15640
+    },
+    {
+      "model": "R12",
+      "msrp": 15870
+    },
+    {
+      "model": "R15",
+      "msrp": 14470
+    },
+    {
+      "model": "R16",
+      "msrp": 16980
+    },
+    {
+      "model": "R17",
+      "msrp": 16890
+    },
+    {
+      "model": "R18",
+      "msrp": 13900
+    },
+    {
+      "model": "R25",
+      "msrp": 17920
+    },
+    {
+      "model": "R8",
+      "msrp": 17250
+    }
+  ],
+  "Rivian": [
+    {
+      "model": "R1S",
+      "msrp": 82450
+    }
+  ],
+  "Rolls-Royce": [
+    {
+      "model": "Corniche",
+      "msrp": 69240
+    },
+    {
+      "model": "Cullinan",
+      "msrp": 74210
+    },
+    {
+      "model": "Dawn",
+      "msrp": 74820
+    },
+    {
+      "model": "Flying Spur",
+      "msrp": 71540
+    },
+    {
+      "model": "Ghost",
+      "msrp": 69900
+    },
+    {
+      "model": "Park Ward",
+      "msrp": 79230
+    },
+    {
+      "model": "Phantom V",
+      "msrp": 71170
+    },
+    {
+      "model": "Phantom VII",
+      "msrp": 70950
+    },
+    {
+      "model": "Phantom VIII",
+      "msrp": 76880
+    },
+    {
+      "model": "Silver Cloud",
+      "msrp": 72590
+    },
+    {
+      "model": "Silver Dawn",
+      "msrp": 69340
+    },
+    {
+      "model": "Silver Seraph",
+      "msrp": 68650
+    },
+    {
+      "model": "Silver Shadow",
+      "msrp": 70280
+    },
+    {
+      "model": "Silver Spur",
+      "msrp": 72930
+    },
+    {
+      "model": "Silver Wraith",
+      "msrp": 68650
+    },
+    {
+      "model": "Touring",
+      "msrp": 76880
+    },
+    {
+      "model": "Wraith",
+      "msrp": 69130
+    }
+  ],
+  "SSC": [
+    {
+      "model": "Aero",
+      "msrp": 340450
+    },
+    {
+      "model": "Tuatara",
+      "msrp": 1604700
+    }
+  ],
+  "Saab": [
+    {
+      "model": "9-2X",
+      "msrp": 20530
+    },
+    {
+      "model": "9-3",
+      "msrp": 22370
+    },
+    {
+      "model": "9-4X",
+      "msrp": 20320
+    },
+    {
+      "model": "9-5",
+      "msrp": 18790
+    },
+    {
+      "model": "9-7X",
+      "msrp": 22140
+    },
+    {
+      "model": "900",
+      "msrp": 22450
+    },
+    {
+      "model": "9000",
+      "msrp": 20220
+    },
+    {
+      "model": "92",
+      "msrp": 19870
+    },
+    {
+      "model": "93",
+      "msrp": 19970
+    },
+    {
+      "model": "94",
+      "msrp": 19450
+    },
+    {
+      "model": "95",
+      "msrp": 20450
+    },
+    {
+      "model": "96",
+      "msrp": 16490
+    },
+    {
+      "model": "97",
+      "msrp": 16050
+    },
+    {
+      "model": "99",
+      "msrp": 21350
+    },
+    {
+      "model": "GT750",
+      "msrp": 14990
+    },
+    {
+      "model": "GT850",
+      "msrp": 15580
+    },
+    {
+      "model": "Sonett",
+      "msrp": 19730
+    },
+    {
+      "model": "Sport",
+      "msrp": 17830
+    }
+  ],
+  "Saleen": [
+    {
+      "model": "S1",
+      "msrp": 104500
+    },
+    {
+      "model": "S7",
+      "msrp": 704300
+    }
+  ],
+  "Scion": [
+    {
+      "model": "FR-S",
+      "msrp": 32450
+    },
+    {
+      "model": "iA",
+      "msrp": 8740
+    },
+    {
+      "model": "iM",
+      "msrp": 11240
+    },
+    {
+      "model": "iQ",
+      "msrp": 10450
+    },
+    {
+      "model": "tC",
+      "msrp": 23240
+    },
+    {
+      "model": "xA",
+      "msrp": 5690
+    },
+    {
+      "model": "xB",
+      "msrp": 8490
+    },
+    {
+      "model": "xD",
+      "msrp": 5470
+    }
+  ],
+  "Subaru": [
+    {
+      "model": "BRZ",
+      "msrp": 30450
+    },
+    {
+      "model": "Forester",
+      "msrp": 20780
+    },
+    {
+      "model": "Impreza",
+      "msrp": 30590
+    },
+    {
+      "model": "Impreza Hatchback",
+      "msrp": 30590
+    },
+    {
+      "model": "Impreza WRX",
+      "msrp": 34200
+    },
+    {
+      "model": "Impreza Wagon",
+      "msrp": null
+    },
+    {
+      "model": "Justy",
+      "msrp": 21500
+    },
+    {
+      "model": "Legacy",
+      "msrp": 30490
+    },
+    {
+      "model": "Leone",
+      "msrp": 14760
+    },
+    {
+      "model": "Levorg",
+      "msrp": 22310
+    },
+    {
+      "model": "Loyale",
+      "msrp": 14800
+    },
+    {
+      "model": "Outback",
+      "msrp": 21300
+    },
+    {
+      "model": "SVX",
+      "msrp": 16600
+    },
+    {
+      "model": "WRX",
+      "msrp": 38200
+    },
+    {
+      "model": "WRX STI",
+      "msrp": 43790
+    },
+    {
+      "model": "XT",
+      "msrp": 13680
+    }
+  ],
+  "Suzuki": [
+    {
+      "model": "Aerio",
+      "msrp": 20200
+    },
+    {
+      "model": "Esteem",
+      "msrp": 12300
+    },
+    {
+      "model": "Forenza",
+      "msrp": 18060
+    },
+    {
+      "model": "Forsa",
+      "msrp": 17950
+    },
+    {
+      "model": "Grand Vitara",
+      "msrp": 14930
+    },
+    {
+      "model": "Kizashi",
+      "msrp": 17630
+    },
+    {
+      "model": "Reno",
+      "msrp": 21080
+    },
+    {
+      "model": "SX4",
+      "msrp": 16290
+    },
+    {
+      "model": "Samurai",
+      "msrp": 12380
+    },
+    {
+      "model": "Sidekick",
+      "msrp": 13290
+    },
+    {
+      "model": "Swift",
+      "msrp": 19880
+    },
+    {
+      "model": "Verona",
+      "msrp": 23110
+    },
+    {
+      "model": "Vitara",
+      "msrp": 14730
+    },
+    {
+      "model": "XL-7",
+      "msrp": 18900
+    }
+  ],
+  "Tesla": [
+    {
+      "model": "Model 3",
+      "msrp": 44500
+    },
+    {
+      "model": "Model S",
+      "msrp": 120500
+    },
+    {
+      "model": "Model X",
+      "msrp": 120500
+    },
+    {
+      "model": "Model Y",
+      "msrp": 53400
+    },
+    {
+      "model": "Roadster",
+      "msrp": 505600
+    }
+  ],
+  "Toyota": [
+    {
+      "model": "4Runner",
+      "msrp": 20340
+    },
+    {
+      "model": "Avalon",
+      "msrp": 20780
+    },
+    {
+      "model": "Camry LE",
+      "msrp": 25050
+    },
+    {
+      "model": "Camry SE",
+      "msrp": 26730
+    },
+    {
+      "model": "Camry TRD",
+      "msrp": 29990
+    },
+    {
+      "model": "Camry XLE",
+      "msrp": 27800
+    },
+    {
+      "model": "Camry XSE",
+      "msrp": 28650
+    },
+    {
+      "model": "Celica",
+      "msrp": 13400
+    },
+    {
+      "model": "Corolla LE",
+      "msrp": 25670
+    },
+    {
+      "model": "Corolla S",
+      "msrp": 24560
+    },
+    {
+      "model": "Corolla SE",
+      "msrp": 26660
+    },
+    {
+      "model": "Corolla XLE",
+      "msrp": 27100
+    },
+    {
+      "model": "Corolla XSE",
+      "msrp": 29850
+    },
+    {
+      "model": "Corona",
+      "msrp": 8350
+    },
+    {
+      "model": "Cressida",
+      "msrp": 5600
+    },
+    {
+      "model": "Crown",
+      "msrp": 15060
+    },
+    {
+      "model": "FJ Cruiser",
+      "msrp": 15420
+    },
+    {
+      "model": "GR86",
+      "msrp": 35520
+    },
+    {
+      "model": "GT86",
+      "msrp": 34050
+    },
+    {
+      "model": "Highlander",
+      "msrp": 14730
+    },
+    {
+      "model": "Land Cruiser",
+      "msrp": 53400
+    },
+    {
+      "model": "MR2",
+      "msrp": 16700
+    },
+    {
+      "model": "Matrix",
+      "msrp": 5050
+    },
+    {
+      "model": "Prius",
+      "msrp": 20570
+    },
+    {
+      "model": "RAV4",
+      "msrp": 26755
+    },
+    {
+      "model": "Sequoia",
+      "msrp": 51450
+    },
+    {
+      "model": "Sienna",
+      "msrp": 10350
+    },
+    {
+      "model": "Supra MK1",
+      "msrp": 50450
+    },
+    {
+      "model": "Supra MK2",
+      "msrp": 52030
+    },
+    {
+      "model": "Supra MK3",
+      "msrp": 54000
+    },
+    {
+      "model": "Supra MK4",
+      "msrp": 100450
+    },
+    {
+      "model": "Supra MK5",
+      "msrp": 106030
+    },
+    {
+      "model": "Venza",
+      "msrp": 13670
+    },
+    {
+      "model": "Yaris",
+      "msrp": 10600
+    }
+  ],
+  "Volkswagen": [
+    {
+      "model": "Arteon",
+      "msrp": 12340
+    },
+    {
+      "model": "Atlas",
+      "msrp": 17690
+    },
+    {
+      "model": "Beetle",
+      "msrp": 13450
+    },
+    {
+      "model": "Bus",
+      "msrp": 103300
+    },
+    {
+      "model": "CC",
+      "msrp": 17640
+    },
+    {
+      "model": "Caravelle",
+      "msrp": 16540
+    },
+    {
+      "model": "Corrado",
+      "msrp": 14690
+    },
+    {
+      "model": "Dasher",
+      "msrp": 22340
+    },
+    {
+      "model": "Eos",
+      "msrp": 11240
+    },
+    {
+      "model": "Golf",
+      "msrp": 24560
+    },
+    {
+      "model": "Golf GTI",
+      "msrp": 29800
+    },
+    {
+      "model": "Golf R",
+      "msrp": 34670
+    },
+    {
+      "model": "Jetta",
+      "msrp": 19830
+    },
+    {
+      "model": "Jetta GLI",
+      "msrp": 24570
+    },
+    {
+      "model": "K70",
+      "msrp": 18290
+    },
+    {
+      "model": "Passat",
+      "msrp": 13670
+    },
+    {
+      "model": "Phaeton",
+      "msrp": 16540
+    },
+    {
+      "model": "Quantum",
+      "msrp": 13450
+    },
+    {
+      "model": "Rabbit",
+      "msrp": 16060
+    },
+    {
+      "model": "Scirocco",
+      "msrp": 13450
+    },
+    {
+      "model": "Thing",
+      "msrp": 34560
+    },
+    {
+      "model": "Tiguan",
+      "msrp": 14670
+    },
+    {
+      "model": "Touareg",
+      "msrp": 15420
+    },
+    {
+      "model": "Transporter",
+      "msrp": 14030
+    },
+    {
+      "model": "Vanagon",
+      "msrp": 15660
+    }
+  ],
+  "Volvo": [
+    {
+      "model": "100 series",
+      "msrp": 11390
+    },
+    {
+      "model": "200 series",
+      "msrp": 13670
+    },
+    {
+      "model": "700 series",
+      "msrp": 15700
+    },
+    {
+      "model": "850",
+      "msrp": 14600
+    },
+    {
+      "model": "900 series",
+      "msrp": 18690
+    },
+    {
+      "model": "Amazon",
+      "msrp": 19330
+    },
+    {
+      "model": "C30",
+      "msrp": 16700
+    },
+    {
+      "model": "C70",
+      "msrp": 21400
+    },
+    {
+      "model": "P1800",
+      "msrp": 32160
+    },
+    {
+      "model": "P1900",
+      "msrp": 43040
+    },
+    {
+      "model": "S40",
+      "msrp": 9800
+    },
+    {
+      "model": "S60",
+      "msrp": 48630
+    },
+    {
+      "model": "S70",
+      "msrp": 13450
+    },
+    {
+      "model": "S80",
+      "msrp": 20730
+    },
+    {
+      "model": "S90",
+      "msrp": 41700
+    },
+    {
+      "model": "V40",
+      "msrp": 22360
+    },
+    {
+      "model": "V50",
+      "msrp": 18730
+    },
+    {
+      "model": "V60",
+      "msrp": 44320
+    },
+    {
+      "model": "V70",
+      "msrp": 16750
+    },
+    {
+      "model": "V90",
+      "msrp": 49720
+    },
+    {
+      "model": "XC40",
+      "msrp": 28230
+    },
+    {
+      "model": "XC60",
+      "msrp": 34500
+    },
+    {
+      "model": "XC70",
+      "msrp": 18600
+    },
+    {
+      "model": "XC90",
+      "msrp": 55150
+    }
+  ]
+}
