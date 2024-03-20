@@ -6,9 +6,11 @@
   import { userStore } from "$lib/stores/user";
   import OtpForm from "./OtpForm.svelte";
   import { onDestroy } from "svelte";
+  import Loading from "./Loading.svelte";
 
   export let form: string = "login";
 
+  let isLoading: boolean = false;
   let numOfInputs = 6;
 	let value = '';
 	let numberOnly = true;
@@ -17,6 +19,7 @@
     console.log("Verification Code", value);
     if (/[0-9]{6}/.test(value)) {
       try {
+        isLoading = true;
         const newUser: any = await phoneVerify(value);
         $authData = { user: newUser?.user, isLoggedIn: false };
         console.log(`Phone new sign in: ${JSON.stringify(newUser)}`);
@@ -28,9 +31,11 @@
             if ($cloudError === "[user_not_exists]") {
               console.log($authData.user)
               addToast("success", "Welcome! Please create your account!");
+              isLoading = false;
               form = "create";
             } else {
               addToast("error", "Server Error! Please try again!");
+              isLoading = false;
               form = "login";
             }
           } else {
@@ -42,13 +47,16 @@
             console.log(`logged in user auth data ${JSON.stringify($authData)}`);
             goto("/account");
             addToast("success", "Successfully Signed In!");
+            isLoading = false;
           }
         } catch (err) {
           addToast("error", "Server Error! Please try again!");
+          isLoading = false;
           form = "login";
         }
       } catch (err) {
         addToast("error", "Incorrect Verification Code! Please Try Again!");
+        isLoading = false;
       }
     }
   }
@@ -85,7 +93,11 @@
     </div>
     <button class="reverify" on:click|preventDefault={handleResendCode}>Resend Code</button>
     <div id="verify-recaptcha-container" class="recaptcha"></div>
-    <button on:click|preventDefault={handleVerify} class="submit">Submit</button>
+    {#if isLoading}
+      <Loading />
+    {:else}
+      <button on:click|preventDefault={handleVerify} class="submit">Submit</button>
+    {/if}
   </form>
 </div>
 
