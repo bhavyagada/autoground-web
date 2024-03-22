@@ -40,11 +40,13 @@
               form = "login";
             }
           } else {
+            $authData = { ...$authData, isLoggedIn: true }
             $userStore = userResult?.result.data;
             $allCarsStore = carsResult?.result.data.cars;
             sessionStorage.setItem("user", JSON.stringify($userStore));
             sessionStorage.setItem("loggedin", "true");
             sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
+            sessionStorage.setItem("mods", JSON.stringify($allCarsStore.map(car => car.modifications ? car.modifications : [])));
             console.log(`logged in user data ${JSON.stringify($userStore)}`);
             console.log(`logged in user cars data ${JSON.stringify($allCarsStore)}`);
             console.log(`logged in user auth data ${JSON.stringify($authData)}`);

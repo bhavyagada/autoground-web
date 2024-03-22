@@ -1,7 +1,7 @@
 import { writable } from "svelte/store"
 
 import { browser } from "$app/environment";
-import { VehicleType, type CarData } from "../../types";
+import { VehicleType, type CarData, type CarModificationData } from "../../types";
 
 export const defaultCarModification = {
   modificationId: "",
@@ -34,11 +34,15 @@ export const defaultCar = {
 
 let car: any;
 let cars: any;
+let mod: any;
+let mods: any;
 if (browser) {
-  const oldCarData: any = sessionStorage.getItem("car");
-  const oldCarListData: any = sessionStorage.getItem("cars");
-  car = JSON.parse(oldCarData);
-  cars = JSON.parse(oldCarListData);
+  car = sessionStorage.getItem("car");
+  cars = sessionStorage.getItem("cars");
+  mod = sessionStorage.getItem("mod");
+  mods = sessionStorage.getItem("mods");
 }
-export const carStore = writable<CarData>(car ? car : defaultCar);
-export const allCarsStore = writable<CarData[]>(cars ? cars : [defaultCar]);
+export const carStore = writable<CarData>(car ? JSON.parse(car) : defaultCar);
+export const allCarsStore = writable<CarData[]>(cars ? JSON.parse(cars) : [defaultCar]);
+export const modificationStore = writable<CarModificationData>(mod ? JSON.parse(mod) : defaultCarModification);
+export const allModificationStore = writable<CarModificationData[][]>(mods ? JSON.parse(mods) : [defaultCarModification]);
