@@ -1,0 +1,774 @@
+{
+  "Categories": {
+    "Power": {
+      "Engine": {
+        "Parts": {
+          "Engine Block": {
+            "msrp": 2000
+          },
+          "Crate Engine/Motor": {
+            "msrp": 6000
+          },
+          "Valves": {
+            "msrp": 500
+          },
+          "Pistons": {
+            "msrp": 1000
+          },
+          "Connecting Rods": {
+            "msrp": 1000
+          },
+          "Oil Filter Relocation Kit": {
+            "msrp": 100
+          },
+          "Serpentine Belt": {
+            "msrp": 80
+          },
+          "Valve Cover": {
+            "msrp": 200
+          },
+          "Timing Gears": {
+            "msrp": 500
+          },
+          "Oil Pan": {
+            "msrp": 250
+          },
+          "Cylinder Head": {
+            "msrp": 1500
+          },
+          "Timing Belt": {
+            "msrp": 80
+          },
+          "Engine Pulley": {
+            "msrp": 200
+          },
+          "Engine Sensors, Relays, Switches, and connectors": {
+            "msrp": 80
+          },
+          "Oil Pump": {
+            "msrp": 500
+          },
+          "Drive Belt Tensioner": {
+            "msrp": 100
+          },
+          "Cam Shafts": {
+            "msrp": 1000
+          },
+          "Crankshaft": {
+            "msrp": 1500
+          },
+          "Engine Management System": {
+            "msrp": 3000
+          },
+          "Engine Bearings": {
+            "msrp": 250
+          },
+          "Harmonic Balancer": {
+            "msrp": 350
+          },
+          "Balance Shafts": {
+            "msrp": 500
+          },
+          "Engine Swap Kit": {
+            "msrp": 3000
+          },
+          "Engine Wiring Harness": {
+            "msrp": 1000
+          },
+          "Engine Trim": {
+            "msrp": 100
+          },
+          "Motor mounts": {
+            "msrp": 400
+          },
+          "Tuners and Programmers": {
+            "msrp": 1000
+          },
+          "Dry Sump Kit": {
+            "msrp": 1500
+          }
+        }
+      },
+      "Air Intake": {
+        "Parts": {
+          "Air Intake": {
+            "msrp": 300
+          },
+          "Air filter": {
+            "msrp": 80
+          },
+          "Intake Manifold": {
+            "msrp": 1000
+          },
+          "Air Filter Box": {
+            "msrp": 100
+          },
+          "Mass Air Flow Sensor": {
+            "msrp": 100
+          },
+          "Throttle Body": {
+            "msrp": 450
+          }
+        }
+      },
+      "Ignition": {
+        "Parts": {
+          "Ignition Coils": {
+            "msrp": 600
+          },
+          "Spark Plugs": {
+            "msrp": 120
+          },
+          "Diesel Glow Plugs": {
+            "msrp": 200
+          },
+          "Distributors": {
+            "msrp": 250
+          },
+          "Ignition Relays, Sensors & Switches": {
+            "msrp": 100
+          }
+        }
+      },
+      "Turbo & Superchargers": {
+        "Parts": {
+          "Turbocharger": {
+            "msrp": 3000
+          },
+          "Turbocharger Blow-off Valves": {
+            "msrp": 300
+          },
+          "Intercooler": {
+            "msrp": 400
+          },
+          "Turbocharger Piping": {
+            "msrp": 500
+          },
+          "Supercharger": {
+            "msrp": 3000
+          },
+          "Turbocharger Wastegates": {
+            "msrp": 300
+          },
+          "Turbocharger Boost Management": {
+            "msrp": 400
+          },
+          "Heat Shields & Blankets": {
+            "msrp": 200
+          },
+          "Exhaust Brakes & Air Shutdown Valves": {
+            "msrp": 700
+          }
+        }
+      },
+      "Exhaust": {
+        "Parts": {
+          "Exhaust kit": {
+            "msrp": 800
+          },
+          "Exhaust Y-Pipe": {
+            "msrp": 250
+          },
+          "Exhaust Tip": {
+            "msrp": 200
+          },
+          "Exhaust Header": {
+            "msrp": 650
+          },
+          "Exhaust Stack": {
+            "msrp": 650
+          },
+          "O2 Sensors": {
+            "msrp": 75
+          },
+          "Flame Map": {
+            "msrp": 1000
+          },
+          "Diesel Emission": {
+            "msrp": 1500
+          }
+        }
+      },
+      "Driveline & Axles": {
+        "Parts": {
+          "Axles": {
+            "msrp": 900
+          },
+          "Wheel hubs/Bearings": {
+            "msrp": 300
+          },
+          "Driveshaft": {
+            "msrp": 800
+          },
+          "Transfer case": {
+            "msrp": 1500
+          },
+          "Differential": {
+            "msrp": 1500
+          },
+          "CV Joint/boot": {
+            "msrp": 300
+          },
+          "4WD Actuator": {
+            "msrp": 400
+          },
+          "Driveshaft Yoke": {
+            "msrp": 200
+          },
+          "Differential Cover": {
+            "msrp": 200
+          },
+          "Axle Trusses": {
+            "msrp": 500
+          },
+          "Steering Knuckles/Spindles": {
+            "msrp": 800
+          },
+          "Welded Diff": {
+            "msrp": 740
+          }
+        }
+      },
+      "Transmission": {
+        "Parts": {
+          "Clutch Kit": {
+            "msrp": 1000
+          },
+          "Transmission Oil Cooler": {
+            "msrp": 300
+          },
+          "Transmission Mount": {
+            "msrp": 200
+          },
+          "Transmission Filter": {
+            "msrp": 70
+          },
+          "Automatic Transmission Torque Converter": {
+            "msrp": 500
+          },
+          "Clutch Flywheel": {
+            "msrp": 500
+          },
+          "Clutch Hydraulic": {
+            "msrp": 250
+          },
+          "Seals & Gaskets": {
+            "msrp": 75
+          },
+          "Rebuild Kit": {
+            "msrp": 500
+          },
+          "Clutch Linkage": {
+            "msrp": 200
+          },
+          "Clutch Release Bearing": {
+            "msrp": 150
+          },
+          "Transmission Shafts & Gears": {
+            "msrp": 1000
+          },
+          "Automatic Transmission Valve Bodies": {
+            "msrp": 1000
+          },
+          "Automatic Transmission Flexplate": {
+            "msrp": 200
+          },
+          "Automatic Transmission Oil Pump": {
+            "msrp": 500
+          },
+          "Swapped Manual Transmission": {
+            "msrp": 2500
+          },
+          "Swapped Automatic Transmission": {
+            "msrp": 1000
+          },
+          "Clutch Pressure Plate": {
+            "msrp": 300
+          },
+          "Clutch Discs": {
+            "msrp": 200
+          },
+          "Transmission Wiring Harness": {
+            "msrp": 500
+          },
+          "Transmission Controller": {
+            "msrp": 600
+          },
+          "Transmission Fluids/Oils": {
+            "msrp": 50
+          }
+        }
+      },
+      "Starting & Charging": {
+        "Parts": {
+          "Alternator": {
+            "msrp": 350
+          },
+          "Starter": {
+            "msrp": 300
+          },
+          "Battery": {
+            "msrp": 200
+          },
+          "Battery Cables": {
+            "msrp": 75
+          },
+          "Voltage Regulator": {
+            "msrp": 150
+          }
+        }
+      },
+      "Cooling": {
+        "Parts": {
+          "Radiator": {
+            "msrp": 500
+          },
+          "Radiator Fans": {
+            "msrp": 300
+          },
+          "Water Pump": {
+            "msrp": 300
+          },
+          "Coolant Overflow Tank": {
+            "msrp": 150
+          },
+          "Thermostat": {
+            "msrp": 100
+          },
+          "Radiator Hoses": {
+            "msrp": 100
+          },
+          "Radiator Cap": {
+            "msrp": 40
+          },
+          "Thermostat Housing": {
+            "msrp": 150
+          },
+          "Oil Cooler": {
+            "msrp": 500
+          },
+          "Antifreeze/Additives": {
+            "msrp": 30
+          }
+        }
+      },
+      "Fuel Delivery": {
+        "Parts": {
+          "Fuel Pump": {
+            "msrp": 500
+          },
+          "Fuel Tank": {
+            "msrp": 500
+          },
+          "Fuel Injectors": {
+            "msrp": 600
+          },
+          "Fuel Rails": {
+            "msrp": 300
+          },
+          "AN Lines": {
+            "msrp": 600
+          },
+          "Fuel Filter": {
+            "msrp": 70
+          },
+          "Flex Fuel Sensor": {
+            "msrp": 200
+          },
+          "Fuel Pressure Regulator": {
+            "msrp": 200
+          },
+          "Fuel Management": {
+            "msrp": 800
+          },
+          "EFI System": {
+            "msrp": 2000
+          },
+          "NOS": {
+            "msrp": 1500
+          },
+          "Water Methanol Injection": {
+            "msrp": 700
+          },
+          "Fuel Transfer Tank": {
+            "msrp": 700
+          }
+        }
+      }
+    },
+    "Exterior": {
+      "Body Parts": {
+        "Parts": {
+          "Front Bumper": {
+            "msrp": 850
+          },
+          "Rear Bumper": {
+            "msrp": 850
+          },
+          "D-Ring": {
+            "msrp": 50
+          },
+          "Winch": {
+            "msrp": 1000
+          },
+          "Fenders Flares": {
+            "msrp": 500
+          },
+          "Step Boards": {
+            "msrp": 500
+          },
+          "Bar Side Steps": {
+            "msrp": 600
+          },
+          "Rocker Bars": {
+            "msrp": 400
+          },
+          "Hoop Steps": {
+            "msrp": 300
+          },
+          "Truck Bed Steps": {
+            "msrp": 200
+          },
+          "Hitch Steps": {
+            "msrp": 200
+          },
+          "Towing Mirrors": {
+            "msrp": 600
+          },
+          "Bull Bars": {
+            "msrp": 500
+          },
+          "Brush Guards": {
+            "msrp": 600
+          },
+          "Push Bars": {
+            "msrp": 500
+          },
+          "Bumper Guards": {
+            "msrp": 300
+          },
+          "Tail Light & Headlight Guards": {
+            "msrp": 300
+          },
+          "Tonneau Cover": {
+            "msrp": 850
+          },
+          "Roof Rack": {
+            "msrp": 450
+          },
+          "Mud Flaps": {
+            "msrp": 200
+          },
+          "Skit Plate": {
+            "msrp": 400
+          }
+        }
+      },
+      "Lighting": {
+        "Parts": {
+          "Headlights": {
+            "msrp": 800
+          },
+          "Tail Lights": {
+            "msrp": 800
+          },
+          "Light Bar": {
+            "msrp": 1000
+          }
+        }
+      },
+      "Paint/Wrap": {
+        "Parts": {
+          "Custom Paint Job": {
+            "msrp": 8000
+          },
+          "Wrap": {
+            "msrp": 3000
+          },
+          "Paint Protective Film (PPF)": {
+            "msrp": 3000
+          },
+          "Window Tint": {
+            "msrp": 500
+          }
+        }
+      },
+      "Bed Accessories": {
+        "Parts": {
+          "Tool Box": {
+            "msrp": 500
+          },
+          "Pet Box": {
+            "msrp": 600
+          }
+        }
+      }
+    },
+    "Interior": {
+      "Parts": {
+        "Dash Panels & Pieces": {
+          "msrp": 450
+        },
+        "Upholstered Dash": {
+          "msrp": 500
+        },
+        "Heel Plate": {
+          "msrp": 450
+        },
+        "Steering Wheel": {
+          "msrp": 350
+        },
+        "Steering Wheel Quick Release": {
+          "msrp": 320
+        },
+        "Steering Wheel Hub": {
+          "msrp": 200
+        },
+        "Guage Cluster": {
+          "msrp": 400
+        },
+        "Digital Dash": {
+          "msrp": 1000
+        },
+        "Stereo": {
+          "msrp": 400
+        },
+        "Speakers": {
+          "msrp": 500
+        },
+        "Amplifier": {
+          "msrp": 250
+        },
+        "Subwoofer": {
+          "msrp": 400
+        },
+        "Short Shifter": {
+          "msrp": 600
+        },
+        "Shift Knob": {
+          "msrp": 100
+        },
+        "Upholstered Headliner": {
+          "msrp": 300
+        },
+        "Headliner Star Lights": {
+          "msrp": 800
+        },
+        "Racing Seats": {
+          "msrp": 1000
+        },
+        "Seat Brackets": {
+          "msrp": 200
+        },
+        "Harness Bar": {
+          "msrp": 250
+        },
+        "Racing Harness": {
+          "msrp": 450
+        },
+        "Pedal Covers": {
+          "msrp": 100
+        },
+        "Pedal Assembly": {
+          "msrp": 900
+        }
+      }
+    },
+    "Wheels/Suspension": {
+      "Brakes": {
+        "Parts": {
+          "Brake Rotors": {
+            "msrp": 450
+          },
+          "Brake Pads": {
+            "msrp": 200
+          },
+          "Brake Calipers": {
+            "msrp": 1000
+          },
+          "Brake Lines": {
+            "msrp": 300
+          },
+          "Brake master Cylinder": {
+            "msrp": 300
+          },
+          "Brake Booster": {
+            "msrp": 300
+          },
+          "Brake System Sensors": {
+            "msrp": 300
+          },
+          "Line Lock and roll Controller": {
+            "msrp": 300
+          },
+          "Brake Controllers": {
+            "msrp": 200
+          },
+          "Caliper Covers": {
+            "msrp": 100
+          },
+          "Brake Fluid": {
+            "msrp": 100
+          }
+        }
+      },
+      "Suspension": {
+        "Parts": {
+          "Control Arms": {
+            "msrp": 550
+          },
+          "Sway Bar Links": {
+            "msrp": 100
+          },
+          "Coil Springs": {
+            "msrp": 400
+          },
+          "Coilovers": {
+            "msrp": 1200
+          },
+          "Lift Kit": {
+            "msrp": 2500
+          },
+          "Lowering Springs": {
+            "msrp": 400
+          },
+          "Ball Joints": {
+            "msrp": 150
+          },
+          "Air Suspension": {
+            "msrp": 2500
+          },
+          "Sway Bar": {
+            "msrp": 500
+          },
+          "Suspension Bushings": {
+            "msrp": 200
+          },
+          "Leveling Kit": {
+            "msrp": 500
+          },
+          "Subframe Brace": {
+            "msrp": 500
+          },
+          "Panhard Bars": {
+            "msrp": 200
+          },
+          "Bump Stops": {
+            "msrp": 200
+          },
+          "Strut Tower Brace": {
+            "msrp": 300
+          },
+          "Self Leveling Sensors": {
+            "msrp": 300
+          },
+          "Torsion Bars": {
+            "msrp": 300
+          },
+          "Angle Kit": {
+            "msrp": 2000
+          },
+          "4 link kits and Frames": {
+            "msrp": 2000
+          },
+          "Traction Bars": {
+            "msrp": 500
+          },
+          "Torque Arms": {
+            "msrp": 500
+          },
+          "Fender Brace": {
+            "msrp": 250
+          }
+        }
+      },
+      "Steering": {
+        "Parts": {
+          "Steering Arms": {
+            "msrp": 400
+          },
+          "Steering Tie Rod Ends": {
+            "msrp": 200
+          },
+          "Steering Rack and Pinion": {
+            "msrp": 1000
+          },
+          "Power Steering Pump": {
+            "msrp": 300
+          },
+          "Power Steering Lines": {
+            "msrp": 200
+          },
+          "Steering Gear": {
+            "msrp": 400
+          },
+          "Steering Knuckles": {
+            "msrp": 550
+          },
+          "Dampeners and Stabilizers": {
+            "msrp": 300
+          },
+          "Steering Column": {
+            "msrp": 500
+          },
+          "Steering Rack boots and Bellows": {
+            "msrp": 200
+          },
+          "Power Steering Reservoir": {
+            "msrp": 200
+          },
+          "Power Steering Cooler": {
+            "msrp": 300
+          },
+          "Power Steering Cylinders": {
+            "msrp": 400
+          },
+          "Hydraulic Steering Assist System": {
+            "msrp": 2000
+          },
+          "Wheel Hubs/Bearings": {
+            "msrp": 450
+          },
+          "Power Steering Fluid": {
+            "msrp": 70
+          }
+        }
+      },
+      "Wheels": {
+        "Parts": {
+          "Single Piece": {
+            "msrp": 700
+          },
+          "Three Piece": {
+            "msrp": 5000
+          },
+          "Aero Discs": {
+            "msrp": 500
+          },
+          "Wheel Spacers": {
+            "msrp": 100
+          },
+          "Horse & Carriage Wheels": {
+            "msrp": 7000
+          }
+        }
+      },
+      "Tires": {
+        "Parts": {
+          "All Season": {
+            "msrp": 400
+          },
+          "Performance": {
+            "msrp": 750
+          },
+          "Track/Competition": {
+            "msrp": 1400
+          },
+          "Off-Road": {
+            "msrp": 1500
+          }
+        }
+      }
+    }
+  }
+}
