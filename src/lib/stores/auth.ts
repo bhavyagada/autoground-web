@@ -20,7 +20,6 @@ if (browser) {
   isLoggedIn = sessionStorage.getItem("loggedin");
 }
 export const authData = writable<AuthData>({ user: user ? user : null, isLoggedIn: isLoggedIn && isLoggedIn === "true" ? true : false });
-export const cloudError = writable<string | null>(null);
 export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 export const toast = writable<ToastData | null>(null);
 

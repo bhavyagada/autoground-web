@@ -53,10 +53,8 @@ if (browser) {
     document.cookie = cookie.serialize("token", token ?? "", {
       path: "/",
       maxAge: token ? undefined : 0,
-    });
-    document.cookie = cookie.serialize("uid", uid ?? "", {
-      path: "/",
-      maxAge: uid ? undefined : 0,
+      sameSite: "none",
+      secure: true
     });
 
     authData.update((curr) => { 

@@ -2,11 +2,12 @@
   import { goto } from "$app/navigation";
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
-  import { addToast, authData, cloudError, phoneConfirmationStore, phoneVerify, resendCodeSignUp } from "$lib/stores/auth";
+  import { addToast, authData, phoneConfirmationStore, phoneVerify, resendCodeSignUp } from "$lib/stores/auth";
   import { userStore } from "$lib/stores/user";
   import OtpForm from "./OtpForm.svelte";
   import { onDestroy } from "svelte";
   import Loading from "./Loading.svelte";
+  import { allCarsStore } from "$lib/stores/car";
 
   export let form: string = "login";
 
@@ -24,12 +25,12 @@
         $authData = { user: newUser?.user, isLoggedIn: false };
         console.log(`Phone new sign in: ${JSON.stringify(newUser)}`);
         try {
-          const result = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
-          console.log(result);
-          if (result?.isError) {
-            $cloudError = result.errorType;
-            if ($cloudError === "[user_not_exists]") {
-              console.log($authData.user)
+          const userResult = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
+          const carsResult = await callFunction(cloudFunctions.GET_GARAGE_DATA, {});
+          console.log(`user result: ${userResult}`);
+          console.log(`cars result: ${carsResult}`);
+          if (userResult?.isError || carsResult?.isError) {
+            if (userResult?.errorType === "[user_not_exists]") {
               addToast("success", "Welcome! Please create your account!");
               isLoading = false;
               form = "create";
@@ -39,11 +40,13 @@
               form = "login";
             }
           } else {
-            $authData = { ...$authData, isLoggedIn: true }
-            $userStore = result?.result.data;
+            $userStore = userResult?.result.data;
+            $allCarsStore = carsResult?.result.data.cars;
             sessionStorage.setItem("user", JSON.stringify($userStore));
             sessionStorage.setItem("loggedin", "true");
+            sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
             console.log(`logged in user data ${JSON.stringify($userStore)}`);
+            console.log(`logged in user cars data ${JSON.stringify($allCarsStore)}`);
             console.log(`logged in user auth data ${JSON.stringify($authData)}`);
             goto("/account");
             addToast("success", "Successfully Signed In!");

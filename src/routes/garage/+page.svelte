@@ -1,13 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
-  import { addToast } from "$lib/stores/auth";
   import { allCarsStore } from "$lib/stores/car";
-  import { onMount } from "svelte";
-  import Loading from "../../components/Loading.svelte";
 
-  let isLoading: boolean = true;
   let coverPhotos: Array<string | null> = [];
   let photosLength: number;
   let years: Array<number | null> = [];
@@ -17,37 +11,14 @@
   let points: Array<number | null> = [];
   let index: number = 0;
 
-  onMount(() => {
-    const getGarageData = async () => {
-      try {
-        const result = await callFunction(cloudFunctions.GET_GARAGE_DATA, {});
-        console.log(result);
-        if (result) {
-          isLoading = false;
-          if (result.isError) {
-            addToast("error", "Server Error! Try reloading the page!");
-          } else {
-            $allCarsStore = result.result.data.cars;
-            sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
-            $allCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
-            $allCarsStore.forEach(car => years.push(car.year));
-            $allCarsStore.forEach(car => makes.push(car.make));
-            $allCarsStore.forEach(car => models.push(car.model));
-            $allCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
-            $allCarsStore.forEach(car => points.push(car.points));
-            console.log(`cover photos ${coverPhotos}`);
-            photosLength = coverPhotos.length;
-            console.log(`cover photos length ${photosLength}`);
-            sessionStorage.setItem("user", JSON.stringify($allCarsStore));
-          }
-        }
-      } catch (err) {
-        isLoading = false;
-        addToast("error", "Server Error! Try reloading the page!");
-      }
-    }
-    getGarageData();
-  });
+  console.log($allCarsStore);
+  $allCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
+  $allCarsStore.forEach(car => years.push(car.year));
+  $allCarsStore.forEach(car => makes.push(car.make));
+  $allCarsStore.forEach(car => models.push(car.model));
+  $allCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
+  $allCarsStore.forEach(car => points.push(car.points));
+  photosLength = coverPhotos.length;
 
   const onPrev = () => {
     index = index > 0 ? index - 1 : photosLength - 1;
@@ -58,28 +29,28 @@
     index = index < photosLength - 1 ? index + 1 : 0;
     console.log(`next index ${index}`);
   }
+
+  const handleCarClick = () => {
+    goto(`/garage/${index+1}`);
+  }
 </script>
 
 <div class="background mygarage">
-  {#if isLoading}
-    <Loading />
-  {:else}
-    <div class="car-container">
-      <div class="carwitharrows">
-        <button class="arrow" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
-        <img src={coverPhotos[index]} alt="My Garage Example Car" class="car">
-        <button class="arrow" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
-      </div>
-      <div class="car-details">
-        <p class="car-name">{years[index]} {makes[index]} {models[index]}</p>
-        <div class="stats">
-          <p>{modificationCounts[index] === 1 ? modificationCounts[index] + " Modification" : modificationCounts[index] + " Modifications"}</p>
-          <p>{points[index]} points</p>
-        </div>
+  <div class="car-container">
+    <div class="carwitharrows">
+      <button class="arrow" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
+      <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>
+      <button class="arrow" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
+    </div>
+    <div class="car-details">
+      <p class="car-name">{years[index]} {makes[index]} {models[index]}</p>
+      <div class="stats">
+        <p>{modificationCounts[index] === 1 ? modificationCounts[index] + " Modification" : modificationCounts[index] + " Modifications"}</p>
+        <p>{points[index]} points</p>
       </div>
     </div>
-    <button on:click|preventDefault={() => goto("garage/add")}>+ Add Vehicle</button>
-  {/if}
+  </div>
+  <button on:click|preventDefault={() => goto("garage/add")}>+ Add Vehicle</button>
 </div>
 
 <style>
@@ -125,9 +96,13 @@
     margin: 0;
   }
   .car {
-    width: 85%;
-    height: 85%;
-    align-self: flex-end;
+    width: 35%;
+    height: 35%;
+    align-self: center;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
   }
   .lefticon, .righticon {
     width: 1.25rem;
@@ -178,7 +153,7 @@
       font-size: 1.5rem;
     }
     .car-details {
-      width: 40%;
+      width: 60%;
     }
     .stats {
       width: 60%;

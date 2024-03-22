@@ -5,7 +5,6 @@
     phoneSignup, 
     googleSignup, 
     appleSignup,
-    cloudError,
     authData,
     addToast,
   } from "$lib/stores/auth";
@@ -16,6 +15,7 @@
   import { goto } from "$app/navigation";
   import Loading from "../../components/Loading.svelte";
   import { userStore } from "$lib/stores/user";
+  import { allCarsStore } from "$lib/stores/car";
 
   const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];
 
@@ -82,11 +82,12 @@
 
   async function getUserProfile() {
     try {
-      const result = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
-      console.log(result);
-      if (result?.isError) {
-        $cloudError = result.errorType;
-        if ($cloudError === "[user_not_exists]") {
+      const userResult = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
+      const carsResult = await callFunction(cloudFunctions.GET_GARAGE_DATA, {});
+      console.log(`user result: ${userResult}`);
+      console.log(`cars result: ${carsResult}`);
+      if (userResult?.isError || carsResult?.isError) {
+        if (userResult?.errorType === "[user_not_exists]") {
           addToast("success", "Welcome! Please create your account!");
           form = "create";
         } else {
@@ -95,10 +96,13 @@
         }
       } else {
         $authData = { ...$authData, isLoggedIn: true }
-        $userStore = result?.result.data;
+        $userStore = userResult?.result.data;
+        $allCarsStore = carsResult?.result.data.cars;
         sessionStorage.setItem("user", JSON.stringify($userStore));
         sessionStorage.setItem("loggedin", "true");
+        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
         console.log(`logged in user data ${JSON.stringify($userStore)}`);
+        console.log(`logged in user cars data ${JSON.stringify($allCarsStore)}`);
         console.log(`logged in user auth data ${JSON.stringify($authData)}`);
         goto("/account");
         addToast("success", "Successfully Signed In!");
