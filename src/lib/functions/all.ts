@@ -17,4 +17,10 @@ export enum cloudFunctions {
   ADD_MODIFICATION_IN_CAR = "addModificationInCar",
   UPDATE_MODIFICATION_IN_CAR = "updateModificationInCar",
   DELETE_MODIFICATION_IN_CAR = "deleteModificationInCar",
+  SEARCH_USER_PROFILES = "searchUserProfiles",
+  SEARCH_CAR_PROFILES = "searchCarProfiles",
+  SEARCH_EVENTS = "searchEvents",
+  GET_ANOTHER_USER_PROFILE = "getAnotherUserProfile",
+  GET_ANOTHER_GARAGE_DATA = "getAnotherGarageData",
+  GET_ANOTHER_CAR_DETAILS = "getAnotherCarDetails",
 }
