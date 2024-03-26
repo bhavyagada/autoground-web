@@ -35,7 +35,6 @@ export const defaultCar = {
 let car: any;
 let cars: any;
 let othercar: any;
-let othercars: any;
 let mod: any;
 let mods: any;
 if (browser) {
@@ -44,7 +43,6 @@ if (browser) {
   mod = sessionStorage.getItem("mod");
   mods = sessionStorage.getItem("mods");
   othercar = sessionStorage.getItem("othercar");
-  othercars = sessionStorage.getItem("othercars");
 }
 export const carStore = writable<CarData>(car ? JSON.parse(car) : defaultCar);
 export const allCarsStore = writable<CarData[]>(cars ? JSON.parse(cars) : [defaultCar]);
@@ -52,4 +50,4 @@ export const modificationStore = writable<CarModificationData>(mod ? JSON.parse(
 export const allModificationStore = writable<CarModificationData[][]>(mods ? JSON.parse(mods) : [defaultCarModification]);
 
 export const otherCarStore = writable<CarData>(othercar ? JSON.parse(othercar) : defaultCar);
-export const otherAllCarsStore = writable<CarData[]>(othercars ? JSON.parse(othercars) : [defaultCar]);
+export const otherAllCarsStore = writable<CarData[]>([defaultCar]);

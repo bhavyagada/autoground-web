@@ -1,12 +1,11 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
-  import { base } from "$app/paths";
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
-  import { otherAllCarsStore } from "$lib/stores/car";
-  import { onDestroy } from "svelte";
+  import { defaultCar, otherAllCarsStore } from "$lib/stores/car";
+  import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
 
@@ -96,6 +95,8 @@
       return handleError("Server Error! Please Try Again!");
     }
   }
+
+  onMount(() => $otherAllCarsStore = [defaultCar]);
 
   $: results = $resultList;
   $: startAfter = $searchData.startAfter;

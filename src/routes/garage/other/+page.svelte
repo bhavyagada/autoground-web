@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { base } from "$app/paths";
-  import { otherAllCarsStore } from "$lib/stores/car";
+  import { defaultCar, otherAllCarsStore } from "$lib/stores/car";
+  import { onMount } from "svelte";
 
   let coverPhotos: Array<string | null> = [];
   let photosLength: number;
@@ -34,6 +34,19 @@
   const handleCarClick = () => {
     goto(`/garage/other/${index+1}`);
   }
+
+  onMount(() => {
+    const deepEqual = (x: any, y: any): boolean => {
+      const ok = Object.keys, tx = typeof x, ty = typeof y;
+      return x && y && tx === 'object' && tx === ty ? (
+        ok(x).length === ok(y).length &&
+          ok(x).every(key => deepEqual(x[key], y[key]))
+      ) : (x === y);
+    }
+    if (deepEqual($otherAllCarsStore, [defaultCar])) {
+      goto("/search");
+    }
+  });
 </script>
 
 <div class="background mygarage">
