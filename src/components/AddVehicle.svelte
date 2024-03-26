@@ -7,10 +7,11 @@
   import { addToast, authData } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import { cloudFunctions } from "$lib/functions/all";
-  import Loading from "../../../components/Loading.svelte";
-  import { VehicleType } from "../../../types";
+  import Loading from "./Loading.svelte";
+  import { VehicleType } from "../../src/types";
   import { userStore } from "$lib/stores/user";
 
+  export let add: boolean = true;
   let size: string = "60"; 
   let isLoading: boolean = false;
 
@@ -212,6 +213,7 @@
         sessionStorage.setItem("car", JSON.stringify($carStore));
         sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
         isLoading = false;
+        add = false;
         return true;
       }
     } catch (err) {

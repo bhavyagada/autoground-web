@@ -5,10 +5,11 @@
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";
-  import Loading from "../../../../../components/Loading.svelte";
+  import Loading from "./Loading.svelte";
   import { callFunction } from "$lib/functions/util";
   import { cloudFunctions } from "$lib/functions/all";
 
+  export let add: boolean = true;
   let size: string = "60"; 
   let isLoading: boolean = false;
 
@@ -65,10 +66,6 @@
   $: console.log(`entered brand name ${brand}`);
   $: console.log(`selected categories ${selectedCategories}`);
 
-  const resetSelectedPart = () => {
-    selectedPart = "";
-  }
-
   const handleClientSideError = (errorMessage: string): boolean => {
     addToast("error", errorMessage);
     return false;
@@ -118,7 +115,7 @@
 
 <div class="background">
   <div class="heading">
-    <button class="back" on:click={() => history.back()}>
+    <button class="back" on:click={() => add = false}>
       <img src="/back-icon.svg" alt="Back Icon">
       Back to Modifications
     </button>
@@ -127,7 +124,7 @@
   <form>
     <div class="select-category">
       <label for="category">Select Category</label>
-      <select bind:value={selectedCategory} name="category" on:change={resetSelectedPart} disabled={isCategoryParts}>
+      <select bind:value={selectedCategory} name="category" on:change={() => selectedPart = ""} disabled={isCategoryParts}>
         {#each categories as category}
           <option value={category}>{category}</option>
         {/each}

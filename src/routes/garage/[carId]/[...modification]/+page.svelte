@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { allModificationStore } from "$lib/stores/car";
+  import AddModification from "../../../../components/AddModification.svelte";
   import type { CarModificationData } from "../../../../types";
 
   const { carId, modification } = $page.params;
@@ -9,6 +9,7 @@
   console.log(`modification clicked: ${modification}`);
   console.log(`all modifications store: ${JSON.stringify($allModificationStore)}`);
 
+  let add: boolean = false;
   let thisCarMods: CarModificationData[];
   $: thisCarMods = $allModificationStore[id-1];
   const modificationIcons: any = {
@@ -20,41 +21,41 @@
 
   let mods: CarModificationData[];
   $: mods = thisCarMods.filter(m => m.category === modification);
-
-  const handleAddModification = () => {
-    goto(`/garage/${carId}/${modification}/add`);
-  }
 </script>
 
-<div class="background">
-  <div class="heading">
-    <button class="back" on:click={() => history.back()}>
-      <img src="/back-icon.svg" alt="Back Icon">
-      Back to Car details
-    </button>
-    <h1>{modification}</h1>
-  </div>
-  <div class="category">
-    <div class="category-totalmods">
-      <img src={modificationIcons[modification]} alt="{modification} Modification Icon">
-      <p class="totalmods">{thisCarMods.filter(m => m.category === modification).length} Modifications</p>
+{#if add}
+  <svelte:component this={AddModification} bind:add />
+{:else}
+  <div class="background">
+    <div class="heading">
+      <button class="back" on:click={() => history.back()}>
+        <img src="/back-icon.svg" alt="Back Icon">
+        Back to Car details
+      </button>
+      <h1>{modification}</h1>
     </div>
-    <div class="points">
-      <p>{thisCarMods.filter(m => m.category === modification).reduce((sum, item) => sum + (item.points ? item.points : 0), 0)} Points</p>
-    </div>
-  </div>
-  <div class="category-list">
-    {#each mods as mod}
-      <div class="mod">
-        <p>{mod.part}</p>
-        <p>{mod.brand}</p>
-        <p>{mod.points} Points</p>
+    <div class="category">
+      <div class="category-totalmods">
+        <img src={modificationIcons[modification]} alt="{modification} Modification Icon">
+        <p class="totalmods">{thisCarMods.filter(m => m.category === modification).length} Modifications</p>
       </div>
-      <hr>
-    {/each}
+      <div class="points">
+        <p>{thisCarMods.filter(m => m.category === modification).reduce((sum, item) => sum + (item.points ? item.points : 0), 0)} Points</p>
+      </div>
+    </div>
+    <div class="category-list">
+      {#each mods as mod}
+        <div class="mod">
+          <p>{mod.part}</p>
+          <p>{mod.brand}</p>
+          <p>{mod.points} Points</p>
+        </div>
+        <hr>
+      {/each}
+    </div>
+    <button class="submit" type="submit" on:click={() => add = true}>+ Add Modification</button>
   </div>
-  <button class="submit" type="submit" on:click={handleAddModification}>+ Add Modification</button>
-</div>
+{/if}
 
 <style>
   .background {
