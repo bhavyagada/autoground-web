@@ -161,7 +161,7 @@
           sessionStorage.setItem("user", JSON.stringify($userStore));
           sessionStorage.setItem("loggedin", "true");
           isLoading = false;
-          goto("/account");
+          goto("/");
           return true;
         }
       } catch (err) {

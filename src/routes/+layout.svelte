@@ -4,6 +4,7 @@
   import { logout, authData, toast, addToast } from "$lib/stores/auth";
   import Toast from "../components/Toast.svelte";
   import { goto } from "$app/navigation";
+  import { userStore } from "$lib/stores/user";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
@@ -31,23 +32,20 @@
     <img src="/logo-xcelerate.svg" alt="Logo">
   </a>
   <ul>
-    <li>
-      <a href="/search">
-        <div class="search">
-          <p>Search</p>
-          <img src="/searchicon.svg" alt="Search Icon">
-        </div>
-      </a>
-    </li>
     {#if $authData.isLoggedIn}
+      <li>
+        <button on:click={() => goto("/account")}>
+          <img class="account" src={$userStore.userPhoto ? $userStore.userPhoto : "/default-photo.svg"} alt="Account Page Button">
+        </button>
+      </li>
+      <li> 
+        <a href="/" on:click|preventDefault={hangleSignOut}>Logout</a>
+      </li>
       <li>
         <a href="/garage">My Garage</a>
       </li>
       <li>
         <a href="/events">Events</a>
-      </li>
-      <li> 
-        <a href="/" on:click|preventDefault={hangleSignOut}>Logout</a>
       </li>
     {:else}
       <li>
@@ -57,6 +55,14 @@
         <a href="/events">Events</a>
       </li>
     {/if}
+    <li>
+      <a href="/search">
+        <div class="search">
+          <p>Search</p>
+          <img src="/searchicon.svg" alt="Search Icon">
+        </div>
+      </a>
+    </li>
   </ul>
   <button class="icon" on:click|preventDefault={toggleNav}>
     <img alt="Menu Icon" src="/menu-icon.svg">
@@ -96,11 +102,10 @@
     padding: 0;
     float: right;
     list-style: none;
-    display: inline;
     text-align: center;
     padding: 0.75rem 1rem;
     font-size: 1.25rem;
-    line-height: 1.75rem;
+    line-height: 50px;
   }
   nav ul li a {
     text-decoration: none;
@@ -115,6 +120,10 @@
   nav .icon img {
     width: 1.5rem;
     height: 1.5rem;
+  }
+  .account {
+    width: 50px;
+    border-radius: 2rem;
   }
   @media screen and (max-width: 600px) {
     nav ul {

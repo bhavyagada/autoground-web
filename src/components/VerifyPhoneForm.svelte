@@ -50,7 +50,7 @@
             console.log(`logged in user data ${JSON.stringify($userStore)}`);
             console.log(`logged in user cars data ${JSON.stringify($allCarsStore)}`);
             console.log(`logged in user auth data ${JSON.stringify($authData)}`);
-            goto("/account");
+            goto("/");
             addToast("success", "Successfully Signed In!");
             isLoading = false;
           }
