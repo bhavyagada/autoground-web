@@ -1,12 +1,14 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { allCarsStore } from "$lib/stores/car";
+  import { allCarsStore, carStore } from "$lib/stores/car";
+  import EditVehicle from "../../../components/EditVehicle.svelte";
   import type { CarData } from "../../../types";
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";
 
+  let edit: boolean = false;
   const { carId } = $page.params;
   const id = Number(carId);
   console.log(`car id: ${carId}`);
@@ -36,48 +38,57 @@
     // const slug = modification.split("/")[0].toLowerCase();
     goto(`/garage/${carId}/${modification}`);
   }
+
+  const handleCarEdit = () => {
+    $carStore = $allCarsStore[id-1];
+    edit = true;
+  }
 </script>
 
-<div class="background">
-  <div class="photos">
-    <img src={thiscar.coverPhoto} alt="Cover">
-    {#each photos as photo}
-      <img src={photo} alt="Car">
-    {/each}
-  </div>
-  <div class="banner">
-    <div class="carname">
-      <p>{thiscar.name}</p>
-      <p>{thiscar.year} {thiscar.make} {thiscar.model}</p>
+{#if edit}
+  <svelte:component this={EditVehicle} bind:edit />
+{:else}
+  <div class="background">
+    <div class="photos">
+      <img src={thiscar.coverPhoto} alt="Cover">
+      {#each photos as photo}
+        <img src={photo} alt="Car">
+      {/each}
     </div>
-    <div class="not-name">
-      <div class="modifications">
-        <img src="/modifications-icon.svg" alt="Modification Icon">
-        <p>{thiscar.modifications?.length} Modifications</p>
+    <div class="banner">
+      <div class="carname">
+        <p>{thiscar.name}</p>
+        <p>{thiscar.year} {thiscar.make} {thiscar.model}</p>
       </div>
-      <div class="points">
-        <img src="/points-icon.svg" alt="Points Icon">
-        <p>{thiscar.points} Points</p>
-      </div>
-      <img class="qrcode" alt="Username QR Code" src="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=user:{thiscar.userName}">
-    </div>
-  </div>
-  <div class="modification-container">
-    {#each categories as category}
-      <button class="category" on:click={() => handleModification(category)}>
-        <div class="category-totalmods">
-          <img src={modificationIcons[category]} alt="{category} Modification Icon">
-          <p class="type">{category} | </p>
-          <p class="totalmods">{thiscar.modifications?.filter(m => m.category === category).length} Modifications</p>
+      <div class="not-name">
+        <div class="modifications">
+          <img src="/modifications-icon.svg" alt="Modification Icon">
+          <p>{thiscar.modifications?.length} Modifications</p>
         </div>
         <div class="points">
-          <p>{thiscar.modifications?.filter(m => m.category === category).reduce((sum, item) => sum + (item.points ? item.points : 0), 0)} Points</p>
+          <img src="/points-icon.svg" alt="Points Icon">
+          <p>{thiscar.points} Points</p>
         </div>
-      </button>
-    {/each}
+        <img class="qrcode" alt="Username QR Code" src="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=user:{thiscar.userName}">
+      </div>
+    </div>
+    <div class="modification-container">
+      {#each categories as category}
+        <button class="category" on:click={() => handleModification(category)}>
+          <div class="category-totalmods">
+            <img src={modificationIcons[category]} alt="{category} Modification Icon">
+            <p class="type">{category} | </p>
+            <p class="totalmods">{thiscar.modifications?.filter(m => m.category === category).length} Modifications</p>
+          </div>
+          <div class="points">
+            <p>{thiscar.modifications?.filter(m => m.category === category).reduce((sum, item) => sum + (item.points ? item.points : 0), 0)} Points</p>
+          </div>
+        </button>
+      {/each}
+    </div>
+    <button class="submit" type="submit" on:click={handleCarEdit}>Edit</button>
   </div>
-  <button class="submit" type="submit">Edit</button>
-</div>
+{/if}
 
 <style>
   .background {
