@@ -7,7 +7,7 @@
   import CreateUserForm from "../../components/CreateUserForm.svelte"
   import { goto } from "$app/navigation";
   import Loading from "../../components/Loading.svelte";
-  import { userStore } from "$lib/stores/auth";
+  import { userStore } from "$lib/stores/user";
   import { allCarsStore } from "$lib/stores/car";
 
   const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];

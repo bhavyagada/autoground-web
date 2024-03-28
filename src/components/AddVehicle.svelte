@@ -9,7 +9,7 @@
   import { cloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
-  import { userStore } from "$lib/stores/auth";
+  import { userStore } from "$lib/stores/user";
   import { goto } from "$app/navigation";
 
   export let add: boolean = true;

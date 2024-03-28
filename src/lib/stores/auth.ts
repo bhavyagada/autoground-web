@@ -1,32 +1,8 @@
 import { get, writable } from "svelte/store";
 import { auth } from "$lib/firebase/client";
 import { RecaptchaVerifier, signInWithPhoneNumber, signOut, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
-import { AuthenticationType, type AuthData, type PhoneVerificationData, type ToastData, type UserData } from "$lib/types";
+import { type AuthData, type PhoneVerificationData, type ToastData } from "$lib/types";
 import { browser } from "$app/environment";
-
-export const defaultUser = {
-  created: 0,
-  modified: 0,
-  userId: "",
-  userPhoto: "",
-  name: "",
-  userName: "",
-  email: "",
-  phone: "",
-  countryCode: "",
-  bio: "",
-  authenticationType: AuthenticationType.phone,
-  points: 0,
-  specialTag: "",
-  privacy: {
-    hideModificationCount: true,
-    hideModifications: true,
-    hidePoints: true
-  },
-  rights: ["user"],
-  cars: [],
-  badges: []
-}
 
 // authentication state stores
 let user = null;
@@ -37,7 +13,6 @@ if (browser) {
   isLoggedIn = sessionStorage.getItem("loggedin") === "true";
 }
 export const authData = writable<AuthData>({ user, isLoggedIn });
-export const userStore = writable<UserData>(user ? user : defaultUser);
 export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 
 export const toast = writable<ToastData | null>(null);

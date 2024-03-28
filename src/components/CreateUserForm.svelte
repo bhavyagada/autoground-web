@@ -2,7 +2,7 @@
   import { addToast, authData } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import { AuthProviderId, AuthenticationType } from "$lib/types";
-  import { userStore } from "$lib/stores/auth";
+  import { userStore } from "$lib/stores/user";
   import { callFunction, uploadPic } from "$lib/functions/util";
   import { cloudFunctions } from "$lib/functions/all";
   import { goto } from "$app/navigation";
