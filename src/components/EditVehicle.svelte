@@ -179,6 +179,7 @@
       return handleClientSideError("Enter a car model!");
     }
 
+    isLoading = true;
     if (coverPhoto && !coverPhoto.startsWith("https://firebasestorage")) {
       coverPhoto = await handleCloudUploadPhoto(coverPhoto);
       $carStore = { ...$carStore, coverPhoto };
@@ -214,7 +215,6 @@
       makeModelChanged = true;
     }
     try {
-      isLoading = true;
       console.log($carStore);
       const result = await callFunction(cloudFunctions.UPDATE_CAR_IN_GARAGE, { carData: $carStore, makeModelChanged });
       if (result?.isError) {
@@ -243,8 +243,12 @@
         return handleServerSideError("Couldn't Delete Car! Please Try Again!");
       } else {
         $allCarsStore = $allCarsStore.filter((car) => car.carId !== $carStore.carId);
+        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
+        console.log($allCarsStore);
         $carStore = defaultCar;
         isLoading = false;
+        goto("/garage");
+        edit = false;
         return true
       }
     } catch (err) {

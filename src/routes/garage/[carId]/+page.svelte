@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { allCarsStore, carStore } from "$lib/stores/car";
+  import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import EditVehicle from "../../../components/EditVehicle.svelte";
   import type { CarData } from "../../../types";
   import bikeParts from "/src/data/bikeParts.json";
@@ -16,7 +16,7 @@
 
   let thiscar: CarData = $allCarsStore[id-1];
   let photos: any;
-  $: thiscar = $allCarsStore[id-1];
+  $: thiscar = $allCarsStore[id-1] !== undefined ? $allCarsStore[id-1] : defaultCar;
   $: photos = thiscar.photos;
   console.log(photos);
 

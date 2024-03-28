@@ -10,6 +10,7 @@
   import Loading from "./Loading.svelte";
   import { VehicleType } from "../../src/types";
   import { userStore } from "$lib/stores/user";
+  import { goto } from "$app/navigation";
 
   export let add: boolean = true;
   let size: string = "60"; 
@@ -170,7 +171,8 @@
     } else if (!selectedModel) {
       return handleClientSideError("Enter a car model!");
     }
-
+    
+    isLoading = true;
     if (coverPhoto) {
       coverPhoto = await handleCloudUploadPhoto(coverPhoto);
       $carStore = { ...$carStore, coverPhoto };
@@ -202,7 +204,6 @@
       $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName }
     }
     try {
-      isLoading = true;
       const result = await callFunction(cloudFunctions.ADD_CAR_TO_GARAGE, { carData: $carStore });
       if (result?.isError) {
         return handleServerSideError("Server Error! Please Try Again!");
@@ -213,7 +214,9 @@
         sessionStorage.setItem("car", JSON.stringify($carStore));
         sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
         isLoading = false;
+        goto("/garage");
         add = false;
+        location.reload();
         return true;
       }
     } catch (err) {

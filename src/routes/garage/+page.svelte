@@ -40,20 +40,24 @@
 {#if add}
   <svelte:component this={AddVehicle} bind:add />
 {:else}
-  <div class="background mygarage">
+  <div class="background mygarage" data-sveltekit-reload>
     <div class="car-container">
-      <div class="carwitharrows">
-        <button class="arrow" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
-        <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>
-        <button class="arrow" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
-      </div>
-      <div class="car-details">
-        <p class="car-name">{years[index]} {makes[index]} {models[index]}</p>
-        <div class="stats">
-          <p>{modificationCounts[index] === 1 ? modificationCounts[index] + " Modification" : modificationCounts[index] + " Modifications"}</p>
-          <p>{points[index]} points</p>
+      {#if $allCarsStore.length > 0}
+        <div class="carwitharrows">
+          <button class="arrow" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
+          <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>
+          <button class="arrow" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
         </div>
-      </div>
+        <div class="car-details">
+          <p class="car-name">{years[index]} {makes[index]} {models[index]}</p>
+          <div class="stats">
+            <p>{modificationCounts[index] === 1 ? modificationCounts[index] + " Modification" : modificationCounts[index] + " Modifications"}</p>
+            <p>{points[index]} points</p>
+          </div>
+        </div>
+      {:else}
+        <p>Cars added to Your Garage will be shown here!</p>
+      {/if}
     </div>
     <button on:click|preventDefault={() => add = true}>+ Add Vehicle</button>
   </div>
