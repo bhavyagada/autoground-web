@@ -1,20 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { 
-    phoneConfirmationStore, 
-    phoneSignup, 
-    googleSignup, 
-    appleSignup,
-    authData,
-    addToast,
-  } from "$lib/stores/auth";
+  import { phoneConfirmationStore, phoneSignup, googleSignup, appleSignup, authData, addToast } from "$lib/stores/auth";
   import { callFunction } from "$lib/functions/util";
   import { cloudFunctions } from "$lib/functions/all";
   import VerifyPhoneForm from "../../components/VerifyPhoneForm.svelte"
   import CreateUserForm from "../../components/CreateUserForm.svelte"
   import { goto } from "$app/navigation";
   import Loading from "../../components/Loading.svelte";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { allCarsStore } from "$lib/stores/car";
 
   const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];

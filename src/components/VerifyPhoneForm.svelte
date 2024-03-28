@@ -3,7 +3,7 @@
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast, authData, phoneConfirmationStore, phoneVerify, resendCodeSignUp } from "$lib/stores/auth";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import OtpForm from "./OtpForm.svelte";
   import { onDestroy } from "svelte";
   import Loading from "./Loading.svelte";

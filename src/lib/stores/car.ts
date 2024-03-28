@@ -1,7 +1,7 @@
 import { writable } from "svelte/store"
 
 import { browser } from "$app/environment";
-import { VehicleType, type CarData, type CarModificationData } from "../../types";
+import { VehicleType, type CarData, type CarModificationData } from "../types";
 
 export const defaultCarModification = {
   modificationId: "",

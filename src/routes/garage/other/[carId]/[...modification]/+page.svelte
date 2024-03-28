@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { allModificationStore } from "$lib/stores/car";
-  import type { CarModificationData } from "../../../../types";
+  import type { CarModificationData } from "$lib/types";
 
   const { carId, modification } = $page.params;
   const id = Number(carId);

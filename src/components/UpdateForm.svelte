@@ -2,7 +2,7 @@
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import Loading from "./Loading.svelte";
 

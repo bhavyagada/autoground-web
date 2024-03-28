@@ -8,8 +8,8 @@
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import { cloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
-  import { VehicleType } from "../../src/types";
-  import { userStore } from "$lib/stores/user";
+  import { VehicleType } from "$lib/types";
+  import { userStore } from "$lib/stores/auth";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
 

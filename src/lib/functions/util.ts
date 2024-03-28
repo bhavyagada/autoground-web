@@ -4,18 +4,20 @@ import { httpsCallable } from 'firebase/functions';
 import { get } from 'svelte/store';
 import { getDownloadURL, ref, uploadBytes, type UploadResult } from 'firebase/storage';
 
+// response object
 const cloudResponse = {
   isError: false,
   result: {},
   errorType: ""
 }
 
+// function to call any firebase cloud function
 export async function callFunction(functionKey: string, sendData: Object) {
   const result = get(authData)
 
   const data = {
-    "userId": result.user?.uid ? result.user?.uid : "",
-    "data": sendData ? sendData : {}
+    "userId": result.user?.uid || "",
+    "data": sendData || {}
   }
 
   const callable = httpsCallable(functions, functionKey);
@@ -47,6 +49,7 @@ export async function callFunction(functionKey: string, sendData: Object) {
   }
 }
 
+// function to upload image to firebase storage
 export async function uploadPic(imageFile: any, uploadLocation: string) {
   const reference = ref(storage, uploadLocation);
   const uploadResult: UploadResult = await uploadBytes(reference, imageFile);

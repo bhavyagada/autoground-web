@@ -2,7 +2,7 @@
   import { page } from "$app/stores";
   import { allModificationStore } from "$lib/stores/car";
   import AddModification from "../../../../components/AddModification.svelte";
-  import type { CarModificationData } from "../../../../types";
+  import type { CarModificationData } from "$lib/types";
 
   const { carId, modification } = $page.params;
   const id = Number(carId);

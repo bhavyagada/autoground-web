@@ -2,7 +2,7 @@
   import { page } from "$app/stores";
   import { otherAllCarsStore } from "$lib/stores/car";
   import { onMount } from "svelte";
-  import type { CarData } from "../../../../types";
+  import type { CarData } from "$lib/types";
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";

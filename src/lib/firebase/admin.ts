@@ -1,14 +1,11 @@
 import admin from "firebase-admin";
-import { getApps, initializeApp, type App } from "firebase-admin/app"
-import { 
-  FIREBASE_ADMIN_PRIVATE_KEY, 
-  FIREBASE_ADMIN_CLIENT_EMAIL 
-} from "$env/static/private"
-import { PUBLIC_FIREBASE_PROJECT_ID } from "$env/static/public";
+import { getApps, initializeApp, type App } from "firebase-admin/app";
 import { getAuth, type Auth } from "firebase-admin/auth";
-import { Firestore, getFirestore } from "firebase-admin/firestore";
+import { FIREBASE_ADMIN_PRIVATE_KEY, FIREBASE_ADMIN_CLIENT_EMAIL } from "$env/static/private";
+import { PUBLIC_FIREBASE_PROJECT_ID } from "$env/static/public";
 
-function makeApp() {
+// initialize firebase admin app
+const makeApp = (): App => {
   const apps: App[] = getApps();
   if (apps.length > 0) {
     return apps[0]!;
@@ -25,4 +22,3 @@ function makeApp() {
 
 export const app: App = makeApp();
 export const auth: Auth = getAuth(app);
-export const db: Firestore = getFirestore(app);

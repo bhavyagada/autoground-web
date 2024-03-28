@@ -1,4 +1,3 @@
-
 export enum cloudFunctions {
   GET_USER_PROFILE = "getUserProfile",
   CREATE_USER_PROFILE = "createUserProfile",

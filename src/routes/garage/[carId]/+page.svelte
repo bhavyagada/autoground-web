@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import EditVehicle from "../../../components/EditVehicle.svelte";
-  import type { CarData } from "../../../types";
+  import type { CarData } from "$lib/types";
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";

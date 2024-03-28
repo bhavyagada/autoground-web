@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { callFunction, uploadPic } from "$lib/functions/util";
   import { addToast, authData } from "$lib/stores/auth";
   import UpdateForm from "../../components/UpdateForm.svelte";
-  import { AuthProviderId } from "../../types";
+  import { AuthProviderId } from "$lib/types";
   import { cloudFunctions } from "$lib/functions/all";
 
   let userPhoto: any = $userStore.userPhoto ? $userStore.userPhoto : "/default-photo.svg";

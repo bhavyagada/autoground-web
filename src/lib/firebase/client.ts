@@ -1,7 +1,6 @@
 import cookie from "cookie";
 import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
-import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import { getFunctions, type Functions } from "firebase/functions";
 import {
@@ -12,17 +11,17 @@ import {
   PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   PUBLIC_FIREBASE_APP_ID,
   PUBLIC_FIREBASE_MEASUREMENT_ID
-} from "$env/static/public"
+} from "$env/static/public";
 import { browser } from "$app/environment";
 import { authData } from "$lib/stores/auth";
 
-function makeApp() {
+// initialize firebase client app
+const makeApp = (): FirebaseApp => {
   const apps: FirebaseApp[] = getApps();
   if (apps.length > 0) {
     return apps[0]!;
   }
 
-  // Firebase configuration
   return initializeApp({
     apiKey: PUBLIC_FIREBASE_APIKEY,
     authDomain: PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -34,22 +33,20 @@ function makeApp() {
   });
 }
 
-// export firebase instances
+// export firebase service instances
 export const app: FirebaseApp = makeApp();
 export const auth: Auth = getAuth(app);
-export const db: Firestore = getFirestore(app);
 export const storage: FirebaseStorage = getStorage(app);
 export const functions: Functions = getFunctions(app);
 
-// Only run in the browser, otherwise this will run during SSR and will break
+// cookie handling
 if (browser) {
-  // Add an observer to create or update the 'token' cookie when the user's ID token changes
-	// This is triggered on sign-in, sign-out, and token refresh events
+  // add an observer to create or update the 'token' cookie when the user's ID token changes
+	// this is triggered on sign-in, sign-out, and token refresh events
   auth.onIdTokenChanged(async (newUser) => {
     const token = await newUser?.getIdToken();
-    const uid = newUser?.uid;
 
-    // Create a cookie for the token or delete it if token is undefined
+    // create a cookie for the token or delete it if token is undefined
     document.cookie = cookie.serialize("token", token ?? "", {
       path: "/",
       maxAge: token ? undefined : 0,
@@ -58,10 +55,7 @@ if (browser) {
     });
 
     authData.update((curr) => { 
-      return {
-        ...curr,
-        user: newUser
-      }
+      return { ...curr, user: newUser };
     });
   });
 
@@ -72,4 +66,3 @@ if (browser) {
     }
   }, 10 * 60 * 1000);
 }
-
