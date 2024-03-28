@@ -44,10 +44,10 @@ if (browser) {
   mods = sessionStorage.getItem("mods");
   othercar = sessionStorage.getItem("othercar");
 }
-export const carStore = writable<CarData>(car ? JSON.parse(car) : defaultCar);
-export const allCarsStore = writable<CarData[]>(cars ? JSON.parse(cars) : [defaultCar]);
+export const carStore = writable<CarData>(car ? JSON.parse(car) : null);
+export const allCarsStore = writable<CarData[]>(cars ? JSON.parse(cars) : []);
 export const modificationStore = writable<CarModificationData>(mod ? JSON.parse(mod) : defaultCarModification);
 export const allModificationStore = writable<CarModificationData[][]>(mods ? JSON.parse(mods) : [defaultCarModification]);
 
-export const otherCarStore = writable<CarData>(othercar ? JSON.parse(othercar) : defaultCar);
-export const otherAllCarsStore = writable<CarData[]>([defaultCar]);
+export const otherCarStore = writable<CarData>(othercar ? JSON.parse(othercar) : null);
+export const otherAllCarsStore = writable<CarData[]>([]);

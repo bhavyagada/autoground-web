@@ -13,7 +13,7 @@
   $: clicked = clicked ? true : false;
 
   const errorMap = ["Invalid Phone Number", "Invalid Country Code", "Phone Number is too short", "Phone Number is too long", "Invalid Phone Number"];
-  const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,20}$/igm;
+  const usernameRegex = /^[^\s]{2,20}$/;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
   let name: string = $userStore.name ? $userStore.name : "";

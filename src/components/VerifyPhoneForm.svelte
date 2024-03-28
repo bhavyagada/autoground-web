@@ -27,8 +27,8 @@
         try {
           const userResult = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
           const carsResult = await callFunction(cloudFunctions.GET_GARAGE_DATA, {});
-          console.log(`user result: ${userResult}`);
-          console.log(`cars result: ${carsResult}`);
+          console.log("user result:", userResult);
+          console.log("cars result:", carsResult);
           if (userResult?.isError || carsResult?.isError) {
             if (userResult?.errorType === "[user_not_exists]") {
               addToast("success", "Welcome! Please create your account!");

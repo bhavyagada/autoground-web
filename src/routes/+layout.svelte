@@ -16,7 +16,8 @@
     await logout();
     $authData = { user: null, isLoggedIn: false };
     goto("/login");
-    addToast("success", "Do visit us again :)")
+    addToast("success", "Do visit us again :)");
+    sessionStorage.clear();
   }
 </script>
 
@@ -123,6 +124,7 @@
   }
   .account {
     width: 50px;
+    height: 50px;
     border-radius: 2rem;
   }
   @media screen and (max-width: 600px) {

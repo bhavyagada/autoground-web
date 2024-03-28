@@ -12,7 +12,7 @@
   let isLoading: boolean = false;
 
   const errorMap = ["Invalid Phone Number", "Invalid Country Code", "Phone Number is too short", "Phone Number is too long", "Invalid Phone Number"];
-  const usernameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{2,20}$/igm;
+  const usernameRegex = /^[^\s]{2,20}$/;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
   let userPhoto: any = "/default-photo.svg";
@@ -99,11 +99,6 @@
     } else {
       if (userName.length > 0) {
         selectedUserName = true;
-      }
-      if (userPhoto) {
-        const newURL = await uploadPic(userPhoto, `UsersProfilePhoto/${$authData?.user?.uid}`);
-        userPhoto = newURL;
-        $userStore = { ...$userStore, userPhoto };
       }
 
       let authenticationType = "";
