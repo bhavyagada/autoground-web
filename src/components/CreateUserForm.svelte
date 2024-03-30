@@ -2,13 +2,12 @@
   import { addToast, authData } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import { AuthProviderId, AuthenticationType } from "$lib/types";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { callFunction, uploadPic } from "$lib/functions/util";
   import { cloudFunctions } from "$lib/functions/all";
   import { goto } from "$app/navigation";
   import Loading from "./Loading.svelte";
 
-	let size = '60';
   let isLoading: boolean = false;
 
   const errorMap = ["Invalid Phone Number", "Invalid Country Code", "Phone Number is too short", "Phone Number is too long", "Invalid Phone Number"];
@@ -153,8 +152,6 @@
         } else {
           addToast("success", "Account Created Successfully!");
           $authData = { ...$authData, isLoggedIn: true };
-          sessionStorage.setItem("user", JSON.stringify($userStore));
-          sessionStorage.setItem("loggedin", "true");
           isLoading = false;
           goto("/");
           return true;
@@ -198,7 +195,7 @@
       <textarea bind:value={bio} name="bio" maxlength="1000"></textarea>
     </div>
     {#if isLoading}
-      <Loading {size} />
+      <Loading />
     {:else}
       <input on:click|preventDefault={handleSubmit} class="submit" type="submit" name="submit" value="Create">
     {/if}

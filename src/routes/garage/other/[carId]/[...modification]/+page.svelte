@@ -1,16 +1,12 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { allModificationStore } from "$lib/stores/car";
-  import type { CarModificationData } from "$lib/types";
+  import { otherAllCarsStore } from "$lib/stores/car";
+  import type { CarData, CarModificationData } from "$lib/types";
 
   const { carId, modification } = $page.params;
   const id = Number(carId);
   console.log(`modification clicked: ${modification}`);
-  console.log(`all modifications store: ${JSON.stringify($allModificationStore)}`);
 
-  let thisCarMods: CarModificationData[];
-  $: thisCarMods = $allModificationStore[id-1];
   const modificationIcons: any = {
     "Power": "/power-icon.svg",
     "Exterior": "/exterior-icon.svg",
@@ -18,12 +14,11 @@
     "Wheels/Suspension": "/wheels-icon.svg"
   }
 
-  let mods: CarModificationData[];
-  $: mods = thisCarMods.filter(m => m.category === modification);
+  let thisCar: CarData = $otherAllCarsStore[id-1];
+  let mods: CarModificationData[] = [];
 
-  const handleAddModification = () => {
-    goto(`/garage/${carId}/${modification}/add`);
-  }
+  $: thisCarMods = thisCar.modifications ? thisCar.modifications : [];
+  $: mods = thisCarMods.filter(m => m.category === modification);
 </script>
 
 <div class="background">
@@ -53,7 +48,6 @@
       <hr>
     {/each}
   </div>
-  <button class="submit" type="submit" on:click={handleAddModification}>+ Add Modification</button>
 </div>
 
 <style>
@@ -113,19 +107,5 @@
     font-size: 1.125rem;
     line-height: 2rem;
     margin: 0.75rem 0;
-  }
-  .submit {
-    background-color: white;
-    color: black;
-    border-radius: 0.5rem;
-    line-height: 2rem;
-    font-size: 1.25rem;
-    width: 90%;
-    align-self: center;
-  }
-  @media all and (min-width: 1200px) {
-    .submit {
-      width: 30%;
-    }
   }
 </style>

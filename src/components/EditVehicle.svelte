@@ -4,19 +4,18 @@
   import bikes from "/src/data/bikes.json";
   import trucks from "/src/data/trucks.json";
   import Cropper from 'svelte-easy-crop';
-  import { addToast, authData } from "$lib/stores/auth";
+  import { addToast } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import { cloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
 
   export let edit: boolean = true;
   const { carId } = $page.params;
   const id = Number(carId);
-  let size: string = "60"; 
   let isLoading: boolean = false;
 
   let photos: string[] = $carStore.photos ? $carStore.photos : [];
@@ -167,7 +166,7 @@
   const handleCloudUploadPhoto = async (photo: any) => {
     console.log(photo);
     const imageFile = dataURItoFile(photo);
-    return await uploadPic(imageFile, `Users/${$authData.user?.uid}/CarPhotos/${Date.now()}`);
+    return await uploadPic(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
   }
 
   const handleCarEdit = async () => {
@@ -196,9 +195,6 @@
       otherPhoto3 = await handleCloudUploadPhoto(otherPhoto3);
       photos.push(otherPhoto3);
     }
-    if (photos.length > 0) {
-      $carStore = { ...$carStore, photos };
-    }
 
     if (selectedYear && selectedMake && selectedModel) {
       let vehicleType: VehicleType = VehicleType.car;
@@ -208,7 +204,7 @@
       const year = Number(selectedYear);
       const make = selectedMake;
       const model = selectedModel;
-      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName }
+      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName, photos }
     }
     let makeModelChanged: boolean = false;
     if (previousMake !== selectedMake || previousModel !== selectedModel) {
@@ -221,13 +217,11 @@
         return handleServerSideError("Couldn't Edit Car! Please Try Again!");
       } else {
         addToast("success", "Vehicle Updated Successfully!");
-        $carStore = result?.result.data;
+        $carStore = result?.result.data.carData;
         $allCarsStore[id-1] = $carStore;
-        sessionStorage.setItem("car", JSON.stringify($carStore));
-        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
         isLoading = false;
         edit = false;
-        goto("/garage");
+        location.reload();
         return true;
       }
     } catch (err) {
@@ -243,12 +237,12 @@
         return handleServerSideError("Couldn't Delete Car! Please Try Again!");
       } else {
         $allCarsStore = $allCarsStore.filter((car) => car.carId !== $carStore.carId);
-        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
-        console.log($allCarsStore);
         $carStore = defaultCar;
         isLoading = false;
-        goto("/garage");
         edit = false;
+        // goto("/garage");
+        history.back();
+        location.reload();
         return true
       }
     } catch (err) {
@@ -279,29 +273,29 @@
         <div class="cropper">
           <Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} />
         </div>
-        <button class="crop-submit" type="submit" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set as Cover Photo</button>
+        <button class="crop-submit" type="button" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set as Cover Photo</button>
       </div>
     {/if}
     <div class="photos">
-      <button on:click={handleMainFileUpload} class={coverPhoto ? "photo" : ""}>
+      <button on:click={handleMainFileUpload} class={coverPhoto ? "photo" : ""} type="button">
         <input bind:this={mainPhotoElement} bind:value={coverPhoto} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
         <img alt="" src={coverPhoto} class={coverPhoto ? "photo" : ""}>
         <p class={coverPhoto ? "none" : ""}>Add Cover Photo</p>
         <p class={coverPhoto ? "none" : ""}>+</p> 
       </button>
-        <button on:click={handleOtherFileUpload1} class={otherPhoto1 ? "photo" : ""}>
+        <button on:click={handleOtherFileUpload1} class={otherPhoto1 ? "photo" : ""} type="button">
           <input bind:this={otherPhotoElement1} bind:value={otherPhoto1} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
           <img alt="" src={otherPhoto1} class={otherPhoto1 ? "photo" : ""}>
           <p class={otherPhoto1 ? "none" : ""}>Add Photo</p>
           <p class={otherPhoto1 ? "none" : ""}>+</p> 
         </button>
-        <button on:click={handleOtherFileUpload2} class={otherPhoto2 ? "photo" : ""}>
+        <button on:click={handleOtherFileUpload2} class={otherPhoto2 ? "photo" : ""} type="button">
           <input bind:this={otherPhotoElement2} bind:value={otherPhoto2} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
           <img alt="" src={otherPhoto2} class={otherPhoto2 ? "photo" : ""}>
           <p class={otherPhoto2 ? "none" : ""}>Add Photo</p>
           <p class={otherPhoto2 ? "none" : ""}>+</p> 
         </button>
-        <button on:click={handleOtherFileUpload3} class={otherPhoto3 ? "photo" : ""}>
+        <button on:click={handleOtherFileUpload3} class={otherPhoto3 ? "photo" : ""} type="button">
           <input bind:this={otherPhotoElement3} bind:value={otherPhoto3} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
           <img alt="" src={otherPhoto3} class={otherPhoto3 ? "photo" : ""}>
           <p class={otherPhoto3 ? "none" : ""}>Add Photo</p>
@@ -372,7 +366,7 @@
       <input bind:value={name} type="text" name="nickname">
     </div>
     {#if isLoading}
-      <Loading {size} />
+      <Loading />
     {:else}
       <div class="controls">
         <input on:click|preventDefault={handleCarDelete} type="submit" name="submit" value="Delete Vehicle">

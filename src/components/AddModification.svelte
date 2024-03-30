@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import { addToast } from "$lib/stores/auth";
-  import { allCarsStore, allModificationStore, defaultCarModification, modificationStore } from "$lib/stores/car";
+  import { allCarsStore, defaultCarModification, modificationStore } from "$lib/stores/car";
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";
@@ -99,9 +99,7 @@
       } else {
         addToast("success", "Modification Added Successfully!");
         $allCarsStore[id-1].modifications?.push(result?.result.data);
-        $allModificationStore[id-1].push($modificationStore);
-        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
-        sessionStorage.setItem("mods", JSON.stringify($allModificationStore));
+        $allCarsStore[id-1] = { ...$allCarsStore[id-1] };
         $modificationStore = defaultCarModification;
         isLoading = false;
         history.back();

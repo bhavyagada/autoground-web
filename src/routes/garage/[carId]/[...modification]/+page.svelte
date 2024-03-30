@@ -1,17 +1,13 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { allModificationStore } from "$lib/stores/car";
+  import { allCarsStore } from "$lib/stores/car";
   import AddModification from "../../../../components/AddModification.svelte";
-  import type { CarModificationData } from "$lib/types";
+  import type { CarData, CarModificationData } from "$lib/types";
 
   const { carId, modification } = $page.params;
   const id = Number(carId);
   console.log(`modification clicked: ${modification}`);
-  console.log(`all modifications store: ${JSON.stringify($allModificationStore)}`);
 
-  let add: boolean = false;
-  let thisCarMods: CarModificationData[];
-  $: thisCarMods = $allModificationStore[id-1];
   const modificationIcons: any = {
     "Power": "/power-icon.svg",
     "Exterior": "/exterior-icon.svg",
@@ -19,7 +15,11 @@
     "Wheels/Suspension": "/wheels-icon.svg"
   }
 
-  let mods: CarModificationData[];
+  let add: boolean = false;
+  let thisCar: CarData = $allCarsStore[id-1];
+  let mods: CarModificationData[] = [];
+
+  $: thisCarMods = thisCar.modifications ? thisCar.modifications : [];
   $: mods = thisCarMods.filter(m => m.category === modification);
 </script>
 

@@ -88,7 +88,6 @@
         return handleError("Server Error! Please Try Again!");
       } else {
         $otherAllCarsStore = result?.result.data.cars;
-        sessionStorage.setItem("othercars", JSON.stringify($otherAllCarsStore));
         goto(`/garage/other`);
       }
     } catch (err) {

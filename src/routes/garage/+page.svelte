@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
+  import { goto, pushState } from "$app/navigation";
+  import { page } from "$app/stores";
   import { allCarsStore } from "$lib/stores/car";
   import AddVehicle from "../../components/AddVehicle.svelte";
 
-  let add: boolean = false;
   let coverPhotos: Array<string | null> = [];
   let photosLength: number;
   let years: Array<number | null> = [];
@@ -37,8 +37,8 @@
   }
 </script>
 
-{#if add}
-  <svelte:component this={AddVehicle} bind:add />
+{#if $page.state.addVehicleModal}
+  <svelte:component this={AddVehicle} />
 {:else}
   <div class="background mygarage" data-sveltekit-reload>
     <div class="car-container">
@@ -59,7 +59,7 @@
         <p>Cars added to Your Garage will be shown here!</p>
       {/if}
     </div>
-    <button on:click|preventDefault={() => add = true}>+ Add Vehicle</button>
+    <button on:click|preventDefault={() => pushState('', { addVehicleModal: true })}>+ Add Vehicle</button>
   </div>
 {/if}
 

@@ -2,7 +2,7 @@
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import Loading from "./Loading.svelte";
 
@@ -56,8 +56,7 @@
     return false;
   };
 
-  const updateStorageToggleModal = (input: string) => {
-    sessionStorage.setItem("user", JSON.stringify($userStore));
+  const handleToggleModal = (input: string) => {
     addToast("success", `${input} updated successfully!`);
     isLoading = false;
     toggleModal();
@@ -92,7 +91,7 @@
           else if (input === "bio") $userStore = { ...$userStore, bio };
           else if (input === "phone") $userStore = { ...$userStore, phone: iti.getNumber(), countryCode: iti.getSelectedCountryData().dialCode };
           else if (input === "email") $userStore = { ...$userStore, email };
-          updateStorageToggleModal(input.charAt(0).toUpperCase() + input.slice(1));
+          handleToggleModal(input.charAt(0).toUpperCase() + input.slice(1));
         }
       } catch (err) {
         return handleServerSideError("Server Error! Please Try Again!");

@@ -14,10 +14,11 @@
   console.log(`car id: ${carId}`);
   console.log(`all cars data within individual car: ${JSON.stringify($allCarsStore)}`);
 
-  let thiscar: CarData = $allCarsStore[id-1];
-  let photos: any;
+  let thiscar: CarData = $allCarsStore[id-1] !== undefined ? $allCarsStore[id-1] : defaultCar;
+  let photos: any = thiscar.photos !== undefined ? $allCarsStore[id-1] : [];
+  console.log("this car after edit nav: ", thiscar);
   $: thiscar = $allCarsStore[id-1] !== undefined ? $allCarsStore[id-1] : defaultCar;
-  $: photos = thiscar.photos;
+  $: photos = thiscar.photos !== undefined ? thiscar.photos : [];
   console.log(photos);
 
   const parts = {

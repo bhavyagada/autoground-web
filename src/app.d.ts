@@ -4,11 +4,11 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		interface Locals {
-			uid: string
-		}
+		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			addVehicleModal: boolean
+		}
 		// interface Platform {}
 	}
 }

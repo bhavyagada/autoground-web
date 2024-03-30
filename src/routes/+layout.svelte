@@ -4,7 +4,7 @@
   import { logout, authData, toast, addToast } from "$lib/stores/auth";
   import Toast from "../components/Toast.svelte";
   import { goto } from "$app/navigation";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
@@ -17,7 +17,7 @@
     $authData = { user: null, isLoggedIn: false };
     goto("/login");
     addToast("success", "Do visit us again :)");
-    sessionStorage.clear();
+    localStorage.clear();
   }
 </script>
 

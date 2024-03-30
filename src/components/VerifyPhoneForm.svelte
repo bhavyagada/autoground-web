@@ -3,7 +3,7 @@
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast, authData, phoneConfirmationStore, phoneVerify, resendCodeSignUp } from "$lib/stores/auth";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import OtpForm from "./OtpForm.svelte";
   import { onDestroy } from "svelte";
   import Loading from "./Loading.svelte";
@@ -43,13 +43,6 @@
             $authData = { ...$authData, isLoggedIn: true }
             $userStore = userResult?.result.data;
             $allCarsStore = carsResult?.result.data.cars;
-            sessionStorage.setItem("user", JSON.stringify($userStore));
-            sessionStorage.setItem("loggedin", "true");
-            sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
-            sessionStorage.setItem("mods", JSON.stringify($allCarsStore.map(car => car.modifications ? car.modifications : [])));
-            console.log(`logged in user data ${JSON.stringify($userStore)}`);
-            console.log(`logged in user cars data ${JSON.stringify($allCarsStore)}`);
-            console.log(`logged in user auth data ${JSON.stringify($authData)}`);
             goto("/");
             addToast("success", "Successfully Signed In!");
             isLoading = false;

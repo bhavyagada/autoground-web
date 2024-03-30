@@ -4,16 +4,14 @@
   import bikes from "/src/data/bikes.json";
   import trucks from "/src/data/trucks.json";
   import Cropper from 'svelte-easy-crop';
-  import { addToast, authData } from "$lib/stores/auth";
+  import { addToast } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import { cloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
-  import { userStore } from "$lib/stores/user";
-  import { goto } from "$app/navigation";
+  import { userStore } from "$lib/stores/auth";
+  import { goto, replaceState } from "$app/navigation";
 
-  export let add: boolean = true;
-  let size: string = "60"; 
   let isLoading: boolean = false;
 
   let photos: string[] = [];
@@ -160,7 +158,7 @@
 
   const handleCloudUploadPhoto = async (photo: any) => {
     const imageFile = dataURItoFile(photo);
-    return await uploadPic(imageFile, `Users/${$authData.user?.uid}/CarPhotos/${Date.now()}`);
+    return await uploadPic(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
   }
 
   const handleSubmit = async () => {
@@ -189,9 +187,6 @@
       otherPhoto3 = await handleCloudUploadPhoto(otherPhoto3);
       photos.push(otherPhoto3);
     }
-    if (photos.length > 0) {
-      $carStore = { ...$carStore, photos };
-    }
 
     if (selectedYear && selectedMake && selectedModel) {
       let vehicleType: VehicleType = VehicleType.car;
@@ -201,7 +196,7 @@
       const year = Number(selectedYear);
       const make = selectedMake;
       const model = selectedModel;
-      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName }
+      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName, photos }
     }
     try {
       const result = await callFunction(cloudFunctions.ADD_CAR_TO_GARAGE, { carData: $carStore });
@@ -210,12 +205,10 @@
       } else {
         addToast("success", "Vehicle Added Successfully!");
         $carStore = defaultCar;
-        $allCarsStore.push(result?.result.data);
-        sessionStorage.setItem("car", JSON.stringify($carStore));
-        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
+        $allCarsStore = [ ...$allCarsStore, result?.result.data];
         isLoading = false;
+        replaceState('', { addVehicleModal: false });
         goto("/garage");
-        add = false;
         location.reload();
         return true;
       }
@@ -241,41 +234,40 @@
       <p>Bike</p>
     </button>
   </div>
-  <form>
+  <form enctype="multipart/form-data">
     {#if image}
       <div class="crop-container">
         <div class="cropper">
           <Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} />
         </div>
-        <button class="crop-submit" type="submit" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set as Cover Photo</button>
+        <button class="crop-submit" type="button" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set Photo</button>
       </div>
     {/if}
     <div class="photos">
-      <button on:click={handleMainFileUpload} class={coverPhoto ? "photo" : ""}>
+      <button on:click={handleMainFileUpload} class={coverPhoto ? "photo" : ""} type="button">
         <input bind:this={mainPhotoElement} bind:value={coverPhoto} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
         <img alt="" src={coverPhoto} class={coverPhoto ? "photo" : ""}>
         <p class={coverPhoto ? "none" : ""}>Add Cover Photo</p>
         <p class={coverPhoto ? "none" : ""}>+</p> 
       </button>
-        <button on:click={handleOtherFileUpload1} class={otherPhoto1 ? "photo" : ""}>
+        <button on:click={handleOtherFileUpload1} class={otherPhoto1 ? "photo" : ""} type="button">
           <input bind:this={otherPhotoElement1} bind:value={otherPhoto1} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
           <img alt="" src={otherPhoto1} class={otherPhoto1 ? "photo" : ""}>
           <p class={otherPhoto1 ? "none" : ""}>Add Photo</p>
           <p class={otherPhoto1 ? "none" : ""}>+</p> 
         </button>
-        <button on:click={handleOtherFileUpload2} class={otherPhoto2 ? "photo" : ""}>
+        <button on:click={handleOtherFileUpload2} class={otherPhoto2 ? "photo" : ""} type="button">
           <input bind:this={otherPhotoElement2} bind:value={otherPhoto2} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
           <img alt="" src={otherPhoto2} class={otherPhoto2 ? "photo" : ""}>
           <p class={otherPhoto2 ? "none" : ""}>Add Photo</p>
           <p class={otherPhoto2 ? "none" : ""}>+</p> 
         </button>
-        <button on:click={handleOtherFileUpload3} class={otherPhoto3 ? "photo" : ""}>
+        <button on:click={handleOtherFileUpload3} class={otherPhoto3 ? "photo" : ""} type="button">
           <input bind:this={otherPhotoElement3} bind:value={otherPhoto3} on:change={loadFile} type="file" class="hidden" name="photo" accept="image/*">
           <img alt="" src={otherPhoto3} class={otherPhoto3 ? "photo" : ""}>
           <p class={otherPhoto3 ? "none" : ""}>Add Photo</p>
           <p class={otherPhoto3 ? "none" : ""}>+</p> 
         </button>
-      
     </div>
     <div class="details">
       <div class="year">
@@ -341,7 +333,7 @@
       <input bind:value={name} type="text" name="nickname">
     </div>
     {#if isLoading}
-      <Loading {size} />
+      <Loading />
     {:else}
       <input on:click|preventDefault={handleSubmit} type="submit" name="submit" value="Add Vehicle">
     {/if}
@@ -449,7 +441,7 @@
     height: 120px;
   }
   .photo {
-    width: 160px;
+    width: 100%;
     height: 120px;
     border-radius: 0.5rem;
     padding: 0;
@@ -558,7 +550,7 @@
     }
     .photo {
       align-self: flex-start;
-      width: 200px;
+      width: 100%;
       height: 150px;
       border-radius: 0.5rem;
       padding: 0;

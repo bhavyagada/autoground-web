@@ -7,7 +7,7 @@
   import CreateUserForm from "../../components/CreateUserForm.svelte"
   import { goto } from "$app/navigation";
   import Loading from "../../components/Loading.svelte";
-  import { userStore } from "$lib/stores/user";
+  import { userStore } from "$lib/stores/auth";
   import { allCarsStore } from "$lib/stores/car";
 
   const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];
@@ -52,9 +52,8 @@
     try {
       isLoading = true;
       const newUser = await googleSignup();
-      console.log(`Google new sign in: ${JSON.stringify(newUser)}`);
+      console.log("Google new sign in: ", newUser);
       $authData = { user: newUser?.user, isLoggedIn: false };
-      console.log($authData.user);
       await getUserProfile();
       isLoading = false;
     } catch (err) {
@@ -64,10 +63,12 @@
 
   async function handleAppleAuth() {
     try {
+      isLoading = true;
       const newUser = await appleSignup();
-      console.log(`Apple new sign in: ${JSON.stringify(newUser)}`);
+      console.log("Apple new sign in: ", newUser);
       $authData = { user: newUser?.user, isLoggedIn: false };
       await getUserProfile();
+      isLoading = false;
     } catch (err) {
       addToast("error", "Server Error! Please try again!");
     }
@@ -91,14 +92,7 @@
         $authData = { ...$authData, isLoggedIn: true };
         $userStore = userResult?.result.data;
         $allCarsStore = carsResult?.result.data.cars;
-        sessionStorage.setItem("user", JSON.stringify($userStore));
-        sessionStorage.setItem("loggedin", "true");
-        sessionStorage.setItem("cars", JSON.stringify($allCarsStore));
-        sessionStorage.setItem("mods", JSON.stringify($allCarsStore.map(car => car.modifications ? car.modifications : [])));
-        console.log(`logged in user data ${JSON.stringify($userStore)}`);
-        console.log(`logged in user cars data ${JSON.stringify($allCarsStore)}`);
-        console.log(`logged in user auth data ${JSON.stringify($authData)}`);
-        goto("/account");
+        goto("/");
         addToast("success", "Successfully Signed In!");
       }
     } catch (err) {

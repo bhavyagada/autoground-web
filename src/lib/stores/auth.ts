@@ -1,21 +1,52 @@
 import { get, writable } from "svelte/store";
 import { auth } from "$lib/firebase/client";
 import { RecaptchaVerifier, signInWithPhoneNumber, signOut, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
-import { type AuthData, type PhoneVerificationData, type ToastData } from "$lib/types";
+import { AuthenticationType, type AuthData, type PhoneVerificationData, type ToastData, type UserData } from "$lib/types";
 import { browser } from "$app/environment";
 
-// authentication state stores
-let user = null;
-let isLoggedIn: boolean = false;
-if (browser) {
-  const storedUser: any = sessionStorage.getItem("user");
-  user = storedUser ? JSON.parse(storedUser) : null;
-  isLoggedIn = sessionStorage.getItem("loggedin") === "true";
+export const defaultUser = {
+  created: 0,
+  modified: 0,
+  userId: "",
+  userPhoto: "",
+  name: "",
+  userName: "",
+  email: "",
+  phone: "",
+  countryCode: "",
+  bio: "",
+  authenticationType: AuthenticationType.phone,
+  points: 0,
+  specialTag: "",
+  privacy: {
+    hideModificationCount: true,
+    hideModifications: true,
+    hidePoints: true
+  },
+  rights: ["user"],
+  cars: [],
+  badges: []
 }
-export const authData = writable<AuthData>({ user, isLoggedIn });
-export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 
+// authentication state stores
+let userAuth = { user: null, isLoggedIn: false };
+let user = defaultUser;
+if (browser) {
+  const storedUserAuth: string | null = localStorage.getItem("auth");
+  const storedUser: string | null = localStorage.getItem("user");
+  userAuth = storedUserAuth ? JSON.parse(storedUserAuth) : userAuth;
+  user = storedUser ? JSON.parse(storedUser) : user;
+}
+export const authData = writable<AuthData>(userAuth);
+export const userStore = writable<UserData>(user);
+if (browser) {
+  authData.subscribe((value) => localStorage.setItem("auth", JSON.stringify(value)));
+  userStore.subscribe((value) => localStorage.setItem("user", JSON.stringify(value)));
+}
+
+export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 export const toast = writable<ToastData | null>(null);
+
 export const addToast = (type: string, message: string) => {
   toast.set({ type, message });
   setTimeout(dismissToast, 5000);

@@ -10,9 +10,9 @@
   export let data;
   let othercars: any;
   onMount(() => {
-    const oldData: any = sessionStorage.getItem("othercars");
+    const oldData: any = localStorage.getItem("othercars");
     othercars = JSON.parse(oldData);
-  })
+  });
   // const { carId } = $page.params;
   const carId = data.carId;
   console.log(carId);
