@@ -1,21 +1,23 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
-  // import EventCard from "../../components/EventCard.svelte";
-  
+  import { allResultList, bookedResultList } from "$lib/stores/events";
+  import EventCard from "../../components/EventCard.svelte";
+  import Loading from "../../components/Loading.svelte";
+  import { goto } from "$app/navigation";
+
   const allEventData = writable<{batchSize: number, startAfter: string | null, afterDateEvent: number }>({ batchSize: 9, startAfter: null, afterDateEvent: Date.now() });
   const allHasMore = writable<boolean>(false);
-  const allResultList = writable<any>([]);
   const bookedEventData = writable<{batchSize: number, startAfter: string | null }>({ batchSize: 9, startAfter: null });
   const bookedHasMore = writable<boolean>(false);
-  const bookedResultList = writable<any>([]);
 
   let isLoading: boolean = false;
   let observer: IntersectionObserver;
-  let results: any;
+  let results: any = [];
   let root: any;
   let selected = "all";
   let startAfter: string | null = null;
@@ -26,53 +28,96 @@
     return false;
   };
 
-  onMount(() => {
-    const getEvents = async () => {
-      isLoading = true;
-      try {
+  const getEvents = async (type: string) => {
+    isLoading = true;
+    try {
+      if (type === "all") {
         const allResults = await callFunction(cloudFunctions.GET_EVENTS, $allEventData);
+        console.log("all events: ", allResults);
         if (allResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
-          $allResultList = allResults?.result.events;
-          $allHasMore = allResults?.result.hasMore;
-          $allEventData = { ...$allEventData, startAfter: allResults?.result.startAfter };
+          $allResultList = allResults?.result.data.events;
+          $allHasMore = allResults?.result.data.hasMore;
+          $allEventData = { ...$allEventData, startAfter: allResults?.result.data.startAfter };
         }
+      } else if (type === "booked") {
         const bookedResults = await callFunction(cloudFunctions.GET_BOOKED_EVENTS, $bookedEventData);
+        console.log("booked events: ", bookedResults);
         if (bookedResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
-          $bookedResultList = bookedResults?.result.events;
-          $bookedHasMore = bookedResults?.result.hasMore;
-          $bookedEventData = { ...$bookedEventData, startAfter: bookedResults?.result.startAfter };
+          $bookedResultList = bookedResults?.result.data.events;
+          $bookedHasMore = bookedResults?.result.data.hasMore;
+          $bookedEventData = { ...$bookedEventData, startAfter: bookedResults?.result.data.startAfter };
         }
-        isLoading = false;
-        return true;
-      } catch (err) {
-        return handleServerSideError("Server Error! Please Try Again!");
       }
+      isLoading = false;
+      return true;
+    } catch (err) {
+      return handleServerSideError("Server Error! Please Try Again!");
     }
-    getEvents();
+  }
+
+  onMount(() => {
+    const storedAllResults = localStorage.getItem("allevents");
+    const storedBookedResults = localStorage.getItem("bookedevents");
+    $allResultList = storedAllResults ? JSON.parse(storedAllResults) : [];
+    $bookedResultList = storedBookedResults ? JSON.parse(storedBookedResults) : [];
+    const getResultsFirstTime = async () => {
+      if ($allResultList.length === 0) await getEvents("all");
+      if ($bookedResultList.length === 0) await getEvents("booked");
+    }
+    getResultsFirstTime();
   });
 
-  const handleAllEventsTabClick = () => {
-    selected = "all";
-    results = $allResultList;
+  const handleEventClick = (e: any) => {
+    const eventId = e.currentTarget.id;
+    goto(`/events/${eventId}`);
   }
-  
-  const handleBookedEventsTabClick = () => {
-    selected = "booked";
+
+  $: if (selected === "all") {
+    results = $allResultList;
+    startAfter = $allEventData.startAfter;
+  } else if (selected === "booked") {
     results = $bookedResultList;
+    startAfter = $bookedEventData.startAfter;
+  }
+
+  $: if (browser) {
+    observer = new IntersectionObserver(async (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          if (selected === "all") await getEvents("all");
+          else if (selected === "booked") await getEvents("booked");
+        }
+      };
+    });
+  
+    if ($allHasMore || $bookedHasMore) observer.observe(root);
+
+    onDestroy(() => observer.disconnect());
   }
 </script>
 
 <div class="background">
   <div class="headings">
-    <button on:click={handleAllEventsTabClick} class={selected === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
-    <button on:click={handleBookedEventsTabClick} class={selected === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
+    <button on:click={() => selected = "all"} class={selected === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
+    <button on:click={() => selected = "booked"} class={selected === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
   </div>
-  <!-- <EventCard /> -->
-  
+  {#if isLoading}
+    <Loading />
+  {:else}
+    <div class="all-results">
+      {#each results as result, index}
+        <button id={String(index+1)} on:click={handleEventClick}>
+          <EventCard {result} {selected} />
+        </button>
+      {/each}
+    </div>
+  {/if}
+  <div bind:this={root} class="results"></div>
 </div>
 
 <style>
@@ -99,5 +144,17 @@
     line-height: 2rem;
     margin-top: 6rem;
     padding-bottom: 1rem;
+  }
+  .all-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 75%;
+    margin-top: 4rem;
+  }
+  .all-results button {
+    background: none;
+    text-align: start;
   }
 </style>
