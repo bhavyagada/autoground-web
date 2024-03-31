@@ -3,11 +3,12 @@
   import { goto } from "$app/navigation";
   import { cloudFunctions } from "$lib/functions/all";
   import { callFunction } from "$lib/functions/util";
-  import { addToast } from "$lib/stores/auth";
+  import { addToast, otherUserStore } from "$lib/stores/auth";
   import { defaultCar, otherAllCarsStore } from "$lib/stores/car";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
+  import Loading from "../../components/Loading.svelte";
 
   const vehicleIcons: any = {
     bike: "/bike.svg",
@@ -15,10 +16,11 @@
     truck: "/truck.svg"
   }
 
-  const searchData = writable<{searchKeyword: string, batchSize: number, startAfter: string | null, afterDateEvent?: number }>({ searchKeyword: "", batchSize: 5, startAfter: null });
+  const searchData = writable<{searchKeyword: string, batchSize: number, startAfter: string | null, afterDateEvent?: number }>({ searchKeyword: "", batchSize: 6, startAfter: null });
   const hasMore = writable<boolean>(false);
   const resultList = writable<any>([]);
 
+  let isLoading: boolean = false;
   let observer: IntersectionObserver;
   let results: any;
   let root: any;
@@ -52,6 +54,7 @@
     }
 
     try {
+      isLoading = true;
       let result;
       if (selectedOption !== "events") {
         result = await callFunction(functions[selectedOption], $searchData);
@@ -66,6 +69,7 @@
         $hasMore = result?.result.data.hasMore;
         $searchData.startAfter = result?.result.data.startAfter;
         $resultList = results.concat(result?.result.data[selectedOption]);
+        isLoading = false;
       }
     } catch (err) {
       return handleError("Server Error! Please Try Again!");
@@ -84,10 +88,13 @@
     console.log("button id = user id:", id);
     try {
       const result = await callFunction(cloudFunctions.GET_ANOTHER_GARAGE_DATA, { searchUserId: id });
-      if (result?.isError) {
+      const userresult = await callFunction(cloudFunctions.GET_ANOTHER_USER_PROFILE, { searchUserId: id} );
+      if (result?.isError || userresult?.isError) {
         return handleError("Server Error! Please Try Again!");
       } else {
+        console.log(userresult?.result.data);
         $otherAllCarsStore = result?.result.data.cars;
+        $otherUserStore = userresult?.result.data;
         goto(`/garage/other`);
       }
     } catch (err) {
@@ -129,46 +136,58 @@
   </div>
   {#if selectedOption === "people"}
     <div transition:fade class="people-results-container">
-      {#each results as result}
-        <button id={result.data.userId} class="user-results" on:click={handleOtherUserClick}>
-          <img src="/search-user-icon.svg" alt="User Icon">
-          <img class="userphoto" src={result.data.userPhoto ? result.data.userPhoto : "/default-photo.svg"} alt="Profile">
-          <p class="name">{result.data.name}</p>
-          <p>@{result.data.userName}</p>
-        </button>
-      {/each}
+      {#if isLoading}
+        <Loading />
+      {:else}
+        {#each results as result}
+          <button id={result.data.userId} class="user-results" on:click={handleOtherUserClick}>
+            <img src="/search-user-icon.svg" alt="User Icon">
+            <img class="userphoto" src={result.data.userPhoto ? result.data.userPhoto : "/default-photo.svg"} alt="Profile">
+            <p class="name">{result.data.name}</p>
+            <p>@{result.data.userName}</p>
+          </button>
+        {/each}
+      {/if}
     </div>
   {:else if selectedOption === "cars"}
     <div transition:fade class="vehicle-results-container">
-      {#each results as result}
-        <button id={result.data.userId} class="vehicle-results" on:click={handleOtherCarClick}>
-          <div class="car-name">
-            <img src={vehicleIcons[result.data.vehicleType]} alt="Vehicle Type">
-            <p>{result.data.name}</p>
-          </div>
-          <img class="cover-photo" src={result.data.coverPhoto ? result.data.coverPhoto : "/default-photo.svg"} alt="Vehicle Cover">
-          <div class="car-make">
-            <p>{result.data.year}</p>
-            <p>{result.data.make}</p>
-            <p>{result.data.model}</p>
-          </div>
-          <div class="car-username">
-            <img src="/search-user-icon.svg" alt="User Icon">
-            <p class="name">@{result.data.userName}</p>
-          </div>
-        </button>
-      {/each}
+      {#if isLoading}
+        <Loading />
+      {:else}
+        {#each results as result}
+          <button id={result.data.userId} class="vehicle-results" on:click={handleOtherCarClick}>
+            <div class="car-name">
+              <img src={result.data.vehicleType ? vehicleIcons[result.data.vehicleType] : vehicleIcons["car"]} alt="Vehicle Type">
+              <p>{result.data.name}</p>
+            </div>
+            <img class="cover-photo" src={result.data.coverPhoto ? result.data.coverPhoto : "/default-photo.svg"} alt="Vehicle Cover">
+            <div class="car-make">
+              <p>{result.data.year}</p>
+              <p>{result.data.make}</p>
+              <p>{result.data.model}</p>
+            </div>
+            <div class="car-username">
+              <img src="/search-user-icon.svg" alt="User Icon">
+              <p class="name">@{result.data.userName}</p>
+            </div>
+          </button>
+        {/each}
+      {/if}
     </div>
   {:else if selectedOption === "events"}
     <div transition:fade class="event-results-container">
-      {#each results as result}
-        <button class="event-results">
-          <img src={result.eventPhoto} alt="Event Cover">
-          <p class="event-name">{result.eventName}</p>
-          <p>{new Date(result.eventStartTime).toDateString()} | {new Date(result.eventStartTime).toLocaleTimeString()}</p>
-          <p>{result.location.address ? result.location.address : ""}</p>
-        </button>
-      {/each}
+      {#if isLoading}
+        <Loading />
+      {:else}
+        {#each results as result}
+          <button class="event-results">
+            <img src={result.data.eventPhoto} alt="Event Cover">
+            <p class="event-name">{result.data.eventName}</p>
+            <p>{new Date(result.data.eventStartTime).toDateString()} | {new Date(result.data.eventStartTime).toLocaleTimeString()}</p>
+            <p>{result.data.location.address}</p>
+          </button>
+        {/each}
+      {/if}
     </div>
   {/if}
   <div bind:this={root} class="results"></div>

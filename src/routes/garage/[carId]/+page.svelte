@@ -7,12 +7,15 @@
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";
+  import { browser } from "$app/environment";
 
+  if (browser) {
+    if ($allCarsStore.length === 0) goto("/garage");
+  }
   let edit: boolean = false;
   const { carId } = $page.params;
   const id = Number(carId);
   console.log(`car id: ${carId}`);
-  console.log(`all cars data within individual car: ${JSON.stringify($allCarsStore)}`);
 
   let thiscar: CarData = $allCarsStore[id-1] !== undefined ? $allCarsStore[id-1] : defaultCar;
   let photos: any = thiscar.photos !== undefined ? $allCarsStore[id-1] : [];
@@ -36,7 +39,6 @@
   const categories = Object.keys(modifications["Categories"]);
 
   const handleModification = (modification: string) => {
-    // const slug = modification.split("/")[0].toLowerCase();
     goto(`/garage/${carId}/${modification}`);
   }
 
@@ -70,7 +72,7 @@
           <img src="/points-icon.svg" alt="Points Icon">
           <p>{thiscar.points} Points</p>
         </div>
-        <img class="qrcode" alt="Username QR Code" src="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=user:{thiscar.userName}">
+        <img class="qrcode" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={thiscar.userName}">
       </div>
     </div>
     <div class="modification-container">
@@ -139,7 +141,6 @@
     width: 75px;
     height: 75px;
     margin-left: 1.25rem;
-    border-radius: 0.5rem;
   }
   .modification-container {
     display: flex;

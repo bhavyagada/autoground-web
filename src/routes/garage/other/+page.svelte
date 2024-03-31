@@ -1,174 +1,213 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { defaultCar, otherAllCarsStore } from "$lib/stores/car";
-  import { onMount } from "svelte";
-
-  let coverPhotos: Array<string | null> = [];
-  let photosLength: number;
-  let years: Array<number | null> = [];
-  let makes: Array<string | null> = [];
-  let models: Array<string | null> = [];
-  let modificationCounts: Array<number | undefined> = [];
-  let points: Array<number | null> = [];
-  let index: number = 0;
-
-  console.log($otherAllCarsStore);
-  $otherAllCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
-  $otherAllCarsStore.forEach(car => years.push(car.year));
-  $otherAllCarsStore.forEach(car => makes.push(car.make));
-  $otherAllCarsStore.forEach(car => models.push(car.model));
-  $otherAllCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
-  $otherAllCarsStore.forEach(car => points.push(car.points));
-  photosLength = coverPhotos.length;
-
-  const onPrev = () => {
-    index = index > 0 ? index - 1 : photosLength - 1;
-    console.log(`prev index ${index}`);
+  import { otherUserStore } from "$lib/stores/auth";
+  import { otherAllCarsStore } from "$lib/stores/car";
+  import { fade } from "svelte/transition";
+  
+  const vehicleIcons: any = {
+    bike: "/bike.svg",
+    car: "/car.svg",
+    truck: "/truck.svg"
   }
-
-  const onNext = () => {
-    index = index < photosLength - 1 ? index + 1 : 0;
-    console.log(`next index ${index}`);
-  }
-
-  const handleCarClick = () => {
-    goto(`/garage/other/${index+1}`);
-  }
-
-  onMount(() => {
-    const deepEqual = (x: any, y: any): boolean => {
-      const ok = Object.keys, tx = typeof x, ty = typeof y;
-      return x && y && tx === 'object' && tx === ty ? (
-        ok(x).length === ok(y).length &&
-          ok(x).every(key => deepEqual(x[key], y[key]))
-      ) : (x === y);
-    }
-    if (deepEqual($otherAllCarsStore, [defaultCar])) {
-      goto("/search");
-    }
-  });
 </script>
-
-<div class="background mygarage">
-  <div class="car-container">
-    <div class="carwitharrows">
-      <button class="arrow" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
-      <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>
-      <button class="arrow" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
+<div class="background">
+  <div class="banner">
+    <img class="banner-photo" alt="Profile" src={$otherUserStore.userPhoto}>
+    <div class="name-username">
+      <p>{$otherUserStore.name}</p>
+      <p>@{$otherUserStore.userName}</p>
     </div>
-    <div class="car-details">
-      <p class="car-name">{years[index]} {makes[index]} {models[index]}</p>
-      <div class="stats">
-        <p>{modificationCounts[index] === 1 ? modificationCounts[index] + " Modification" : modificationCounts[index] + " Modifications"}</p>
-        <p>{points[index]} points</p>
-      </div>
+    <div class="points">
+      <img alt="Points Icon" src="/points-icon.svg">
+      <p>{$otherUserStore.points} points</p>
+    </div>
+    <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$otherUserStore.userName}">
+  </div>
+  <div class="vehicles">
+    <h1>Vehicles</h1>
+    <div transition:fade class="vehicle-results-container">
+      {#each $otherAllCarsStore as result}
+        <div id={result.userId} class="vehicle-results">
+          <div class="car-name">
+            <img src={result.vehicleType ? vehicleIcons[result.vehicleType] : vehicleIcons["car"]} alt="Vehicle Type">
+            <p>{result.name}</p>
+          </div>
+          <img class="cover-photo" src={result.coverPhoto ? result.coverPhoto : "/default-photo.svg"} alt="Vehicle Cover">
+          <div class="car-make">
+            <p>{result.year}</p>
+            <p>{result.make}</p>
+            <p>{result.model}</p>
+          </div>
+          <div class="car-modification">
+            <img src="/modifications-icon.svg" alt="Modifications Icon">
+            <p class="name">{result.modifications?.length} Modifications</p>
+          </div>
+          <div class="points">
+            <img alt="Points Icon" src="/points-icon.svg">
+            <p>{$otherUserStore.points} points</p>
+          </div>
+        </div>
+      {/each}
     </div>
   </div>
 </div>
 
 <style>
-  button {
-    background-color: black;
-    border: 1px solid white;
-    border-radius: 1rem;
-    padding: 0.5rem 3rem;
-    margin-bottom: auto;
-  }
   .background {
     width: var(--bgwidth);
     height: var(--bgheight);
-    position: relative;
-    z-index: 1; 
+    background-color: rgb(24, 24, 24);
     color: white;
-  }
-  .mygarage {
-    background: var(--homebg3) center / var(--bgsize) var(--bgrepeat);
+    width: 100vw;
+    height: 100vh;
     display: flex;
+    justify-content: space-evenly;
     flex-direction: column;
+    align-items: center;
+  }
+  .banner {
+    background-color: rgb(24, 24, 24);
+    border-radius: 1rem;
+    padding: 1rem 0;
+    width: 90vw;
+    display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 100vh;
+    position: relative;
   }
-  .car-container {
+  .banner-photo {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 3rem;
+    align-self: center;
+  }
+  .points {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .points img {
+    width: 1.5rem;
+    height: 1.5rem;
+    align-self: center;
+  }
+  h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 4rem;
+  }
+  .vehicles {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 75%;
+    width: 95%;
+    margin-top: 3rem;
   }
-  .carwitharrows {
+  .vehicle-results-container {
     display: flex;
+    flex-wrap: wrap;
+    width: 95%;
+    margin-top: 3rem;
+  }
+  .vehicle-results {
+    background-color: rgba(51, 55, 64, 0.7);
+    border-radius: 0.75rem;
+    width: 95%;
+    margin: 0.875rem;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: 50%;
+    align-items: center;
   }
-  .arrow {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-  .car {
-    width: 35%;
-    height: 35%;
-    align-self: center;
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-  .lefticon, .righticon {
-    width: 1.25rem;
-    height: 1.25rem;
-    align-self: center;
+  .cover-photo {
+    width: 225px;
+    height: 150px;
+    border-radius: 0.5rem;
+    margin-top: 0.25rem;
   }
   .car-name {
-    font-size: 1.25rem;
-    line-height: 2rem;
-  }
-  .car-details {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 100%;
+    margin-top: 0.25rem;
   }
-  .stats {
+  .car-name img {
+    width: 30px;
+    height: 25px;
+    margin-right: 0.25rem;
+  }
+  .car-make, .car-modification {
     display: flex;
-    justify-content: space-evenly;
-    font-size: 1.125rem;
-    width: 100vw;
+    justify-content: center;
   }
-  @media all and (min-width: 700px) {
-    .car-container {
-      width: 100vw;
-      height: 50%;
+  .car-make p, .car-modification > * {
+    margin: 0 0.25rem;
+  }
+  .car-make p {
+    font-size: 0.875rem;
+  }
+  .car-make {
+    margin-top: 0.25rem;
+  }
+  .car-modification {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .car-modification img {
+    width: 20px;
+    height: 20px;
+  }
+  .qr {
+    width: 65px;
+    height: 65px;
+  }
+  @media all and (min-width: 600px) {
+    .background {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+  }
+  @media all and (min-width: 900px) {
+    .banner {
+      width: 50%;
+      margin-top: 8rem;
+    }
+    .points {
+      flex-direction: row;
+    }
+    .points > p {
+      padding: 0 0.5rem;
+    }
+    .vehicles {
+      width: 90%;
+    }
+    .vehicle-results-container {
       justify-content: space-evenly;
     }
-    .carwitharrows {
-      width: 50%;
-      justify-content: space-between;
+    .vehicle-results {
+      width: 30%;
     }
-    .car {
-      max-width: 320px;
-      max-height: 240px;
-      width: auto;
-      height: auto;
-      aspect-ratio: 4 / 3;
+  }
+  @media all and (min-width: 1200px) {
+    h1 {
+      margin: 0;
     }
-    .lefticon, .righticon {
-      width: 1.5rem;
-      height: 1.5rem;
-      margin-bottom: 4rem;
+    .banner {
+      width: 40%;
     }
-    .car-name {
-      font-size: 1.5rem;
+    .points {
+      flex-direction: row;
     }
-    .car-details {
-      width: 60%;
+    .points > p {
+      padding: 0 0.5rem;
     }
-    .stats {
-      width: 60%;
+    .vehicle-results {
+      padding: 0.75rem;
+      width: 25%;
+    }
+    .vehicle-results-container {
+      margin: 0;
     }
   }
 </style>

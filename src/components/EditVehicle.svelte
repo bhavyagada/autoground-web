@@ -240,8 +240,7 @@
         $carStore = defaultCar;
         isLoading = false;
         edit = false;
-        // goto("/garage");
-        history.back();
+        goto("/garage");
         location.reload();
         return true
       }
@@ -477,7 +476,7 @@
     height: 120px;
   }
   .photo {
-    width: 160px;
+    width: 100%;
     height: 120px;
     border-radius: 0.5rem;
     padding: 0;
@@ -586,7 +585,7 @@
     }
     .photo {
       align-self: flex-start;
-      width: 200px;
+      width: 100%;
       height: 150px;
       border-radius: 0.5rem;
       padding: 0;

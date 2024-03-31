@@ -66,7 +66,7 @@
       <img alt="Points Icon" src="/points-icon.svg">
       <p>{$userStore.points} points</p>
     </div>
-    <img alt="Username QR Code" src="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={userName}">
+    <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={userName}">
   </div>
   <form class={clicked ? "blured" : ""}>
     <div class="form-top">
@@ -218,7 +218,10 @@
     background-origin: content-box;
     color: white;
   }
-
+  .qr {
+    width: 65px;
+    height: 65px;
+  }
   @media all and (min-width: 600px) {
     .background {
       display: flex;

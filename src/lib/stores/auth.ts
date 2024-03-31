@@ -31,17 +31,22 @@ export const defaultUser = {
 // authentication state stores
 let userAuth = { user: null, isLoggedIn: false };
 let user = defaultUser;
+let otheruser = null;
 if (browser) {
   const storedUserAuth: string | null = localStorage.getItem("auth");
   const storedUser: string | null = localStorage.getItem("user");
+  const storedOtherUser: string | null = localStorage.getItem("otheruser");
   userAuth = storedUserAuth ? JSON.parse(storedUserAuth) : userAuth;
   user = storedUser ? JSON.parse(storedUser) : user;
+  otheruser = storedOtherUser ? JSON.parse(storedOtherUser) : null;
 }
 export const authData = writable<AuthData>(userAuth);
 export const userStore = writable<UserData>(user);
+export const otherUserStore = writable<any | null>(otheruser);
 if (browser) {
   authData.subscribe((value) => localStorage.setItem("auth", JSON.stringify(value)));
   userStore.subscribe((value) => localStorage.setItem("user", JSON.stringify(value)));
+  otherUserStore.subscribe((value) => localStorage.setItem("otheruser", JSON.stringify(value)));
 }
 
 export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
