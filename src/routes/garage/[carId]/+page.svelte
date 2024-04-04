@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
+  import { goto, pushState } from "$app/navigation";
   import { page } from "$app/stores";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
   import EditVehicle from "../../../components/EditVehicle.svelte";
@@ -12,7 +12,6 @@
   if (browser) {
     if ($allCarsStore.length === 0) goto("/garage");
   }
-  let edit: boolean = false;
   const { carId } = $page.params;
   const id = Number(carId);
   console.log(`car id: ${carId}`);
@@ -44,12 +43,12 @@
 
   const handleCarEdit = () => {
     $carStore = $allCarsStore[id-1];
-    edit = true;
+    pushState('', { addVehicleModal: false, editVehicleModal: true });
   }
 </script>
 
-{#if edit}
-  <svelte:component this={EditVehicle} bind:edit />
+{#if $page.state.editVehicleModal}
+  <svelte:component this={EditVehicle} />
 {:else}
   <div class="background">
     <div class="photos">

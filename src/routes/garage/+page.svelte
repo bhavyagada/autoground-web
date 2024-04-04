@@ -59,7 +59,7 @@
         <p>Cars added to Your Garage will be shown here!</p>
       {/if}
     </div>
-    <button on:click|preventDefault={() => pushState('', { addVehicleModal: true })}>+ Add Vehicle</button>
+    <button on:click|preventDefault={() => pushState('', { addVehicleModal: true, editVehicleModal: false })}>+ Add Vehicle</button>
   </div>
 {/if}
 

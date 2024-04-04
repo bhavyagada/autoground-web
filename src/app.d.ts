@@ -7,7 +7,8 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		interface PageState {
-			addVehicleModal: boolean
+			addVehicleModal: boolean,
+			editVehicleModal: boolean
 		}
 		// interface Platform {}
 	}

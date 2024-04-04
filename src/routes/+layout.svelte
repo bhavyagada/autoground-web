@@ -1,10 +1,11 @@
 <script lang="ts">
   import "../app.css";
   import { page } from "$app/stores";
-  import { logout, authData, toast, addToast } from "$lib/stores/auth";
+  import { logout, authData, toast, addToast, defaultUser } from "$lib/stores/auth";
   import Toast from "../components/Toast.svelte";
   import { goto } from "$app/navigation";
   import { userStore } from "$lib/stores/auth";
+  import { allCarsStore, defaultCar } from "$lib/stores/car";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
@@ -15,9 +16,12 @@
   const hangleSignOut = async () => {
     await logout();
     $authData = { user: null, isLoggedIn: false };
+    $userStore = defaultUser;
+    $allCarsStore = [];
     goto("/login");
     addToast("success", "Do visit us again :)");
     localStorage.clear();
+    console.log(location);
   }
 </script>
 

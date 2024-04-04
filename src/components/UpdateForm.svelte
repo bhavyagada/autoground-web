@@ -3,7 +3,6 @@
   import { callFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
   import { userStore } from "$lib/stores/auth";
-  import { onMount } from "svelte";
   import Loading from "./Loading.svelte";
 
   export let type: string;
@@ -35,7 +34,7 @@
   $: isValidEmail = email.trim().length > 0 && emailRegex.test(email);
 
   let iti: intlTelInput.Plugin;
-  onMount(() => {
+  $: if (type === phone) {
     phoneElement = document.querySelector("#phone")!;
 
     iti = window.intlTelInput(phoneElement, {
@@ -43,7 +42,9 @@
       autoInsertDialCode: true,
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.5/build/js/utils.js"
     });
-  });
+  } else {
+    if (iti !== undefined) iti.destroy();
+  }
 
   const handleClientSideError = (errorMessage: string): boolean => {
     addToast("error", errorMessage);

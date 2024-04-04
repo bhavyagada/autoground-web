@@ -1,73 +1,108 @@
 import { browser } from "$app/environment";
+import { writeBatch } from "firebase/firestore";
 import { writable } from "svelte/store";
+
+enum EventStatus {
+  active = "active",
+  cancelled = "cancelled"
+}
 
 interface Circle {
   circleId: string,
-  circleRadius: number,
   latitude: number,
   longitude: number
+  circleRadius: number,
 }
 
 interface Marker {
-  address: string,
+  markerId: string
   latitude: number,
   longitude: number,
-  markerId: string
+  address: string,
 }
 
 interface Location {
-  address: string,
   latitude: number,
   longitude: number
+  address: string,
 }
 
 interface Ticket {
+  ticketId: string,
+  title: string
   description: string,
   freeTicket: boolean,
   price: number,
   quantity: number,
-  ticketId: string,
-  title: string
 }
 
 interface EventsData {
   created: number,
-  date: number,
-  eventAddress: string,
-  eventDescription: string,
-  eventEndTime: number,
-  eventId: string,
-  eventMapRoute: {
-    circles: Circle[],
-    date: number,
-    markers: Marker[]
-    showMapRouteTime: number
-  },
-  eventName: string,
-  eventPhoto: string,
-  eventStartTime: number,
-  eventStatus: string,
-  hideLivePeopleAttendCount: boolean,
-  location: Location,
   modified: number,
-  showAddressAfterTime: number,
-  tickets: Ticket[],
-  totalPeopleAttendingCount: number,
+  eventId: string,
+  eventName: string,
+  date: number,
   userId: string,
+  eventAddress: string,
+  eventPhoto: string,
+  eventDescription: string,
+  eventStatus: string,
+  eventStartTime: number,
+  eventEndTime: number,
+  showAddressAfterTime: number,
+  showAddress: boolean,
+  totalPeopleAttendingCount: number,
+  hideLivePeopleAttendCount: boolean,
+  locationSharingEnabled: boolean,
+  showVipList: boolean,
+  eventMapRoute: {
+    markers: Marker[]
+    circles: Circle[],
+    showMapRouteTime: number
+    date: number,
+    showMapRoute: boolean
+  },
+  location: Location,
+  tickets: Ticket[],
+}
+
+interface TransactionTicket {
+  ticketData: Ticket,
+  quantity: number,
+  price: number
+}
+
+interface BookingEventTransaction {
+  userId: string,
+  eventId: string,
+  created: number,
+  totalPrice: number,
+  tax: number,
+  status: string,
+  paymentMethod: string,
+  paymentDescription: string,
+  bookingId: string,
+  eventDescription: EventsData,
+  ticketsBooked: TransactionTicket[]
 }
 
 let all: EventsData[] = [];
-let booked: any[] = [];
+let booked: BookingEventTransaction[] = [];
+let transaction: BookingEventTransaction | Object = {};
 if (browser) {
   const storedAll: string | null = localStorage.getItem("allevents");
   const storedBooked: string | null = localStorage.getItem("bookedevents");
+  const storedTransaction: string | null = localStorage.getItem("transaction");
   all = storedAll ? JSON.parse(storedAll) : all;
   booked = storedBooked ? JSON.parse(storedBooked) : booked;
+  transaction = storedTransaction ? JSON.parse(storedTransaction) : transaction
 }
 export const allResultList = writable<EventsData[]>(all);
-export const bookedResultList = writable<any>(booked);
+export const bookedResultList = writable<BookingEventTransaction[]>(booked);
+export const bookingTransaction = writable<BookingEventTransaction | Object>(transaction);
 
 if (browser) {
   allResultList.subscribe((value) => localStorage.setItem("allevents", JSON.stringify(value)));
   bookedResultList.subscribe((value) => localStorage.setItem("bookedevents", JSON.stringify(value)));
+  bookingTransaction.subscribe((value) => localStorage.setItem("transaction", JSON.stringify(transaction)));
 }

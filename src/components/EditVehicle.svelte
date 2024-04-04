@@ -11,20 +11,20 @@
   import { VehicleType } from "$lib/types";
   import { userStore } from "$lib/stores/auth";
   import { page } from "$app/stores";
-  import { goto } from "$app/navigation";
+  import { goto, replaceState } from "$app/navigation";
 
-  export let edit: boolean = true;
   const { carId } = $page.params;
   const id = Number(carId);
   let isLoading: boolean = false;
 
   let photos: string[] = $carStore.photos ? $carStore.photos : [];
-  let otherPhoto1: any = photos.length === 1 ? photos[0] : null;
-  let otherPhoto2: any = photos.length === 2 ? photos[1] : null;
-  let otherPhoto3: any = photos.length === 3 ? photos[2] : null;
+  let otherPhoto1: any = photos.length >= 1 ? photos[0] : null;
+  let otherPhoto2: any = photos.length >= 2 ? photos[1] : null;
+  let otherPhoto3: any = photos.length >= 3 ? photos[2] : null;
   let coverPhoto: any = $carStore.coverPhoto ? $carStore.coverPhoto : null;
   let pixelCrop: any;
-  let image: any;
+  let cropContainer: any;
+  let image: any = null;
   let crop = { x: 0, y: 0 };
   let zoom = 1;
   console.log(otherPhoto1, otherPhoto2, otherPhoto3);
@@ -86,8 +86,18 @@
 		reader.onload = e => {
       if (!e.target) return null;
 			image = e.target.result;
+      reader.onload = null;
 		};
 		reader.readAsDataURL(imageFile);
+    document.addEventListener('click', (e: any) => {
+      if (!e.target.closest('.crop-container')) {
+        image = null;
+        if (coverPhoto.includes("C:\\fakepath")) coverPhoto = null;
+        if (otherPhoto1.includes("C:\\fakepath")) otherPhoto1 = null;
+        if (otherPhoto2.includes("C:\\fakepath")) otherPhoto2 = null;
+        if (otherPhoto3.includes("C:\\fakepath")) otherPhoto3 = null;
+      }
+    });
   }
 
   const previewCrop = (e: any) => {
@@ -220,8 +230,7 @@
         $carStore = result?.result.data.carData;
         $allCarsStore[id-1] = $carStore;
         isLoading = false;
-        edit = false;
-        location.reload();
+        replaceState('', { addVehicleModal: false, editVehicleModal: false });
         return true;
       }
     } catch (err) {
@@ -239,9 +248,8 @@
         $allCarsStore = $allCarsStore.filter((car) => car.carId !== $carStore.carId);
         $carStore = defaultCar;
         isLoading = false;
-        edit = false;
+        replaceState('', { addVehicleModal: false, editVehicleModal: false });
         goto("/garage");
-        location.reload();
         return true
       }
     } catch (err) {
@@ -268,11 +276,11 @@
   </div>
   <form>
     {#if image}
-      <div class="crop-container">
+      <div class="crop-container" bind:this={cropContainer}>
         <div class="cropper">
           <Cropper {image} bind:crop bind:zoom on:cropcomplete={previewCrop} />
         </div>
-        <button class="crop-submit" type="button" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set as Cover Photo</button>
+        <button class="crop-submit" type="button" name="submit" on:click={async () => {await cropImage(image, pixelCrop)}}>Set Photo</button>
       </div>
     {/if}
     <div class="photos">

@@ -207,7 +207,7 @@
         $carStore = defaultCar;
         $allCarsStore = [ ...$allCarsStore, result?.result.data];
         isLoading = false;
-        replaceState('', { addVehicleModal: false });
+        replaceState('', { addVehicleModal: false, editVehicleModal: false });
         goto("/garage");
         location.reload();
         return true;
