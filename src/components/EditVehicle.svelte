@@ -92,10 +92,14 @@
     document.addEventListener('click', (e: any) => {
       if (!e.target.closest('.crop-container')) {
         image = null;
-        if (coverPhoto.includes("C:\\fakepath")) coverPhoto = null;
-        if (otherPhoto1.includes("C:\\fakepath")) otherPhoto1 = null;
-        if (otherPhoto2.includes("C:\\fakepath")) otherPhoto2 = null;
-        if (otherPhoto3.includes("C:\\fakepath")) otherPhoto3 = null;
+        if (!$carStore.coverPhoto && coverPhoto.includes("C:\\fakepath")) coverPhoto = null;
+        else coverPhoto = $carStore.coverPhoto;
+        if (photos.length < 1 && otherPhoto1.includes("C:\\fakepath")) otherPhoto1 = null;
+        else otherPhoto1 = photos[0];
+        if (photos.length < 2 && otherPhoto2.includes("C:\\fakepath")) otherPhoto2 = null;
+        else otherPhoto2 = photos[1];
+        if (photos.length < 3 && otherPhoto3.includes("C:\\fakepath")) otherPhoto3 = null;
+        else otherPhoto3 = photos[2];
       }
     });
   }

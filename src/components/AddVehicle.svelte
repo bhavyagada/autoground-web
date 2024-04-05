@@ -81,6 +81,15 @@
 			image = e.target.result;
 		};
 		reader.readAsDataURL(imageFile);
+    document.addEventListener('click', (e: any) => {
+      if (!e.target.closest('.crop-container')) {
+        image = null;
+        if (coverPhoto.includes("C:\\fakepath")) coverPhoto = null;
+        if (otherPhoto1.includes("C:\\fakepath")) otherPhoto1 = null;
+        if (otherPhoto2.includes("C:\\fakepath")) otherPhoto2 = null;
+        if (otherPhoto3.includes("C:\\fakepath")) otherPhoto3 = null;
+      }
+    });
   }
 
   const previewCrop = (e: any) => {
