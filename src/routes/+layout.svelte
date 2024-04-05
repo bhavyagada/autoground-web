@@ -1,11 +1,11 @@
 <script lang="ts">
   import "../app.css";
   import { page } from "$app/stores";
-  import { logout, authData, toast, addToast, defaultUser } from "$lib/stores/auth";
+  import { logout, authData, toast, addToast, defaultUser, otherUserStore } from "$lib/stores/auth";
   import Toast from "../components/Toast.svelte";
   import { goto } from "$app/navigation";
   import { userStore } from "$lib/stores/auth";
-  import { allCarsStore, defaultCar } from "$lib/stores/car";
+  import { allCarsStore, carStore, defaultCar, defaultCarModification, modificationStore, otherAllCarsStore } from "$lib/stores/car";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
@@ -17,11 +17,13 @@
     await logout();
     $authData = { user: null, isLoggedIn: false };
     $userStore = defaultUser;
+    $carStore = defaultCar;
+    $modificationStore = defaultCarModification;
     $allCarsStore = [];
+    $otherAllCarsStore = [];
+    $otherUserStore = null;
     goto("/login");
     addToast("success", "Do visit us again :)");
-    localStorage.clear();
-    console.log(location);
   }
 </script>
 
