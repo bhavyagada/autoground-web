@@ -6,6 +6,7 @@
   import { goto } from "$app/navigation";
   import { userStore } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar, defaultCarModification, modificationStore, otherAllCarsStore } from "$lib/stores/car";
+  import { allResultList, bookedResultList } from "$lib/stores/events";
 
   /** To make navigation collapsible on smaller devices */
   let clicked = false;
@@ -22,6 +23,8 @@
     $allCarsStore = [];
     $otherAllCarsStore = [];
     $otherUserStore = null;
+    $allResultList = [];
+    $bookedResultList = [];
     goto("/login");
     addToast("success", "Do visit us again :)");
   }

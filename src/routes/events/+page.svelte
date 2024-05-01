@@ -21,6 +21,8 @@
   let root: any;
   let selected = "all";
   let startAfter: string | null = null;
+  let loadAll: boolean = true;
+  let loadBooked: boolean = true;
 
   const handleServerSideError = (errorMessage: string): boolean => {
     addToast("error", errorMessage);
@@ -37,7 +39,9 @@
         if (allResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
-          $allResultList = allResults?.result.data.events;
+          const res = allResults?.result.data.events;
+          if (res.length === 0) loadAll = false;
+          else $allResultList = allResults?.result.data.events;
           $allHasMore = allResults?.result.data.hasMore;
           $allEventData = { ...$allEventData, startAfter: allResults?.result.data.startAfter };
         }
@@ -47,7 +51,9 @@
         if (bookedResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
-          $bookedResultList = bookedResults?.result.data.events;
+          const res = bookedResults?.result.data.events;
+          if (res.length === 0) loadBooked = false;
+          else $bookedResultList = bookedResults?.result.data.events;
           $bookedHasMore = bookedResults?.result.data.hasMore;
           $bookedEventData = { ...$bookedEventData, startAfter: bookedResults?.result.data.startAfter };
         }
@@ -65,15 +71,15 @@
     $allResultList = storedAllResults ? JSON.parse(storedAllResults) : [];
     $bookedResultList = storedBookedResults ? JSON.parse(storedBookedResults) : [];
     const getResultsFirstTime = async () => {
-      if ($allResultList.length === 0) await getEvents("all");
-      if ($bookedResultList.length === 0) await getEvents("booked");
+      if ($allResultList.length === 0 && loadAll) await getEvents("all");
+      if ($bookedResultList.length === 0 && loadBooked) await getEvents("booked");
     }
     getResultsFirstTime();
   });
 
   const handleEventClick = (e: any) => {
     const eventId = e.currentTarget.id;
-    goto(`/events/${eventId}`);
+    goto(`/events/${selected}/${eventId}`);
   }
 
   $: if (selected === "all") {

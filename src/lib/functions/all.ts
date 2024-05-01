@@ -24,5 +24,7 @@ export enum cloudFunctions {
   GET_ANOTHER_CAR_DETAILS = "getAnotherCarDetails",
   GET_EVENTS = "getEvents",
   GET_BOOKED_EVENTS = "getBookedEvents",
-  BOOK_FREE_EVENT = "bookFreeEvent"
+  BOOK_FREE_EVENT = "bookFreeEvent",
+  CANCEL_FREE_EVENT_TICKET = "cancelFreeEventTicket",
+  GET_EVENT_ANNOUNCEMENTS = "getEventAnnouncements"
 }

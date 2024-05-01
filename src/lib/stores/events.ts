@@ -1,5 +1,4 @@
 import { browser } from "$app/environment";
-import { writeBatch } from "firebase/firestore";
 import { writable } from "svelte/store";
 
 enum EventStatus {
