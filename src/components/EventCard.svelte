@@ -1,23 +1,40 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
+
   export let selected: string;
   export let result: any;
+  export let index: number;
   let resultList: any;
   $: if (selected === "all") {
     resultList = result;
   } else if (selected === "booked") {
     resultList = result.eventDescription;
   }
+
+  const handleEventClick = (e: any) => {
+    const eventId = e.currentTarget.id;
+    goto(`/events/${selected}/${eventId}`);
+  }
 </script>
 
 <div>
-  <img alt="Event" src={resultList.eventPhoto || "/default-event.svg"}>
+  <button id={String(index+1)} class="event" on:click={handleEventClick}>
+    <img alt="Event" src={resultList.eventPhoto || "/default-event.svg"}>
+  </button>
   <h1>{resultList.eventName}</h1>
   <p>{new Date(resultList.date).toDateString()} | {new Date(resultList.date).toLocaleTimeString()}</p>
   <p>{resultList.eventAddress || "Address Coming Soon"}</p>
-  {#if resultList.tickets[0].freeTicket}
-    <p class="free">Free</p>
+  {#if selected === "all"}
+    {#if resultList.tickets[0].freeTicket}
+      <p class="free">Free</p>
+    {:else}
+      <p>From ${resultList.tickets[0].price}</p>
+    {/if}
   {:else}
-    <p>From ${resultList.tickets[0].price}</p>
+    <div class="view-ticket">
+      <p>Ticket</p>
+      <button class="submit" on:click={() => { goto(`/events/${selected}/${String(index+1)}/ticket`); }}>View</button>
+    </div>
   {/if}
 </div>
 
@@ -45,5 +62,23 @@
   }
   .free {
     color: rgb(57, 181, 74);
+  }
+  .view-ticket {
+    display: flex;
+    margin: 0;
+    padding-left: 0.75rem;
+  }
+  .view-ticket p {
+    width: 20%;
+    padding: 0.5rem 0;
+    padding-right: 0.25rem;
+  }
+  .submit {
+    background-color: white;
+    color: black;
+    border-radius: 0.5rem;
+    width: 20%;
+    height: 20%;
+    margin: 0.5rem 0.25rem;
   }
 </style>

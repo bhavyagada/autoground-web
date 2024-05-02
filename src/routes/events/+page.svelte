@@ -8,7 +8,6 @@
   import { allResultList, bookedResultList } from "$lib/stores/events";
   import EventCard from "../../components/EventCard.svelte";
   import Loading from "../../components/Loading.svelte";
-  import { goto } from "$app/navigation";
 
   const allEventData = writable<{batchSize: number, startAfter: string | null, afterDateEvent: number }>({ batchSize: 9, startAfter: null, afterDateEvent: Date.now() });
   const allHasMore = writable<boolean>(false);
@@ -77,11 +76,6 @@
     getResultsFirstTime();
   });
 
-  const handleEventClick = (e: any) => {
-    const eventId = e.currentTarget.id;
-    goto(`/events/${selected}/${eventId}`);
-  }
-
   $: if (selected === "all") {
     results = $allResultList;
     startAfter = $allEventData.startAfter;
@@ -117,9 +111,9 @@
   {:else}
     <div class="all-results">
       {#each results as result, index}
-        <button id={String(index+1)} on:click={handleEventClick}>
-          <EventCard {result} {selected} />
-        </button>
+        <div id={String(index+1)}>
+          <EventCard {result} {selected} {index} />
+        </div>
       {/each}
     </div>
   {/if}
@@ -159,7 +153,7 @@
     width: 75%;
     margin-top: 4rem;
   }
-  .all-results button {
+  .all-results div {
     background: none;
     text-align: start;
   }
