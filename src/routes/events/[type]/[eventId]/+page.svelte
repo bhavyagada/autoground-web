@@ -2,38 +2,80 @@
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
+  import { cloudFunctions } from "$lib/functions/all";
+  import { callFunction } from "$lib/functions/util";
+  import { addToast } from "$lib/stores/auth";
   import { allResultList, bookedResultList } from "$lib/stores/events";
+  import Loading from "../../../../components/Loading.svelte";
 
   const { type, eventId } = $page.params;
-  const id = Number(eventId);
+  const id = Number(eventId) - 1;
   if (browser) {
-    if (type === "all" && $allResultList.length === 0) goto("/events");
-    else if (type === "booked" && $bookedResultList.length === 0) goto("/events");
+    if (id < 0) goto("/events");
+    if (type === "all" && (!$allResultList.length || id >= $allResultList.length)) goto("/events");
+    else if (type === "booked" && (!$bookedResultList.length || id >= $bookedResultList.length)) goto("/events");
   }
   let eventDetails: any;
-  if (type === "all") eventDetails = $allResultList[id-1];
-  else if (type === "booked") eventDetails = $bookedResultList[id-1].eventDescription;
+  if (type === "all") eventDetails = $allResultList[id];
+  else if (type === "booked") eventDetails = $bookedResultList[id].eventDescription;
 
-  let booked: boolean = false; 
+  let booked: boolean = false;
+  let isLoading: boolean = false;
+  let clicked: boolean = false;
 
-  const handleEventBooking = () => {
-    console.log(eventDetails);
-  }
+  const handleServerSideError = (errorMessage: string): boolean => {
+    addToast("error", errorMessage);
+    isLoading = false;
+    return false;
+  };
 
-  const handleAnnouncementsClick = () => {
-    goto(`${$page.url.pathname}/announcements`);
+  const handleEventBooking = () => {}
+
+  const handleCancelTicket = async () => {
+    try {
+      isLoading = true;
+      const data = $bookedResultList[id];
+      const res = await callFunction(cloudFunctions.CANCEL_FREE_EVENT_TICKET, { ticketsBooked: data.ticketsBooked, bookingId: data.bookingId, eventId: data.eventId });
+      if (res?.isError) return handleServerSideError("Error Loading Data! Try Again!");
+      else {
+        $bookedResultList = $bookedResultList.filter((_, index) => index !== id);
+        isLoading = false;
+        clicked = false;
+        addToast("success", "Event Ticket Cancelled Successfully!");
+        goto("/events");
+        return true;
+      }
+    } catch (err) {
+      return handleServerSideError("Server Error! Please Try Again!");
+    }
   }
 </script>
 
+{#if clicked}
+  <div class="confirm-form">
+    <form class={!clicked ? "hide" : ""}>
+      <button on:click={() => { clicked = !clicked; }}><img src="/close-icon.svg" alt="Close Modal"></button>
+      <h1>Confirm</h1>
+      <div class="update">
+        <p>Are you sure you want to cancel your ticket?</p>
+        <div class="button-group">
+          <button type="button" class="cancel" on:click={handleCancelTicket}>Yes</button>
+          <button type="button" class="submit" on:click={() => { clicked = !clicked; }}>Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{/if}
+
 {#if booked}
-  <div class="booked-background">
+  <div class={clicked ? "hide" : "booked-background"}>
     <h1>Event Booked Successfully!</h1>
     <img src="/event-booked.svg" alt="Event Booked Confirmation">
     <p>Thank you for booking this event. We look forward to seeing you!</p>
     <button type="submit">Done</button>
   </div>
 {:else}
-  <div class="background">
+  <div class={clicked ? "hide" : "background"}>
     <h1>Event Details</h1>
     <div class="details-container">
       <img src={eventDetails.eventPhoto !== "" ? eventDetails.eventPhoto : "/default-event.svg"} alt="Change this later">
@@ -64,19 +106,74 @@
         </div>
       </div>
     </div>
-    {#if type === "all"}
-      <button class="submit" on:click={handleEventBooking}>I am attending</button>
-    {:else if type === "booked"}
-      <div class="booked-actions">
-        <button class="submit">View ticket</button>
-        <button class="submit">Cancel ticket</button>
-        <button class="submit" on:click={handleAnnouncementsClick}>Announcements</button>
-      </div>
+    {#if isLoading}
+      <Loading />
+    {:else}
+      {#if type === "all"}
+        <button class="submit" on:click={handleEventBooking}>I am attending</button>
+      {:else if type === "booked"}
+        <div class="booked-actions">
+          <button class="submit" on:click={() => { goto(`${$page.url.pathname}/ticket`); }}>View ticket</button>
+          <button class="submit" on:click={() => { clicked = !clicked; }}>Cancel ticket</button>
+          <button class="submit" on:click={() => { goto(`${$page.url.pathname}/announcements`); }}>Announcements</button>
+        </div>
+      {/if}
     {/if}
   </div>
 {/if}
 
 <style>
+  .confirm-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+  }
+  form {
+    position: absolute;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    height: 25%;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
+  .hide {
+    display: none;
+  }
+  .confirm-form img {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    z-index: 4;
+    width: 3rem;
+    height: 3rem;
+  }
+  form h1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    margin-bottom: 2rem;
+    color: white;
+  }
+  .update {
+    margin: auto 0;
+  }
+  .button-group {
+    margin-top: 1rem;
+  }
+  .cancel {
+    background-color: red;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    width: 15%;
+    margin-bottom: 8rem;
+    margin-right: 0.5rem;
+  }
   .background, .booked-background {
     color: white;
     width: 100vw;
@@ -148,7 +245,7 @@
     margin: 0 0.375rem;
     align-self: center;
   }
-  button {
+  .background button, .booked-background button {
     background-color: white;
     color: black;
     border-radius: 0.5rem;
