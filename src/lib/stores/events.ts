@@ -87,7 +87,7 @@ interface BookingEventTransaction {
 
 let all: EventsData[] = [];
 let booked: BookingEventTransaction[] = [];
-let transaction: BookingEventTransaction | Object = {};
+let transaction: BookingEventTransaction | object = {};
 if (browser) {
   const storedAll: string | null = localStorage.getItem("allevents");
   const storedBooked: string | null = localStorage.getItem("bookedevents");
@@ -98,7 +98,7 @@ if (browser) {
 }
 export const allResultList = writable<EventsData[]>(all);
 export const bookedResultList = writable<BookingEventTransaction[]>(booked);
-export const bookingTransaction = writable<BookingEventTransaction | Object>(transaction);
+export const bookingTransaction = writable<BookingEventTransaction | object>(transaction);
 
 if (browser) {
   allResultList.subscribe((value) => localStorage.setItem("allevents", JSON.stringify(value)));

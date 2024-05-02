@@ -76,7 +76,7 @@
       return handleClientSideError(`Enter a different ${input} to update!`);
     } else {
       isLoading = true;
-      let update: Object = {};
+      let update: object = {};
       if (input === "name") update = { name: name };
       else if (input === "userName") update = { userName: userName };
       else if (input === "bio") update = { bio: bio };

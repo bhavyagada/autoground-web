@@ -12,7 +12,7 @@ const cloudResponse = {
 }
 
 // function to call any firebase cloud function
-export async function callFunction(functionKey: string, sendData: Object) {
+export async function callFunction(functionKey: string, sendData: object) {
   const result = get(authData)
 
   const data = {
