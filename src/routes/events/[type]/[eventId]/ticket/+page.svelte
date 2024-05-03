@@ -9,6 +9,7 @@
   if (browser) {
     if (id < 0 || id >= $bookedResultList.length) goto("/events");
   }
+  const eventBooking = $bookedResultList[id];
   const eventDetails = $bookedResultList[id].eventDescription;
   const eventTicket = eventDetails.tickets[0];
 </script>
@@ -24,7 +25,11 @@
         <p>{eventTicket.freeTicket ? "Free" : "$" + eventTicket.price}</p>
         <p>Qty {eventTicket.quantity}</p>
       </div>
-      <img class="qr" alt="Event Ticket QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={type}">
+      {#if eventBooking.status === "booked"}
+        <img class="qr" alt="Event Ticket QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={eventBooking.bookingId}">
+      {:else if eventBooking.status === "cancelled"}
+        <p class="cancel-message">Ticket Cancelled</p>
+      {/if}
     </div>
   </div>
 </div>
@@ -87,5 +92,9 @@
     margin: auto;
     width: 150px;
     height: 150px;
+  }
+  .cancel-message {
+    margin: auto;
+    color: red;
   }
 </style>
