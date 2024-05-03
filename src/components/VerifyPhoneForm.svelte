@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
   import { addToast, authData, phoneConfirmationStore, phoneVerify, resendCodeSignUp } from "$lib/stores/auth";
   import { userStore } from "$lib/stores/auth";
   import OtpForm from "./OtpForm.svelte";
@@ -25,10 +25,8 @@
         $authData = { user: newUser?.user, isLoggedIn: false };
         console.log(`Phone new sign in: ${JSON.stringify(newUser)}`);
         try {
-          const userResult = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
-          const carsResult = await callFunction(cloudFunctions.GET_GARAGE_DATA, {});
-          console.log("user result:", userResult);
-          console.log("cars result:", carsResult);
+          const userResult = await callCloudFunction(CloudFunctions.GET_USER_PROFILE, {});
+          const carsResult = await callCloudFunction(CloudFunctions.GET_GARAGE_DATA, {});
           if (userResult?.isError || carsResult?.isError) {
             if (userResult?.errorType === "[user_not_exists]") {
               addToast("success", "Welcome! Please create your account!");

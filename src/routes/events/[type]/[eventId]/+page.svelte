@@ -2,8 +2,8 @@
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
   import { allResultList, bookedResultList } from "$lib/stores/events";
   import Loading from "../../../../components/Loading.svelte";
@@ -35,7 +35,7 @@
     try {
       isLoading = true;
       const data = $bookedResultList[id];
-      const res = await callFunction(cloudFunctions.CANCEL_FREE_EVENT_TICKET, { ticketsBooked: data.ticketsBooked, bookingId: data.bookingId, eventId: data.eventId });
+      const res = await callCloudFunction(CloudFunctions.CANCEL_FREE_EVENT_TICKET, { ticketsBooked: data.ticketsBooked, bookingId: data.bookingId, eventId: data.eventId });
       if (res?.isError) return handleServerSideError("Error Loading Data! Try Again!");
       else {
         $bookedResultList = $bookedResultList.filter((_, index) => index !== id);

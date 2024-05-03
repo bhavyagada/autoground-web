@@ -3,8 +3,8 @@
   import { onMount } from "svelte";
   import { AuthProviderId, AuthenticationType } from "$lib/types";
   import { userStore } from "$lib/stores/auth";
-  import { callFunction, uploadPic } from "$lib/functions/util";
-  import { cloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction, uploadImage } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
   import { goto } from "$app/navigation";
   import Loading from "./Loading.svelte";
 
@@ -45,7 +45,7 @@
 
   const loadFile = async (e: any) => {
     const imageFile: any = e.target.files[0];
-    userPhoto = await uploadPic(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
+    userPhoto = await uploadImage(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
     $userStore = { ...$userStore, userPhoto };
   }
 
@@ -113,8 +113,7 @@
       console.log(checkUniqueFields);
       try {
         isLoading = true;
-        const result = await callFunction(cloudFunctions.CHECK_UNIQUE_USER_FIELDS, checkUniqueFields);
-        console.log(`unique fields result ${JSON.stringify(result)}`);
+        const result = await callCloudFunction(CloudFunctions.CHECK_UNIQUE_USER_FIELDS, checkUniqueFields);
         if (result?.isError) {
           return handleServerSideError("Server Error! Please Try Again!");
         } 
@@ -146,7 +145,7 @@
       const createUserData = { user: $userStore, selectedUserName: selectedUserName };
       console.log(createUserData);
       try {
-        const result = await callFunction(cloudFunctions.CREATE_USER_PROFILE, createUserData);
+        const result = await callCloudFunction(CloudFunctions.CREATE_USER_PROFILE, createUserData);
         if (result?.isError) {
           return handleServerSideError("Server Error! Please Try Again!");
         } else {

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
   import { addToast, otherUserStore } from "$lib/stores/auth";
   import { defaultCar, otherAllCarsStore } from "$lib/stores/car";
   import { onDestroy, onMount } from "svelte";
@@ -28,9 +28,9 @@
   let startAfter: string | null = null;
 
   const functions: any = {
-    "people": cloudFunctions.SEARCH_USER_PROFILES,
-    "cars": cloudFunctions.SEARCH_CAR_PROFILES,
-    "events": cloudFunctions.SEARCH_EVENTS
+    "people": CloudFunctions.SEARCH_USER_PROFILES,
+    "cars": CloudFunctions.SEARCH_CAR_PROFILES,
+    "events": CloudFunctions.SEARCH_EVENTS
   }
 
   const handleOptionChange = (option: string) => {
@@ -57,12 +57,11 @@
       isLoading = true;
       let result;
       if (selectedOption !== "events") {
-        result = await callFunction(functions[selectedOption], $searchData);
+        result = await callCloudFunction(functions[selectedOption], $searchData);
       } else {
         $searchData = { ...$searchData, afterDateEvent: Date.now() };
-        result = await callFunction(functions[selectedOption], $searchData);
+        result = await callCloudFunction(functions[selectedOption], $searchData);
       }
-      console.log(result);
       if (result?.isError) {
         return handleError("Server Error! Please Try Again!");
       } else {
@@ -87,8 +86,8 @@
     const id = button.id;
     console.log("button id = user id:", id);
     try {
-      const result = await callFunction(cloudFunctions.GET_ANOTHER_GARAGE_DATA, { searchUserId: id });
-      const userresult = await callFunction(cloudFunctions.GET_ANOTHER_USER_PROFILE, { searchUserId: id} );
+      const result = await callCloudFunction(CloudFunctions.GET_ANOTHER_GARAGE_DATA, { searchUserId: id });
+      const userresult = await callCloudFunction(CloudFunctions.GET_ANOTHER_USER_PROFILE, { searchUserId: id} );
       if (result?.isError || userresult?.isError) {
         return handleError("Server Error! Please Try Again!");
       } else {

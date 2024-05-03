@@ -1,60 +1,40 @@
 import { authData } from '$lib/stores/auth';
 import { functions, storage } from '$lib/firebase/client';
-import { httpsCallable } from 'firebase/functions';
 import { get } from 'svelte/store';
-import { getDownloadURL, ref, uploadBytes, type UploadResult } from 'firebase/storage';
+import { httpsCallable, type HttpsCallable, type HttpsCallableResult } from 'firebase/functions';
+import { ref, uploadBytes, getDownloadURL, type StorageReference, type UploadResult } from 'firebase/storage';
 
-// response object
-const cloudResponse = {
-  isError: false,
-  result: {},
-  errorType: ""
-}
-
-// function to call any firebase cloud function
-export async function callFunction(functionKey: string, sendData: object) {
-  const result = get(authData)
-
-  const data = {
-    "userId": result.user?.uid || "",
-    "data": sendData || {}
-  }
-
-  const callable = httpsCallable(functions, functionKey);
-
+/**
+ * Function to handle calls to the Firebase Cloud Functions
+ * @param functionName - The name of the Firebase cloud function
+ * @param sendData - The data object to be sent to the server
+ * @returns Server response consisting of the result object, isError boolean and the errorType description
+ */
+export const callCloudFunction = async (functionName: string, sendData: object): Promise<{ isError: boolean, errorType: string, result: any }> => {
   try {
-    const response: any = await callable(data);
-    console.log(`response data for ${functionKey}: ${JSON.stringify(response.data)}`);
-    const result = response.data;
-
-    let code: number = 400;
-    if (result.statusCode) {
-      code = result.statusCode;
-    }
-    if (code !== 200) {
-      const errorType = result.errorType ? result.errorType : "";
-      return { ...cloudResponse, errorType, isError: true}
-    } 
-    if (result) {
-      return { ...cloudResponse, result};
-    } else {
-      return cloudResponse;
-    }
-  } catch (error: any) {
-    const code = error.code;
-    const message = error.message;
-    const details = error.details;
-    console.error(`error for ${functionKey} with ${code} => ${message}`);
-    console.error(`error detials: ${details}`);
+    const callable: HttpsCallable<unknown, unknown> = httpsCallable(functions, functionName);
+    const callableResult: HttpsCallableResult<unknown> = await callable({ userId: get(authData).user?.uid || "", data: sendData });
+    console.log(`${functionName} response data => `, callableResult.data);
+    const { statusCode, errorType }: any = callableResult.data || {};
+    if (statusCode !== 200) return { isError: true, errorType: errorType || "", result: callableResult.data};
+    return { isError: false, errorType: "", result: callableResult.data || {} };
+  } catch (error) {
+    console.error(`${functionName} error =>`, error);
+    return { isError: true, errorType: (error as Error).message, result: {} }
   }
 }
 
-// function to upload image to firebase storage
-export async function uploadPic(imageFile: any, uploadLocation: string) {
-  const reference = ref(storage, uploadLocation);
-  const uploadResult: UploadResult = await uploadBytes(reference, imageFile);
-  console.log(uploadResult);
-  const newURL = await getDownloadURL(reference);
-  console.log(newURL);
+/**
+ * Upload an image to Firebase Storage
+ * @param imageFile - The image File {@link https://developer.mozilla.org/en-US/docs/Web/API/File}
+ * @param uploadLocation - Firebase Storage Path where the image is to be saved.
+ * @returns The image URL string after it is stored (firebasestorage/image/url)
+ */
+export const uploadImage = async (imageFile: File, uploadLocation: string): Promise<string> => {
+  const storageRef: StorageReference = ref(storage, uploadLocation);
+  const uploadResult: UploadResult = await uploadBytes(storageRef, imageFile);
+  const newURL: string = await getDownloadURL(storageRef);
+  console.log("image upload result => ", uploadResult);
+  console.log("download URL after image upload => ", newURL);
   return newURL;
 }

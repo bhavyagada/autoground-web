@@ -1,10 +1,10 @@
 <script lang="ts">
   import { userStore } from "$lib/stores/auth";
-  import { callFunction, uploadPic } from "$lib/functions/util";
+  import { callCloudFunction, uploadImage } from "$lib/functions/util";
   import { addToast, authData } from "$lib/stores/auth";
   import UpdateForm from "../../components/UpdateForm.svelte";
   import { AuthProviderId } from "$lib/types";
-  import { cloudFunctions } from "$lib/functions/all";
+  import { CloudFunctions } from "$lib/functions/all";
 
   let userPhoto: any = $userStore.userPhoto ? $userStore.userPhoto : "/default-photo.svg";
   let name: string | null = $userStore.name ? $userStore.name : "";
@@ -28,8 +28,8 @@
 
   const loadFile = async (e: any) => {
     const imageFile: any = e.target.files[0];
-    userPhoto = await uploadPic(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
-    const result = await callFunction(cloudFunctions.UPDATE_USER_PHOTO, { userPhoto: userPhoto });
+    userPhoto = await uploadImage(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
+    const result = await callCloudFunction(CloudFunctions.UPDATE_USER_PHOTO, { userPhoto: userPhoto });
     if (result?.isError) {
       addToast("error", "Server Error! Please Try Again!");
     } else {

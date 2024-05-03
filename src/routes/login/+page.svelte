@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { phoneConfirmationStore, phoneSignup, googleSignup, appleSignup, authData, addToast } from "$lib/stores/auth";
-  import { callFunction } from "$lib/functions/util";
-  import { cloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
   import VerifyPhoneForm from "../../components/VerifyPhoneForm.svelte"
   import CreateUserForm from "../../components/CreateUserForm.svelte"
   import { goto } from "$app/navigation";
@@ -76,10 +76,8 @@
 
   async function getUserProfile() {
     try {
-      const userResult = await callFunction(cloudFunctions.GET_USER_PROFILE, {});
-      const carsResult = await callFunction(cloudFunctions.GET_GARAGE_DATA, {});
-      console.log(`user result: ${userResult}`);
-      console.log(`cars result: ${carsResult}`);
+      const userResult = await callCloudFunction(CloudFunctions.GET_USER_PROFILE, {});
+      const carsResult = await callCloudFunction(CloudFunctions.GET_GARAGE_DATA, {});
       if (userResult?.isError || carsResult?.isError) {
         if (userResult?.errorType === "[user_not_exists]") {
           addToast("success", "Welcome! Please create your account!");

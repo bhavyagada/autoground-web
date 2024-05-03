@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { callFunction, uploadPic } from "$lib/functions/util";
+  import { callCloudFunction, uploadImage } from "$lib/functions/util";
   import cars from "/src/data/cars.json";
   import bikes from "/src/data/bikes.json";
   import trucks from "/src/data/trucks.json";
   import Cropper from 'svelte-easy-crop';
   import { addToast } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
-  import { cloudFunctions } from "$lib/functions/all";
+  import { CloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
   import { userStore } from "$lib/stores/auth";
@@ -180,7 +180,7 @@
   const handleCloudUploadPhoto = async (photo: any) => {
     console.log(photo);
     const imageFile = dataURItoFile(photo);
-    return await uploadPic(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
+    return await uploadImage(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
   }
 
   const handleCarEdit = async () => {
@@ -226,7 +226,7 @@
     }
     try {
       console.log($carStore);
-      const result = await callFunction(cloudFunctions.UPDATE_CAR_IN_GARAGE, { carData: $carStore, makeModelChanged });
+      const result = await callCloudFunction(CloudFunctions.UPDATE_CAR_IN_GARAGE, { carData: $carStore, makeModelChanged });
       if (result?.isError) {
         return handleServerSideError("Couldn't Edit Car! Please Try Again!");
       } else {
@@ -245,7 +245,7 @@
   const handleCarDelete = async () => {
     try {
       isLoading = true;
-      const result = await callFunction(cloudFunctions.DELETE_CAR_IN_GARAGE, { carId: $carStore.carId });
+      const result = await callCloudFunction(CloudFunctions.DELETE_CAR_IN_GARAGE, { carId: $carStore.carId });
       if (result?.isError) {
         return handleServerSideError("Couldn't Delete Car! Please Try Again!");
       } else {

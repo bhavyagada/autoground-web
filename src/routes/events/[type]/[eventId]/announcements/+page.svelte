@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
@@ -35,8 +35,7 @@
   const getAnnouncements = async () => {
     try {
       isLoading = true;
-      const results = await callFunction(cloudFunctions.GET_EVENT_ANNOUNCEMENTS, { eventId: $bookedResultList[id].eventId });
-      console.log("announcements: ", results);
+      const results = await callCloudFunction(CloudFunctions.GET_EVENT_ANNOUNCEMENTS, { eventId: $bookedResultList[id].eventId });
       if (results?.isError) return handleServerSideError("Error Loading Data! Try Again!");
       else {
         $announcementData = results?.result.data.announcements;;

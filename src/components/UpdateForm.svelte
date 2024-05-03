@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
   import { userStore } from "$lib/stores/auth";
   import Loading from "./Loading.svelte";
@@ -83,7 +83,7 @@
       else if (input === "phone") update = { phone: phone };
       else if (input === "email") update = { email: email };
       try {
-        const result = await callFunction(cloudFunction, update);
+        const result = await callCloudFunction(cloudFunction, update);
         if (result?.isError) {
           return handleServerSideError("Server Error! Please Try Again!");
         } else {
@@ -101,15 +101,15 @@
   }
 
   const handleNameUpdate = async () => {
-    return await handleUpdate("name", isValidName, "Name required with less than 50 characters!", cloudFunctions.UPDATE_USER_PROFILE_NAME);
+    return await handleUpdate("name", isValidName, "Name required with less than 50 characters!", CloudFunctions.UPDATE_USER_PROFILE_NAME);
   }
   
   const handleUserNameUpdate = async () => {
-    return await handleUpdate("userName", isValidUsername, "Username required with 3-20 characters & no whitespace!", cloudFunctions.UPDATE_USER_NAME);
+    return await handleUpdate("userName", isValidUsername, "Username required with 3-20 characters & no whitespace!", CloudFunctions.UPDATE_USER_NAME);
   }
 
   const handleBioUpdate = async () => {
-    return await handleUpdate("bio", isValidBio, "Bio should be less than 1000 characters!", cloudFunctions.UPDATE_USER_BIO);
+    return await handleUpdate("bio", isValidBio, "Bio should be less than 1000 characters!", CloudFunctions.UPDATE_USER_BIO);
   }
 
   const handlePhoneUpdate = async () => {
@@ -120,11 +120,11 @@
       const errorCode = iti.getValidationError();
       validMessage = errorMap[errorCode] || "Invalid number";
     }
-    return await handleUpdate("phone", isValidPhone, validMessage, cloudFunctions.UPDATE_USER_PHONE);
+    return await handleUpdate("phone", isValidPhone, validMessage, CloudFunctions.UPDATE_USER_PHONE);
   }
 
   const handleEmailUpdate = async () => {
-    return await handleUpdate("email", isValidEmail, "Invalid Email", cloudFunctions.UPDATE_USER_EMAIL);
+    return await handleUpdate("email", isValidEmail, "Invalid Email", CloudFunctions.UPDATE_USER_EMAIL);
   }
 
   const updateHandlers: any = {

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { cloudFunctions } from "$lib/functions/all";
-  import { callFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
@@ -33,8 +33,7 @@
     isLoading = true;
     try {
       if (type === "all") {
-        const allResults = await callFunction(cloudFunctions.GET_EVENTS, $allEventData);
-        console.log("all events: ", allResults);
+        const allResults = await callCloudFunction(CloudFunctions.GET_EVENTS, $allEventData);
         if (allResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
@@ -45,8 +44,7 @@
           $allEventData = { ...$allEventData, startAfter: allResults?.result.data.startAfter };
         }
       } else if (type === "booked") {
-        const bookedResults = await callFunction(cloudFunctions.GET_BOOKED_EVENTS, $bookedEventData);
-        console.log("booked events: ", bookedResults);
+        const bookedResults = await callCloudFunction(CloudFunctions.GET_BOOKED_EVENTS, $bookedEventData);
         if (bookedResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {

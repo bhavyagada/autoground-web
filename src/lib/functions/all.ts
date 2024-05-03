@@ -1,4 +1,4 @@
-export enum cloudFunctions {
+export enum CloudFunctions {
   GET_USER_PROFILE = "getUserProfile",
   CREATE_USER_PROFILE = "createUserProfile",
   CHECK_UNIQUE_USER_FIELDS = "checkUniqueUserFields",

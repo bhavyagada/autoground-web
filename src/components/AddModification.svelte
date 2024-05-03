@@ -6,8 +6,8 @@
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";
   import Loading from "./Loading.svelte";
-  import { callFunction } from "$lib/functions/util";
-  import { cloudFunctions } from "$lib/functions/all";
+  import { callCloudFunction } from "$lib/functions/util";
+  import { CloudFunctions } from "$lib/functions/all";
 
   export let add: boolean = true;
   let size: string = "60"; 
@@ -92,8 +92,7 @@
     console.log(`final modification data sent: ${addModificationData}`);
     try {
       isLoading = true;
-      const result = await callFunction(cloudFunctions.ADD_MODIFICATION_IN_CAR, addModificationData);
-      console.log(result);
+      const result = await callCloudFunction(CloudFunctions.ADD_MODIFICATION_IN_CAR, addModificationData);
       if (result?.isError) {
         return handleServerSideError("Server Error! Please Try Again!");
       } else {

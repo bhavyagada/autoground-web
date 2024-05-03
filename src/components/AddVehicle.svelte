@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { callFunction, uploadPic } from "$lib/functions/util";
+  import { callCloudFunction, uploadImage } from "$lib/functions/util";
   import cars from "/src/data/cars.json";
   import bikes from "/src/data/bikes.json";
   import trucks from "/src/data/trucks.json";
   import Cropper from 'svelte-easy-crop';
   import { addToast } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
-  import { cloudFunctions } from "$lib/functions/all";
+  import { CloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
   import { userStore } from "$lib/stores/auth";
@@ -167,7 +167,7 @@
 
   const handleCloudUploadPhoto = async (photo: any) => {
     const imageFile = dataURItoFile(photo);
-    return await uploadPic(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
+    return await uploadImage(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
   }
 
   const handleSubmit = async () => {
@@ -208,7 +208,7 @@
       $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName, photos }
     }
     try {
-      const result = await callFunction(cloudFunctions.ADD_CAR_TO_GARAGE, { carData: $carStore });
+      const result = await callCloudFunction(CloudFunctions.ADD_CAR_TO_GARAGE, { carData: $carStore });
       if (result?.isError) {
         return handleServerSideError("Server Error! Please Try Again!");
       } else {
