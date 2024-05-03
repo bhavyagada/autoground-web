@@ -4,7 +4,7 @@
   import { page } from "$app/stores";
   import { CloudFunctions } from "$lib/functions/all";
   import { callCloudFunction } from "$lib/functions/util";
-  import { addToast } from "$lib/stores/auth";
+  import { addToast, userStore } from "$lib/stores/auth";
   import { allResultList, bookedResultList } from "$lib/stores/events";
   import Loading from "../../../../components/Loading.svelte";
 
@@ -29,7 +29,48 @@
     return false;
   };
 
-  const handleEventBooking = () => {}
+  const handleEventBooking = async () => {
+    const eventsData = $allResultList[id];
+    const sendData = { 
+      userId: $userStore.userId, 
+      eventId: eventsData.eventId,
+      created: 0,
+      totalPrice: 0,
+      tax: 0,
+      status: "cancelled",
+      paymentMethod: "",
+      paymentDescription: "",
+      bookingId: "",
+      eventDescription: eventsData,
+      ticketsBooked: {
+        ticketData: eventsData.tickets[0],
+        quantity: 1,
+        price: 0.0
+      }
+    }
+    try {
+      isLoading = true;
+      const response = await callCloudFunction(CloudFunctions.BOOK_FREE_EVENT, sendData);
+      if (response.isError) {
+        if (response.errorType === "[already_booked]") return handleServerSideError("You are already attending this event!");
+        else return handleServerSideError("Server Error! Please Try Again!");
+      }
+      else {
+        isLoading = false;
+        booked = true;
+        return true;
+      }
+    } catch (err) {
+      return handleServerSideError("Server Error! Please Try Again!");
+    }
+  }
+
+  const handleCancelConfirmation = () => {
+    if (type === "booked") {
+      if ($bookedResultList[id].status === "cancelled") addToast("error", "Your ticket is already Cancelled!");
+      else clicked = !clicked;
+    }
+  }
 
   const handleCancelTicket = async () => {
     try {
@@ -38,11 +79,10 @@
       const res = await callCloudFunction(CloudFunctions.CANCEL_FREE_EVENT_TICKET, { ticketsBooked: data.ticketsBooked, bookingId: data.bookingId, eventId: data.eventId });
       if (res?.isError) return handleServerSideError("Error Loading Data! Try Again!");
       else {
-        $bookedResultList = $bookedResultList.filter((_, index) => index !== id);
+        $bookedResultList[id] = { ...data, status: "cancelled"};
         isLoading = false;
         clicked = false;
         addToast("success", "Event Ticket Cancelled Successfully!");
-        goto("/events");
         return true;
       }
     } catch (err) {
@@ -72,7 +112,7 @@
     <h1>Event Booked Successfully!</h1>
     <img src="/event-booked.svg" alt="Event Booked Confirmation">
     <p>Thank you for booking this event. We look forward to seeing you!</p>
-    <button type="submit">Done</button>
+    <button type="submit" on:click={() => goto("/events")}>Done</button>
   </div>
 {:else}
   <div class={clicked ? "hide" : "background"}>
@@ -107,14 +147,14 @@
       </div>
     </div>
     {#if isLoading}
-      <Loading />
+      <div class="loading"><Loading /></div>
     {:else}
       {#if type === "all"}
         <button class="submit" on:click={handleEventBooking}>I am attending</button>
       {:else if type === "booked"}
         <div class="booked-actions">
           <button class="submit" on:click={() => { goto(`${$page.url.pathname}/ticket`); }}>View ticket</button>
-          <button class="submit" on:click={() => { clicked = !clicked; }}>Cancel ticket</button>
+          <button class="submit" on:click={handleCancelConfirmation}>Cancel ticket</button>
           <button class="submit" on:click={() => { goto(`${$page.url.pathname}/announcements`); }}>Announcements</button>
         </div>
       {/if}
@@ -190,6 +230,22 @@
   .booked-background {
     background-color: black;
   }
+  .booked-background h1 {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  .booked-background p {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .booked-background button {
+    background-color: white;
+    color: black;
+    border-radius: 0.5rem;
+    padding: 0.125rem 2rem;
+    width: 15%;
+    height: 4%;
+  }
   h1 {
     font-size: 1.75rem;
     line-height: 2rem;
@@ -198,7 +254,7 @@
   .details-container {
     display: flex;
     width: 80%;
-    height: 100vh;
+    height: 50%;
   }
   .details-container img {
     width: 300px;
@@ -245,7 +301,7 @@
     margin: 0 0.375rem;
     align-self: center;
   }
-  .background button, .booked-background button {
+  .background button {
     background-color: white;
     color: black;
     border-radius: 0.5rem;
@@ -264,5 +320,8 @@
     display: flex;
     justify-content: center;
     width: 100%;
+  }
+  .loading {
+    margin-bottom: auto;
   }
 </style>
