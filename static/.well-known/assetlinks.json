@@ -1,9 +1,9 @@
 [{
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
-    "namespace": "android_app",
-    "package_name": "com.example.deeplink_cookbook",
+    "namespace": "com.theautoground.autoground",
+    "package_name": "com.theautoground.autoground",
     "sha256_cert_fingerprints":
-    ["FF:2A:CF:7B:DD:CC:F1:03:3E:E8:B2:27:7C:A2:E3:3C:DE:13:DB:AC:8E:EB:3A:B9:72:A1:0E:26:8A:F5:EC:AF"]
+    ["6f:12:93:b0:32:f0:b2:8f:b4:53:ab:ed:3c:b8:f9:a8:0c:aa:5f:25:cb:67:cd:81:c2:0e:d2:0b:60:fd:5c:21"]
   }
 }]
