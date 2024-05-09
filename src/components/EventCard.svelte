@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { addToast, authData } from "$lib/stores/auth";
 
   export let selected: string;
   export let result: any;
@@ -13,7 +14,11 @@
 
   const handleEventClick = (e: any) => {
     const eventId = e.currentTarget.id;
-    goto(`/events/${selected}/${eventId}`);
+    if ($authData.isLoggedIn) goto(`/events/${selected}/${eventId}`);
+    else {
+      addToast("error", "Please Sign In to Book the Event");
+      goto("/login");
+    }
   }
 </script>
 

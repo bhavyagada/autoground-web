@@ -2,7 +2,7 @@
   import { browser } from "$app/environment";
   import { CloudFunctions } from "$lib/functions/all";
   import { callCloudFunction } from "$lib/functions/util";
-  import { addToast } from "$lib/stores/auth";
+  import { addToast, authData } from "$lib/stores/auth";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
   import { allResultList, bookedResultList } from "$lib/stores/events";
@@ -96,7 +96,9 @@
 <div class="background">
   <div class="headings">
     <button on:click={() => selected = "all"} class={selected === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
-    <button on:click={() => selected = "booked"} class={selected === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
+    {#if $authData.isLoggedIn}
+      <button on:click={() => selected = "booked"} class={selected === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
+    {/if}
   </div>
   {#if isLoading}
     <Loading />

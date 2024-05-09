@@ -57,6 +57,14 @@
       <li>
         <a href="/events">Events</a>
       </li>
+      <li>
+        <a href="/search">
+          <div class="search">
+            <p>Search</p>
+            <img src="/searchicon.svg" alt="Search Icon">
+          </div>
+        </a>
+      </li>
     {:else}
       <li>
         <a href="/login">Sign In/Up</a>
@@ -65,14 +73,6 @@
         <a href="/events">Events</a>
       </li>
     {/if}
-    <li>
-      <a href="/search">
-        <div class="search">
-          <p>Search</p>
-          <img src="/searchicon.svg" alt="Search Icon">
-        </div>
-      </a>
-    </li>
   </ul>
   <button class="icon" on:click|preventDefault={toggleNav}>
     <img alt="Menu Icon" src="/menu-icon.svg">
