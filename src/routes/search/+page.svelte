@@ -3,12 +3,13 @@
   import { goto } from "$app/navigation";
   import { CloudFunctions } from "$lib/functions/all";
   import { callCloudFunction } from "$lib/functions/util";
-  import { addToast, otherUserStore } from "$lib/stores/auth";
+  import { addToast, otherUserStore, userStore } from "$lib/stores/auth";
   import { defaultCar, otherAllCarsStore } from "$lib/stores/car";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
   import { fade } from "svelte/transition";
   import Loading from "../../components/Loading.svelte";
+  import { allResultList } from "$lib/stores/events";
 
   const vehicleIcons: any = {
     bike: "/bike.svg",
@@ -44,6 +45,12 @@
     return false;
   };
 
+  const handleServerError = (errorMessage: string): boolean => {
+    isLoading = false;
+    addToast("error", errorMessage);
+    return false;
+  };
+
   const handleKeywordChange = () => {
     if ($resultList) $resultList = [];
   }
@@ -63,7 +70,7 @@
         result = await callCloudFunction(functions[selectedOption], $searchData);
       }
       if (result?.isError) {
-        return handleError("Server Error! Please Try Again!");
+        return handleServerError("Server Error! Please Try Again!");
       } else {
         $hasMore = result?.result.data.hasMore;
         $searchData.startAfter = result?.result.data.startAfter;
@@ -71,34 +78,53 @@
         isLoading = false;
       }
     } catch (err) {
-      return handleError("Server Error! Please Try Again!");
+      return handleServerError("Server Error! Please Try Again!");
     }
   }
 
-  const handleOtherUserClick = (e: MouseEvent) => {
+  const handleOtherCarOrUserClick = async (e: MouseEvent, type: string) => {
     const button = e.currentTarget as HTMLButtonElement;
     const id = button.id;
-    console.log("button id = user id:", id);
-  }
-
-  const handleOtherCarClick = async (e: MouseEvent) => {
-    const button = e.currentTarget as HTMLButtonElement;
-    const id = button.id;
+    if ($userStore.userId === id) return handleError("This is your Profile!");
     console.log("button id = user id:", id);
     try {
+      isLoading = true;
       const result = await callCloudFunction(CloudFunctions.GET_ANOTHER_GARAGE_DATA, { searchUserId: id });
       const userresult = await callCloudFunction(CloudFunctions.GET_ANOTHER_USER_PROFILE, { searchUserId: id} );
       if (result?.isError || userresult?.isError) {
-        return handleError("Server Error! Please Try Again!");
+        return handleServerError("Server Error! Please Try Again!");
       } else {
         console.log(userresult?.result.data);
         $otherAllCarsStore = result?.result.data.cars;
         $otherUserStore = userresult?.result.data;
-        goto(`/garage/other`);
+        isLoading = false;
+        if (type === "car") goto(`/garage/other`);
+        else if (type === "user") goto(`/user/other`);
       }
     } catch (err) {
-      return handleError("Server Error! Please Try Again!");
+      return handleServerError("Server Error! Please Try Again!");
     }
+  }
+
+  const handleEventClick = async (e: MouseEvent) => {
+    const button = e.currentTarget as HTMLButtonElement;
+    const id = button.id;
+    console.log(id);
+    const currentEventIndex = $allResultList.findIndex(event => event.eventId === id);
+    if ($allResultList.length > 0) goto(`/events/all/${currentEventIndex + 1}`);
+    // else {
+    //   try {
+    //     isLoading = true;
+    //     const allResults = await callCloudFunction(CloudFunctions.GET_EVENTS, $allEventData);
+    //     if (allResults?.isError) {
+    //       return handleServerSideError("Error Loading Data! Try Again!");
+    //     } else {
+    //       $allResultList = allResults?.result.data.events;
+    //       $allHasMore = allResults?.result.data.hasMore;
+    //       $allEventData = { ...$allEventData, startAfter: allResults?.result.data.startAfter };
+    //     }
+    //   }
+    // }
   }
 
   onMount(() => $otherAllCarsStore = [defaultCar]);
@@ -139,7 +165,7 @@
         <Loading />
       {:else}
         {#each results as result}
-          <button id={result.data.userId} class="user-results" on:click={handleOtherUserClick}>
+          <button id={result.data.userId} class="user-results" on:click={(e) => { handleOtherCarOrUserClick(e, "user"); } }>
             <img src="/search-user-icon.svg" alt="User Icon">
             <img class="userphoto" src={result.data.userPhoto ? result.data.userPhoto : "/default-photo.svg"} alt="Profile">
             <p class="name">{result.data.name}</p>
@@ -149,12 +175,12 @@
       {/if}
     </div>
   {:else if selectedOption === "cars"}
-    <div transition:fade class="vehicle-results-container">
-      {#if isLoading}
-        <Loading />
-      {:else}
+    {#if isLoading}
+      <Loading />
+    {:else}
+      <div transition:fade class="vehicle-results-container">
         {#each results as result}
-          <button id={result.data.userId} class="vehicle-results" on:click={handleOtherCarClick}>
+          <button id={result.data.userId} class="vehicle-results" on:click={(e) => { handleOtherCarOrUserClick(e, "car"); } }>
             <div class="car-name">
               <img src={result.data.vehicleType ? vehicleIcons[result.data.vehicleType] : vehicleIcons["car"]} alt="Vehicle Type">
               <p>{result.data.name}</p>
@@ -171,23 +197,23 @@
             </div>
           </button>
         {/each}
-      {/if}
-    </div>
+      </div>
+    {/if}
   {:else if selectedOption === "events"}
-    <div transition:fade class="event-results-container">
-      {#if isLoading}
-        <Loading />
-      {:else}
+    {#if isLoading}
+      <Loading />
+    {:else}
+      <div transition:fade class="event-results-container">
         {#each results as result}
-          <button class="event-results">
+          <button id={result.id} class="event-results" on:click={handleEventClick}>
             <img src={result.data.eventPhoto} alt="Event Cover">
             <p class="event-name">{result.data.eventName}</p>
             <p>{new Date(result.data.eventStartTime).toDateString()} | {new Date(result.data.eventStartTime).toLocaleTimeString()}</p>
             <p>{result.data.location.address}</p>
           </button>
         {/each}
-      {/if}
-    </div>
+      </div>
+    {/if}
   {/if}
   <div bind:this={root} class="results"></div>
 </div>
@@ -264,6 +290,7 @@
   }
   .user-results img {
     margin-right: 1rem;
+    border-radius: 2rem;
   }
   .userphoto {
     width: 55px;
