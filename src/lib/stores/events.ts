@@ -88,20 +88,24 @@ interface BookingEventTransaction {
 let all: EventsData[] = [];
 let booked: BookingEventTransaction[] = [];
 let transaction: BookingEventTransaction | object = {};
+let selected: string = "all";
 if (browser) {
   const storedAll: string | null = localStorage.getItem("allevents");
   const storedBooked: string | null = localStorage.getItem("bookedevents");
   const storedTransaction: string | null = localStorage.getItem("transaction");
+  const storedSelectedEventType: string | null = localStorage.getItem("eventtype");
   all = storedAll ? JSON.parse(storedAll) : all;
   booked = storedBooked ? JSON.parse(storedBooked) : booked;
-  transaction = storedTransaction ? JSON.parse(storedTransaction) : transaction
+  transaction = storedTransaction ? JSON.parse(storedTransaction) : transaction;
+  selected = storedSelectedEventType ? JSON.parse(storedSelectedEventType) : selected;
 }
 export const allResultList = writable<EventsData[]>(all);
 export const bookedResultList = writable<BookingEventTransaction[]>(booked);
 export const bookingTransaction = writable<BookingEventTransaction | object>(transaction);
-
+export const selectedEventType = writable<string>("all");
 if (browser) {
   allResultList.subscribe((value) => localStorage.setItem("allevents", JSON.stringify(value)));
   bookedResultList.subscribe((value) => localStorage.setItem("bookedevents", JSON.stringify(value)));
-  bookingTransaction.subscribe((value) => localStorage.setItem("transaction", JSON.stringify(transaction)));
+  bookingTransaction.subscribe((value) => localStorage.setItem("transaction", JSON.stringify(value)));
+  selectedEventType.subscribe((value) => localStorage.setItem("eventtype", JSON.stringify(value)));
 }

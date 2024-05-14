@@ -1,20 +1,20 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { addToast, authData } from "$lib/stores/auth";
+  import { selectedEventType } from "$lib/stores/events";
 
-  export let selected: string;
   export let result: any;
   export let index: number;
   let resultList: any;
-  $: if (selected === "all") {
+  $: if ($selectedEventType === "all") {
     resultList = result;
-  } else if (selected === "booked") {
+  } else if ($selectedEventType === "booked") {
     resultList = result.eventDescription;
   }
 
   const handleEventClick = (e: any) => {
     const eventId = e.currentTarget.id;
-    if ($authData.isLoggedIn) goto(`/events/${selected}/${eventId}`);
+    if ($authData.isLoggedIn) goto(`/events/${$selectedEventType}/${eventId}`);
     else {
       addToast("error", "Please Sign In to Book the Event");
       goto("/login");
@@ -25,11 +25,11 @@
 <div>
   <button id={String(index+1)} class="event" on:click={handleEventClick}>
     <img alt="Event" src={resultList.eventPhoto || "/default-event.svg"}>
+    <h1>{resultList.eventName}</h1>
+    <p>{new Date(resultList.date).toDateString()} | {new Date(resultList.date).toLocaleTimeString()}</p>
+    <p>{resultList.eventAddress || "Address Coming Soon"}</p>
   </button>
-  <h1>{resultList.eventName}</h1>
-  <p>{new Date(resultList.date).toDateString()} | {new Date(resultList.date).toLocaleTimeString()}</p>
-  <p>{resultList.eventAddress || "Address Coming Soon"}</p>
-  {#if selected === "all"}
+  {#if $selectedEventType === "all"}
     {#if resultList.tickets[0].freeTicket}
       <p class="free">Free</p>
     {:else}
@@ -38,7 +38,7 @@
   {:else}
     <div class="view-ticket">
       <p>Ticket</p>
-      <button class="submit" on:click={() => { goto(`/events/${selected}/${String(index+1)}/ticket`); }}>View</button>
+      <button class="submit" on:click={() => { goto(`/events/${$selectedEventType}/${String(index+1)}/ticket`); }}>View</button>
     </div>
   {/if}
 </div>
@@ -59,6 +59,7 @@
     padding-bottom: 0.625rem;
     padding-left: 0.75rem;
     width: 100%;
+    text-align: start;
   }
   div h1 {
     font-size: 1.25rem;

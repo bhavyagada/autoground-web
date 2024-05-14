@@ -5,7 +5,7 @@
   import { addToast, authData } from "$lib/stores/auth";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
-  import { allResultList, bookedResultList } from "$lib/stores/events";
+  import { allResultList, bookedResultList, selectedEventType } from "$lib/stores/events";
   import EventCard from "../../components/EventCard.svelte";
   import Loading from "../../components/Loading.svelte";
 
@@ -18,7 +18,6 @@
   let observer: IntersectionObserver;
   let results: any = [];
   let root: any;
-  let selected = "all";
   let startAfter: string | null = null;
 
   const handleServerSideError = (errorMessage: string): boolean => {
@@ -63,15 +62,15 @@
     $bookedResultList = storedBookedResults ? JSON.parse(storedBookedResults) : [];
     const getResultsFirstTime = async () => {
       await getEvents("all");
-      await getEvents("booked");
+      if ($authData.isLoggedIn) await getEvents("booked");
     }
     getResultsFirstTime();
   });
 
-  $: if (selected === "all") {
+  $: if ($selectedEventType === "all") {
     results = $allResultList;
     startAfter = $allEventData.startAfter;
-  } else if (selected === "booked") {
+  } else if ($selectedEventType === "booked") {
     results = $bookedResultList;
     startAfter = $bookedEventData.startAfter;
   }
@@ -81,8 +80,8 @@
       for (const entry of entries) {
         if (entry.isIntersecting) {
           observer.disconnect();
-          if (selected === "all") await getEvents("all");
-          else if (selected === "booked") await getEvents("booked");
+          if ($selectedEventType === "all") await getEvents("all");
+          else if ($selectedEventType === "booked") await getEvents("booked");
         }
       };
     });
@@ -95,9 +94,9 @@
 
 <div class="background">
   <div class="headings">
-    <button on:click={() => selected = "all"} class={selected === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
+    <button on:click={() => $selectedEventType = "all"} class={$selectedEventType === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
     {#if $authData.isLoggedIn}
-      <button on:click={() => selected = "booked"} class={selected === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
+      <button on:click={() => $selectedEventType = "booked"} class={$selectedEventType === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
     {/if}
   </div>
   {#if isLoading}
@@ -106,7 +105,7 @@
     <div class="all-results">
       {#each results as result, index}
         <div id={String(index+1)}>
-          <EventCard {result} {selected} {index} />
+          <EventCard {result} {index} />
         </div>
       {/each}
     </div>
@@ -144,7 +143,7 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    width: 75%;
+    width: 80%;
     margin-top: 4rem;
   }
   .all-results div {
