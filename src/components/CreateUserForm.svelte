@@ -26,6 +26,7 @@
   let isValidEmail: boolean = false;
   let isValidBio: boolean = false;
   let phoneElement: Element = undefined!;
+  let ref: any = null;
 
   let iti: intlTelInput.Plugin;
   onMount(() => {
@@ -36,6 +37,8 @@
       autoInsertDialCode: true,
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.5/build/js/utils.js"
     });
+
+    ref.focus();
   });
 
   let profilePhoto: HTMLElement;
@@ -172,7 +175,7 @@
       </button>
       <div class="name-phone-container">
         <label for="name">Name</label>
-        <input bind:value={name} type="text" name="name" maxlength="50" required>
+        <input bind:value={name} type="text" name="name" maxlength="50" bind:this={ref} required>
         <div class="name-phone">
           <div class="username">
             <label for="">Username</label>

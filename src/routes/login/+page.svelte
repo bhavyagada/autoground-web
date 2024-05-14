@@ -16,6 +16,7 @@
   let form: string = "login";
   let isLoading: boolean = false;
 
+  let phoneRef: any = null;
   let phoneElement: Element = undefined!;
   let iti: intlTelInput.Plugin;
 
@@ -27,6 +28,7 @@
       autoInsertDialCode: true,
       utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.5/build/js/utils.js"
     });
+    phoneRef.focus();
   });
 
   async function handleAuth() {
@@ -105,7 +107,7 @@
       <h1>Sign In/Up</h1>
       <form>
         <label for="phone">Phone</label>
-        <input id="phone" name="phone" type="tel" placeholder="8005550101" required>
+        <input id="phone" name="phone" type="tel" placeholder="8005550101" bind:this={phoneRef} required>
         <div id="recaptcha-container" class="recaptcha"></div>
         {#if isLoading}
           <Loading {size} />

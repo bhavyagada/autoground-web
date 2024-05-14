@@ -3,6 +3,7 @@
   import { callCloudFunction } from "$lib/functions/util";
   import { addToast } from "$lib/stores/auth";
   import { userStore } from "$lib/stores/auth";
+  import { onMount } from "svelte";
   import Loading from "./Loading.svelte";
 
   export let type: string;
@@ -27,11 +28,14 @@
   let isValidBio: boolean = false;
   let isValidEmail: boolean = false;
   let phoneElement: Element = undefined!;
+  let ref: any = null;
 
   $: isValidName = name.trim().length > 0 && name.trim().length < 51;
   $: isValidUsername = userName.trim().length > 2 && userName.trim().length < 21 && usernameRegex.test(userName);
   $: isValidBio = bio.length < 1000;
   $: isValidEmail = email.trim().length > 0 && emailRegex.test(email);
+
+  onMount(() => { ref.focus(); });
 
   let iti: intlTelInput.Plugin;
   $: if (type === phone) {
@@ -142,21 +146,21 @@
   <div class="update">
     {#if type === "name"}
       <label for="name">Name</label>
-      <input bind:value={name} type="text" name="name" maxlength="50">
+      <input bind:value={name} type="text" name="name" maxlength="50" bind:this={ref}>
     {:else if type === "username"}
       <label for="">Username</label>
-      <input bind:value={userName} type="text" name="username" minlength="3" maxlength="20">
+      <input bind:value={userName} type="text" name="username" minlength="3" maxlength="20" bind:this={ref}>
     {:else if type === "bio"}
       <label for="bio">Bio</label>
-      <textarea bind:value={bio} name="bio" maxlength="1000"></textarea>
+      <textarea bind:value={bio} name="bio" maxlength="1000" bind:this={ref}></textarea>
     {:else if type === "phone"}
       <div class="phonenumber">
         <label for="phone">Phone Number</label>
-        <input bind:value={phone} id="phone" type="tel" name="phone">
+        <input bind:value={phone} id="phone" type="tel" name="phone" bind:this={ref}>
       </div>
     {:else if type === "email"}
       <label for="email">Email</label>
-      <input bind:value={email} type="email" name="email">
+      <input bind:value={email} type="email" name="email" bind:this={ref}>
     {/if}
   </div>
 
