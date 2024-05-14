@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { authData } from "$lib/stores/auth";
+  import { goto } from "$app/navigation";
+  import { addToast, authData } from "$lib/stores/auth";
+  import { allCarsStore } from "$lib/stores/car";
   import Card from "../components/WhatWeDoCard.svelte";
 
   const bookEvents = [
@@ -12,13 +14,53 @@
     "Plan and organize car shows, meets and gatherings",
     "Invite enthusiasts to connect and share their passion for cars",
   ];
+
+  const buttonSubmit = () => {
+    if (!$authData.isLoggedIn) {
+      addToast("error", "Please Sign in to Book or Host Events!");
+      goto("/login");
+    } 
+    else goto("/events");
+  }
+
+  let coverPhotos: Array<string | null> = [];
+  let photosLength: number;
+  let years: Array<number | null> = [];
+  let makes: Array<string | null> = [];
+  let models: Array<string | null> = [];
+  let modificationCounts: Array<number | undefined> = [];
+  let points: Array<number | null> = [];
+  let index: number = 0;
+
+  console.log($allCarsStore);
+  $allCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
+  $allCarsStore.forEach(car => years.push(car.year));
+  $allCarsStore.forEach(car => makes.push(car.make));
+  $allCarsStore.forEach(car => models.push(car.model));
+  $allCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
+  $allCarsStore.forEach(car => points.push(car.points));
+  photosLength = coverPhotos.length;
+
+  const onPrev = () => {
+    index = index > 0 ? index - 1 : photosLength - 1;
+    console.log(`prev index ${index}`);
+  }
+
+  const onNext = () => {
+    index = index < photosLength - 1 ? index + 1 : 0;
+    console.log(`next index ${index}`);
+  }
+
+  const handleCarClick = () => {
+    goto(`/garage/${index+1}`);
+  }
 </script>
 
 <!-- Main page-->
 <div class="background home">
   <h1>Drive your passion</h1>
   <h2>Book, create and view events through Xcelerate. An all in one place for all car enthusiasts.</h2>
-  <button>Explore Events</button>
+  <button on:click={() => goto("/events")}>Explore Events</button>
 </div>
 
 <!-- Scroll to What We Do -->
@@ -34,6 +76,7 @@
       simplifies the process, ensuring you never miss out on the excitement of the automative
       world. Join us and elevate your car show experience today."
       buttonText="Book Events"
+      {buttonSubmit}
     />
     <Card
       iconpath="/eventshost.svg"
@@ -43,6 +86,7 @@
       description="From setting up event details to managing attendee RSVPs, our user-friendly interface simplifies
       the event creation process, ensuring a smooth experience for both organizers and participants."
       buttonText="Host Events"
+      {buttonSubmit}
     />
   </div>
 </div>
@@ -51,18 +95,31 @@
 <div class="background mygarage">
     <div class="titles">
       <h1>My Garage</h1>
-      <h2>Sign in to see your cars in My Garage. Record all your modifications in one place to increase your points and allow others to see.</h2>
+      {#if !$authData.isLoggedIn}
+        <h2>Sign in to see your cars in My Garage. Record all your modifications in one place to increase your points and allow others to see.</h2>
+      {/if}
     </div>
-    <div class="carwitharrows">
-      <img src="/chevron-left.svg" alt="Left Arrow" class="lefticon">
-      <img src="/homepage-car.svg" alt="My Garage Example Car" class="car">
-      <img src="/chevron-right.svg" alt="Right Arrow" class="righticon">
-    </div>
-    <p>2020 BMW M4</p>
-    <p>1200 points</p>
     {#if $authData.isLoggedIn}
-      <button>View My Garage</button>
+      {#if $allCarsStore.length > 0}
+        <div class="in-carwitharrows">
+          <button class="lefticon" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
+          <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>
+          <button class="righticon" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
+        </div>
+        <p class="in-car-details">{years[index]} {makes[index]} {models[index]}</p>
+        <p class="in-car-details">{points[index]} points</p>
+      {:else}
+        <p>Cars added to Your Garage will be shown here!</p>
+      {/if}
+      <button on:click={() => { goto("/garage"); }}>View My Garage</button>
     {:else}
+      <div class="carwitharrows">
+        <img src="/chevron-left.svg" alt="Left Arrow" class="lefticon">
+        <img src="/homepage-car.svg" alt="My Garage Example Car" class="out-car">
+        <img src="/chevron-right.svg" alt="Right Arrow" class="righticon">
+      </div>
+      <p>2020 BMW M4</p>
+      <p>1200 points</p>
       <div class="empty"></div>
     {/if}
 </div>
@@ -98,13 +155,13 @@
     <p>FAQ</p>
   </div>
   <div class="apps">
-    <button>
+    <button on:click={() => { window.open("https://play.google.com/store/apps/details?id=com.xcelerate.xcelerate", "_blank"); }}>
       <span>
         <img src="/logo-google.svg" alt="Google Logo">
       </span>
       <p>Download App</p>
     </button>
-    <button>
+    <button on:click={() => { window.open("https://apps.apple.com/us/app/autolnk/id6478376890", "_blank"); }}>
       <span>
         <img src="/logo-apple.svg" alt="Apple Logo">
       </span>
@@ -178,7 +235,7 @@
   }
   .titles {
     justify-self: flex-start;
-    margin-top: 1rem;
+    margin-top: 2.5rem;
     margin-bottom: 2rem;
   }
   .carwitharrows {
@@ -187,7 +244,21 @@
     height: 40%;
     margin-top: auto;
   }
-  .car {
+  .in-carwitharrows {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 60%;
+  }
+  .in-carwitharrows .car {
+    width: 30%;
+    height: 30%;
+    margin-top: 7rem;
+  }
+  .in-carwitharrows button {
+    border: none;
+  }
+  .out-car {
     width: 85%;
     height: 85%;
     align-self: flex-end;
@@ -201,11 +272,9 @@
     font-size: 1.25rem;
     line-height: 2rem;
   }
-  .mygarage button, .empty {
+  .empty {
     margin-top: auto;
     margin-bottom: 4rem;
-  }
-  .empty {
     width: 11rem;
     height: 4rem;
   }
@@ -347,9 +416,6 @@
     }
   }
   @media all and (min-width: 1300px) {
-    .whatwedo {
-      height: 100vh;
-    }
     .carwitharrows {
       height: 45%;
     }

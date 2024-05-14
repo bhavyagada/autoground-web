@@ -1,13 +1,3 @@
-<!-- @component
-Card component for the What We Do section on the Home Page.
-
-@param iconpath Path to the icon image/svg as
-@param title Card title (also used as image alt text for A11y purposes)
-@param subtitle Card subtitle
-@param features Card specific features list
-@param description Card description
-@param buttonText Card specific button text
- -->
 <script lang="ts">
   export let iconpath: string;
   export let title: string;
@@ -15,6 +5,7 @@ Card component for the What We Do section on the Home Page.
   export let features: Array<string>;
   export let description: string;
   export let buttonText: string;
+  export let buttonSubmit: any;
 </script>
 
 <div class="card">
@@ -27,7 +18,7 @@ Card component for the What We Do section on the Home Page.
     {/each}
   </ul>
   <p>{description}</p>
-  <button>{buttonText}</button>
+  <button on:click={() => { buttonSubmit(); }}>{buttonText}</button>
 </div>
 
 <style>
