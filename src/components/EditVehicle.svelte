@@ -317,14 +317,8 @@
       <div class="year">
         <label for="year">Select Year</label>
         <div>
-          <input type="text" list="year" placeholder="Search or Select below" bind:value={selectedYear}>
-          <datalist id="year">
-            {#each years as year}
-              <option>{year}</option>
-            {/each}
-          </datalist>
           <select bind:value={selectedYear} name="year">
-            <option value={selectedYear}></option>
+            <option value={selectedYear}>{selectedYear}</option>
             {#each years as year}
               <option value={year}>{year}</option>
             {/each}
@@ -335,14 +329,8 @@
       <div class="make">
         <label for="make">Select Make</label>
         <div>
-          <input type="text" list="makes" placeholder="Search or Select below" bind:value={selectedMake} on:change={resetSelectedModel}>
-          <datalist id="makes">
-            {#each makes[selectedType] as make}
-              <option>{make}</option>
-            {/each}
-          </datalist>
           <select bind:value={selectedMake} name="make" on:change={resetSelectedModel}>
-            <option value={selectedMake}></option>
+            <option value={selectedMake}>{selectedMake}</option>
             {#each makes[selectedType] as make}
               <option value={make}>{make}</option>
             {/each}
@@ -353,16 +341,8 @@
       <div class="model">
         <label for="model">Select Model</label>
         <div>
-          <input type="text" list="models" placeholder="Search or Select below" bind:value={selectedModel}>
-          <datalist id="models">
-            {#if models[selectedType]}
-              {#each models[selectedType] as model}
-                <option>{model.model}</option>
-              {/each}
-            {/if}
-          </datalist>
           <select bind:value={selectedModel} name="model">
-            <option value={selectedModel}></option>
+            <option value={selectedModel}>{selectedModel}</option>
             {#if models[selectedType]}
               {#each models[selectedType] as model}
                 <option value={model.model}>{model.model}</option>
@@ -609,10 +589,16 @@
     }
     .year, .make, .model {
       margin: 2rem 0;
-      width: 90%;
+      width: 100%;
     }
     .year div, .make div, .model div {
-      width: 90%;
+      width: 100%;
+    }
+    .year {
+      margin-right: 10px;
+    }
+    .model {
+      margin-left: 10px;
     }
     form label {
       margin-bottom: 0.25rem;
