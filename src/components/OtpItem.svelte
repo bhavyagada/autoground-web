@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let input: HTMLElement | null = null;
   export let index: number;
   export let value: string;
@@ -8,36 +10,28 @@
 
   let key: string;
 
+  onMount(() => inputs[0]?.focus());
+
   // shift focus to the next input box
   function shiftFocus(key: string) {
-    if ((!/[0-9]/.test(key) && num && key) || key === "ArrowRight" || key === "ArrowLeft" || key === "Backspace") {
-      return;
-    }
+    if ((!/[0-9]/.test(key) && num && key) || key === "ArrowRight" || key === "ArrowLeft" || key === "Backspace") return;
     if (value === " ") {
       value = '';
       return;
     }
-    if (index !== inputs.length - 1) {
-      (inputs[index + 1] as HTMLInputElement).focus(); 
-    }
+    if (index !== inputs.length - 1) (inputs[index + 1] as HTMLInputElement).focus();
   }
 
   // prevent undo
   function keyDownHandler(e: KeyboardEvent) {
-    if (e.ctrlKey && e.key === "z") {
-      e.preventDefault();
-    }
+    if (e.ctrlKey && e.key === "z") e.preventDefault();
     key = e.key;
-    if (value.length >= 1 && !e.ctrlKey) {
-      shiftFocus(key);
-    }
+    if (value.length >= 1 && !e.ctrlKey) shiftFocus(key);
   }
 
   // do not insert text if its not a number
   function typeHandler(e: KeyboardEvent) {
-    if (value.length >= 1 || (!/[0-9]/.test(e.key) && num)) {
-      e.preventDefault();
-    }
+    if (value.length >= 1 || (!/[0-9]/.test(e.key) && num)) e.preventDefault();
   }
 
   // update codes array based on input value and shift focus
@@ -45,11 +39,8 @@
     const val = (e.target as HTMLInputElement).value;
     if (/[0-9]/.test(val) || !num || !val) {
       codes = codes.map((c, i) => {
-        if (i < index) {
-          return c === "" ? "" : c;
-        } else if (i === index) {
-          return val[0];
-        }
+        if (i < index) return c === "" ? "" : c;
+        else if (i === index) return val[0];
         return c;
       });
       // value = val[0]
@@ -64,11 +55,8 @@
 
   // shift focus on arrow button clicks or backspace
   function keyUpHandler(e: KeyboardEvent) {
-    if ((e.key === "Backspace" || e.key === "ArrowLeft") && index !== 0) {
-      inputs[index - 1]?.focus();
-    } else if (e.key === "ArrowRight" && index !== inputs.length - 1) {
-      inputs[index + 1]?.focus();
-    }
+    if ((e.key === "Backspace" || e.key === "ArrowLeft") && index !== 0) inputs[index - 1]?.focus();
+    else if (e.key === "ArrowRight" && index !== inputs.length - 1) inputs[index + 1]?.focus();
   }
 
   // handle code paste from clipboard
@@ -86,7 +74,7 @@
   }
 </script>
 
-<input 
+<input class="bg-[#3b3b3be6] text-white text-center text-xl border border-white border-solid rounded-lg w-10 md:w-12 h-12 md:h-16"
   bind:this={input}
   on:keydown={keyDownHandler}
   on:keyup={keyUpHandler}
@@ -95,17 +83,3 @@
   on:paste={pasteHandler}
   {value}
 />
-
-<style>
-  input {
-    color: black;
-    border: 1px solid black;
-    border-radius: 0.5rem;
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    text-align: center;
-    width: 3rem;
-    height: 4rem;
-    margin: 0;
-  }
-</style>

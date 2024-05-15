@@ -22,23 +22,8 @@
   $: value = codes.join("");
 </script>
 
-<div>
+<div class="flex items-center gap-1 md:gap-2 lg:gap-4">
   {#each codes as value, i (i)}
-      <OtpItem 
-        num={numberOnly}
-        bind:input={inputs[i]}
-        bind:value
-        index={i}
-        bind:codes
-        {inputs}
-      />
+      <OtpItem num={numberOnly} bind:input={inputs[i]} bind:value index={i} bind:codes {inputs} />
   {/each}
 </div>
-
-<style>
-  div {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-</style>

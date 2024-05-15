@@ -1,8 +1,8 @@
 import { get, writable } from "svelte/store";
+import { browser } from "$app/environment";
 import { auth } from "$lib/firebase/client";
 import { RecaptchaVerifier, signInWithPhoneNumber, signOut, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
 import { AuthenticationType, type AuthData, type PhoneVerificationData, type ToastData, type UserData } from "$lib/types";
-import { browser } from "$app/environment";
 
 export const defaultUser = {
   created: 0,
@@ -58,40 +58,43 @@ export const addToast = (type: string, message: string) => {
 };
 export const dismissToast = () => toast.set(null);
 
-export async function phoneSignup(phoneNumber: string) {
+export const phoneSignup = async (phoneNumber: string) => {
+  const recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
   try {
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, new RecaptchaVerifier(auth, "recaptcha-container", {}));
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
     phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
   } catch (error) {
+    recaptchaVerifier.clear();
     console.error(error);
   }
 }
 
-export async function resendCodeSignUp(phoneNumber: string) {
+export const resendCodeSignUp = async (phoneNumber: string) => {
+  const recaptchaVerifier = new RecaptchaVerifier(auth, "verify-recaptcha-container", {});
   try {
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, new RecaptchaVerifier(auth, "verify-recaptcha-container", {}));
-    console.log(confirmationResult);
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
     phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
   } catch (error) {
+    recaptchaVerifier.clear();
     console.error(error);
   }
 }
 
-export async function phoneVerify(code: string) {
+export const phoneVerify = async (code: string) => {
   const confirmationResult = get(phoneConfirmationStore);
   if(!confirmationResult) return;
   if (!confirmationResult.confirmation) return;
   return confirmationResult.confirmation.confirm(code);
 }
 
-export async function googleSignup() {
+export const googleSignup = async () => {
   return await signInWithPopup(auth, new GoogleAuthProvider());
 }
 
-export async function appleSignup() {
+export const appleSignup = async () => {
   return await signInWithPopup(auth, new OAuthProvider("apple.com"));
 }
 
-export async function logout() {
+export const logout = async () => {
   return await signOut(auth);
 }
