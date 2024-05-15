@@ -4,47 +4,16 @@
   export let type = "error";
 </script>
 
-<div>
-  <article class={type} role="alert" transition:fade>
-    {#if type === "success"}
+<div class="absolute w-full my-20">
+  {#if type === "success"}
+    <article class="bg-[#3cb371] text-white flex items-center rounded-lg mx-auto my-6 lg:my-auto py-3 px-6 w-5/6 md:w-2/5" role="alert" transition:fade>
       <img src="/success-icon.svg" alt="Close Icon" />
-    {:else if type === "error"}
+      <div class="ml-7"><slot /></div>
+    </article>
+  {:else if type === "error"}
+    <article class="bg-[#cd5c5c] text-white flex items-center rounded-lg mx-auto my-6 lg:my-auto py-3 px-6 w-5/6 md:w-2/5" role="alert" transition:fade>
       <img src="/error-icon.svg" alt="Close Icon" />
-    {/if}
-
-    <div class="text">
-      <slot />
-    </div>
-  </article>
+      <div class="ml-7"><slot /></div>
+    </article>
+  {/if}
 </div>
-
-<style>
-  div {
-    position: absolute;
-    z-index: 3;
-    width: 100%;
-    margin: 5rem 0;
-  }
-  article {
-    color: white;
-    padding: 0.75rem 1.5rem;
-    margin: auto;
-    border-radius: 0.5rem;
-    display: flex;
-    align-items: center;
-    width: 35rem;
-  }
-  img {
-    margin-right: auto;
-  }
-  .error {
-    background: IndianRed;
-  }
-  .success {
-    background: MediumSeaGreen;
-  }
-  .text {
-    margin-left: 1.75rem;
-    font-size: 1.125rem;
-  }
-</style>
