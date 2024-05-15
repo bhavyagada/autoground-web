@@ -2,428 +2,145 @@
   import { goto } from "$app/navigation";
   import { addToast, authData } from "$lib/stores/auth";
   import { allCarsStore } from "$lib/stores/car";
-  import Card from "../components/WhatWeDoCard.svelte";
 
-  const bookEvents = [
-    "Purchasing Tickets",
-    "Entering Contests",
-    "QR code for seamless event entry"
-  ];
+  let index: number = 0; // index state for cars in virtual garage
 
-  const hostEvents = [
-    "Plan and organize car shows, meets and gatherings",
-    "Invite enthusiasts to connect and share their passion for cars",
-  ];
-
-  const buttonSubmit = () => {
+  const handleEventButtonClick = () => {
     if (!$authData.isLoggedIn) {
       addToast("error", "Please Sign in to Book or Host Events!");
       goto("/login");
     } 
     else goto("/events");
   }
-
-  let coverPhotos: Array<string | null> = [];
-  let photosLength: number;
-  let years: Array<number | null> = [];
-  let makes: Array<string | null> = [];
-  let models: Array<string | null> = [];
-  let modificationCounts: Array<number | undefined> = [];
-  let points: Array<number | null> = [];
-  let index: number = 0;
-
-  console.log($allCarsStore);
-  $allCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
-  $allCarsStore.forEach(car => years.push(car.year));
-  $allCarsStore.forEach(car => makes.push(car.make));
-  $allCarsStore.forEach(car => models.push(car.model));
-  $allCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
-  $allCarsStore.forEach(car => points.push(car.points));
-  photosLength = coverPhotos.length;
-
-  const onPrev = () => {
-    index = index > 0 ? index - 1 : photosLength - 1;
-    console.log(`prev index ${index}`);
-  }
-
-  const onNext = () => {
-    index = index < photosLength - 1 ? index + 1 : 0;
-    console.log(`next index ${index}`);
-  }
-
-  const handleCarClick = () => {
-    goto(`/garage/${index+1}`);
-  }
 </script>
 
 <!-- Main page-->
-<div class="background home">
-  <h1>Drive your passion</h1>
-  <h2>Book, create and view events through Xcelerate. An all in one place for all car enthusiasts.</h2>
-  <button on:click={() => goto("/events")}>Explore Events</button>
+<div class="bg-[url('/bg-home.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center">
+  <h1 class="text-3xl md:text-4xl lg:text-5xl p-1">Drive your passion</h1>
+  <h2 class="text-base md:text-lg lg:text-xl p-1">Book, create and view events through Xcelerate. An all in one place for all car enthusiasts.</h2>
+  <button class="p-1" on:click={() => goto("/events")}>Explore Events</button>
 </div>
 
-<!-- Scroll to What We Do -->
-<div class="background whatwedo">
-  <h1>What We Do</h1>
-  <div class="cards">
-    <Card 
-      iconpath="/eventsbook.svg"
-      title="Find Events"
-      subtitle="Discover your next car show experience with our all-in-one platform"
-      features={bookEvents}
-      description="Whether you're a passionate enthusiast or an avid attendee, our comprehensive solution
-      simplifies the process, ensuring you never miss out on the excitement of the automative
-      world. Join us and elevate your car show experience today."
-      buttonText="Book Events"
-      {buttonSubmit}
-    />
-    <Card
-      iconpath="/eventshost.svg"
-      title="Host Events"
-      subtitle="Empower your automative community by hosting and creating events effortlessly with our platform"
-      features={hostEvents}
-      description="From setting up event details to managing attendee RSVPs, our user-friendly interface simplifies
-      the event creation process, ensuring a smooth experience for both organizers and participants."
-      buttonText="Host Events"
-      {buttonSubmit}
-    />
+<!-- What We Do -->
+<div class="bg-[url('/bg-what-we-do.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat flex flex-col justify-center items-center text-white">
+  <h1 class="text-2xl md:text-3xl lg:text-4xl p-1 mt-16">What We Do</h1>
+  <div class="flex flex-col lg:flex-row w-4/5 lg:w-full lg:justify-evenly">
+    <div class="flex flex-col justify-center items-center bg-white/20 text-lg rounded-2xl p-6 lg:p-8 my-8 lg:my-20 lg:w-[30%]">
+      <img src="/eventsbook.svg" alt="Find Events" class="h-16 w-16">
+      <h1 class="text-2xl mb-6 lg:text-3xl">Find Events</h1>
+      <p class="mb-6">Discover your next car show experience with our all-in-one platform</p>
+      <ul class="flex flex-col list-disc list-inside w-full mb-6">
+        <li>Purchasing Tickets</li>
+        <li>Entering Contests</li>
+        <li>QR code for seamless event entry</li>
+      </ul>
+      <p class="mb-6">
+        Whether you're a passionate enthusiast or an avid attendee, our comprehensive solution
+        simplifies the process, ensuring you never miss out on the excitement of the automative
+        world. Join us and elevate your car show experience today.
+      </p>
+      <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg mt-auto m-6" 
+        on:click={handleEventButtonClick}>Book Events</button>
+    </div>
+    <div class="flex flex-col justify-center items-center bg-white/20 text-lg rounded-2xl p-6 lg:p-8 my-8 lg:my-20 lg:w-[30%]">
+      <img src="/eventshost.svg" alt="Host Events" class="h-16 w-16">
+      <h1 class="text-2xl mb-6 lg:text-3xl">Host Events</h1>
+      <p class="mb-6">Empower your automative community by hosting and creating events effortlessly with our platform</p>
+      <ul class="flex flex-col list-disc list-inside w-full mb-6">
+        <li>Plan and organize car shows, meets and gatherings</li>
+        <li>Invite enthusiasts to connect and share their passion for cars</li>
+      </ul>
+      <p class="mb-6">
+        From setting up event details to managing attendee RSVPs, our user-friendly interface simplifies
+        the event creation process, ensuring a smooth experience for both organizers and participants.
+      </p>
+      <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg mt-auto m-6" 
+        on:click={handleEventButtonClick}>Host Events</button>
+    </div>
   </div>
 </div>
 
-<!-- Scroll to My Garage -->
-<div class="background mygarage">
-    <div class="titles">
-      <h1>My Garage</h1>
-      {#if !$authData.isLoggedIn}
-        <h2>Sign in to see your cars in My Garage. Record all your modifications in one place to increase your points and allow others to see.</h2>
-      {/if}
-    </div>
-    {#if $authData.isLoggedIn}
-      {#if $allCarsStore.length > 0}
-        <div class="in-carwitharrows">
-          <button class="lefticon" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
-          <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>
-          <button class="righticon" on:click={onNext}><img src="/chevron-right.svg" alt="Right Arrow" class="righticon"></button>
-        </div>
-        <p class="in-car-details">{years[index]} {makes[index]} {models[index]}</p>
-        <p class="in-car-details">{points[index]} points</p>
-      {:else}
-        <p>Cars added to Your Garage will be shown here!</p>
-      {/if}
-      <button on:click={() => { goto("/garage"); }}>View My Garage</button>
-    {:else}
-      <div class="carwitharrows">
-        <img src="/chevron-left.svg" alt="Left Arrow" class="lefticon">
-        <img src="/homepage-car.svg" alt="My Garage Example Car" class="out-car">
-        <img src="/chevron-right.svg" alt="Right Arrow" class="righticon">
-      </div>
-      <p>2020 BMW M4</p>
-      <p>1200 points</p>
-      <div class="empty"></div>
+<!-- My Garage -->
+<div class="bg-[url('/bg-my-garage.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center mygarage">
+  <div class="justify-self-start mt-10 mb-8">
+    <h1 class="text-2xl md:text-3xl lg:text-4xl p-1">My Garage</h1>
+    {#if !$authData.isLoggedIn}
+      <h2 class="text-base md:text-lg lg:text-xl p-1">Sign in to see your cars in My Garage. Record all your modifications in one place to increase your points and allow others to see.</h2>
     {/if}
+  </div>
+  {#if $authData.isLoggedIn}
+    {#if $allCarsStore.length > 0}
+      <div class="flex justify-evenly w-5/6 h-3/5">
+        <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index > 0 ? index - 1 : $allCarsStore.length - 1; }}>
+          <img src="/chevron-left.svg" alt="Left Arrow">
+        </button>
+        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-44 md:mt-32" on:click={() => goto(`/garage/${index+1}`)}>
+          <img src={$allCarsStore[index].coverPhoto} alt="My Garage Car">
+        </button>
+        <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index < $allCarsStore.length - 1 ? index + 1 : 0; }}>
+          <img src="/chevron-right.svg" alt="Right Arrow">
+        </button>
+      </div>
+      <p class="text-xl md:text-2xl">{$allCarsStore[index].year} {$allCarsStore[index].make} {$allCarsStore[index].model}</p>
+      <p>{$allCarsStore[index].points} points</p>
+    {:else}
+      <p>Cars added to Your Garage will be shown here!</p>
+    {/if}
+    <button class="border border-white border-solid rounded-xl h-14 w-44 text-lg m-6"
+      on:click={() => { goto("/garage"); }}>View My Garage</button>
+  {:else}
+    <div class="flex justify-center h-2/5 mt-auto">
+      <img class="w-5 md:w-6 h-5 md:h-6 self-center" src="/chevron-left.svg" alt="Left Arrow">
+      <img class="w-5/6 h-5/6 self-end" src="/homepage-car.svg" alt="My Garage Example Car">
+      <img class="w-5 md:w-6 h-5 md:h-6 self-center" src="/chevron-right.svg" alt="Right Arrow">
+    </div>
+    <p class="text-xl md:text-2xl">2020 BMW M4</p>
+    <p>1200 points</p>
+    <div class="mt-auto mb-16 h-16 w-44"></div>
+  {/if}
 </div>
 
-<!-- Scroll to Message Us -->
-<div class="background messageus">
-  <h1>Message Us</h1>
-  <form>
-    <lable for="name">Name</lable>
-    <input type="text" name="name" />
-    <lable for="email">Email</lable>
-    <input type="email" name="email" />
-    <lable>Message</lable>
-    <textarea rows="8" cols="10"></textarea>
-    <button type="submit" class="submit">Submit</button>
+<!-- Message Us -->
+<div class="bg-[url('/bg-message-us.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white messageus">
+  <h1 class="text-2xl md:text-3xl lg:text-4xl p-1 mt-16 mb-12">Message Us</h1>
+  <form class="flex flex-col justify-center w-4/5 md:w-1/3 lg:w-1/2 xl:w-1/3">
+    <label class="p-2 text-lg" for="name">Name</label>
+    <input class="p-2 bg-white/20 rounded-xl text-lg w-full h-12" type="text" name="name" />
+    <label class="p-2 text-lg" for="email">Email</label>
+    <input class="p-2 bg-white/20 rounded-xl text-lg w-full h-12" type="email" name="email" />
+    <label class="p-2 text-lg" for="message">Message</label>
+    <textarea class="p-2 bg-white/20 rounded-xl text-lg w-full" name="message" rows="8" cols="10"></textarea>
+    <button class="bg-white text-xl text-black rounded-2xl font-medium h-12 w-full my-12 p-2" type="submit">Submit</button>
   </form>
 </div>
 
-<div class="footer">
-  <img src="/logo-xcelerate.svg" alt="Xcelerate Logo">
-  <div class="contact-info">
-    <p class="title">Contact</p>
-    <address>
+<!-- Footer -->
+<div class="flex flex-col lg:flex-row justify-evenly bg-black text-white p-4">
+  <img class="w-28 h-28 self-center" src="/logo-xcelerate.svg" alt="Xcelerate Logo">
+  <div>
+    <p class="font-bold text-lg mt-auto text-center py-4">Contact</p>
+    <address class="text-center py-1">
       10551 Garden Grove Blvd<br>
       Garden Grove, CA, 90000
     </address>
-    <p>info@email.com</p>
+    <p class="text-center py-1">info@email.com</p>
   </div>
-  <div class="contact-info">
-    <p class="title">Information</p>
-    <p>About Us</p>
-    <p>Terms of Service</p>
-    <p>FAQ</p>
+  <div>
+    <p class="font-bold text-lg mt-auto text-center py-4">Information</p>
+    <p class="text-center py-1">About Us</p>
+    <p class="text-center py-1">Terms of Service</p>
+    <p class="text-center py-1">FAQ</p>
   </div>
-  <div class="apps">
-    <button on:click={() => { window.open("https://play.google.com/store/apps/details?id=com.xcelerate.xcelerate", "_blank"); }}>
-      <span>
-        <img src="/logo-google.svg" alt="Google Logo">
-      </span>
-      <p>Download App</p>
+  <div class="flex flex-col items-center">
+    <button class="flex justify-center items-center w-full md:w-1/2 lg:w-full border-none rounded-xl bg-white/20 font-bold px-4 my-3"
+      on:click={() => { window.open("https://play.google.com/store/apps/details?id=com.xcelerate.xcelerate", "_blank"); }}>
+      <span class="w-8"><img src="/logo-google.svg" alt="Google Logo"></span>
+      <p class="p-4">Download App</p>
     </button>
-    <button on:click={() => { window.open("https://apps.apple.com/us/app/autolnk/id6478376890", "_blank"); }}>
-      <span>
-        <img src="/logo-apple.svg" alt="Apple Logo">
-      </span>
-      <p>Download App</p>
+    <button class="flex justify-center items-center w-full md:w-1/2 lg:w-full border-none rounded-xl bg-white/20 font-bold px-4 my-3"
+      on:click={() => { window.open("https://apps.apple.com/us/app/autolnk/id6478376890", "_blank"); }}>
+      <span class="w-8"><img src="/logo-apple.svg" alt="Apple Logo"></span>
+      <p class="p-4">Download App</p>
     </button>
   </div>
 </div>
-
-<style>
-  h1 {
-    font-size: 2rem;
-    line-height: 1;
-  }
-  h2 {
-    font-size: 1rem;
-    line-height: 1.375rem;
-  }
-  button {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-    border: 1px solid white;
-    border-radius: 0.5rem;
-    width: 11rem;
-    height: 4rem;
-    margin: 1.5rem;
-  }
-  .background {
-    width: var(--bgwidth);
-    height: var(--bgheight);
-    position: relative;
-    z-index: 1; 
-    color: white;
-  }
-  .home {
-    background: var(--homebg1) center / var(--bgsize) var(--bgrepeat);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .home > * {
-    text-align: center;
-    padding: 0.25rem;
-  }
-  .whatwedo {
-    background: var(--homebg2) center / var(--bgsize) var(--bgrepeat);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .whatwedo h1 {
-    margin-top: 3rem;
-  }
-  .cards {
-    display: flex;
-    flex-direction: column;
-    width: 85%;
-  }
-  .mygarage {
-    background: var(--homebg3) center / var(--bgsize) var(--bgrepeat);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-  }
-  .mygarage .titles > * {
-    text-align: center;
-    padding: 0.75rem;
-  }
-  .titles {
-    justify-self: flex-start;
-    margin-top: 2.5rem;
-    margin-bottom: 2rem;
-  }
-  .carwitharrows {
-    display: flex;
-    justify-content: center;
-    height: 40%;
-    margin-top: auto;
-  }
-  .in-carwitharrows {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 60%;
-  }
-  .in-carwitharrows .car {
-    width: 30%;
-    height: 30%;
-    margin-top: 7rem;
-  }
-  .in-carwitharrows button {
-    border: none;
-  }
-  .out-car {
-    width: 85%;
-    height: 85%;
-    align-self: flex-end;
-  }
-  .lefticon, .righticon {
-    width: 1.25rem;
-    height: 1.25rem;
-    align-self: center;
-  }
-  .mygarage p:first-of-type {
-    font-size: 1.25rem;
-    line-height: 2rem;
-  }
-  .empty {
-    margin-top: auto;
-    margin-bottom: 4rem;
-    width: 11rem;
-    height: 4rem;
-  }
-  .messageus {
-    background: var(--homebg4) center / var(--bgsize) var(--bgrepeat);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  .messageus h1 {
-    margin-bottom: 3rem;
-  }
-  .messageus form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 80%;
-  }
-  .messageus form > * {
-    padding: 0.5rem;
-  }
-  .messageus form input, textarea {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 0.5rem;
-    font-size: large;
-    width: 100%;
-  }
-  .messageus form input {
-    height: 2rem;
-  }
-  .submit {
-    background-color: white;
-    color: black;
-    border-radius: 1rem;
-    font-weight: 700;
-    height: 3rem;
-    width: 100%;
-    margin: 3rem 0;
-  }
-  .footer {
-    background-color: black;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    padding: 1rem;
-  }
-  .footer img:first-of-type {
-    width: 7rem;
-    height: 7rem;
-    align-self: center;
-  }
-  .contact-info .title {
-    padding: 1rem 0;
-    font-size: large;
-    font-weight: 700;
-    margin-top: auto;
-    text-align: center;
-  }
-  .contact-info address {
-    text-align: center;
-  }
-  .contact-info > p:not(:first-child) {
-    text-align: center;
-  }
-  .apps {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .apps button {
-    border: none;
-    background-color: rgba(255, 255, 255, 0.2);
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 0 1rem;
-    margin: 0.75rem 0;
-  }
-  .apps button span {
-    width: 2rem;
-  }
-  .apps button p {
-    padding: 1rem;
-  }
-  .contact-info *:not(:first-child) {
-    padding: 0.25rem 0;
-  }
-  @media all and (min-width: 700px) {
-    h1 {
-      font-size: 2.25rem;
-    }
-    h2 {
-      font-size: 1.125rem;
-      line-height: 1.75rem;
-    }
-    .lefticon, .righticon {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
-    .mygarage p:first-of-type {
-      font-size: 1.5rem;
-    }
-    .messageus form {
-      width: 30%;
-    }
-    .messageus form input {
-      height: 3rem;
-    }
-    .apps button {
-      width: 50%;
-    }
-  }
-  @media all and (min-width: 900px) {
-    h1 {
-      font-size: 3rem;
-    }
-    h2 {
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-    }
-    .cards {
-      flex-direction: row;
-      justify-content: space-evenly;
-      width: 100%;
-    }
-    .messageus form {
-      width: 50%;
-    }
-    .footer {
-      flex-direction: row;
-    }
-    .apps button {
-      width: 100%;
-    }
-  }
-  @media all and (min-width: 1300px) {
-    .carwitharrows {
-      height: 45%;
-    }
-    .car {
-      width: 100%;
-    }
-    .messageus form {
-      width: 30%;
-    }
-  }
-</style>
