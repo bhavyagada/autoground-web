@@ -2,19 +2,20 @@
   import "../app.css";
   import { page } from "$app/stores";
   import { logout, authData, toast, addToast, defaultUser, otherUserStore } from "$lib/stores/auth";
-  import Toast from "../components/Toast.svelte";
   import { goto } from "$app/navigation";
   import { userStore } from "$lib/stores/auth";
   import { allCarsStore, carStore, defaultCar, defaultCarModification, modificationStore, otherAllCarsStore } from "$lib/stores/car";
   import { allResultList, bookedResultList } from "$lib/stores/events";
+  import { fade } from "svelte/transition";
+  import { browser } from "$app/environment";
 
-  /** To make navigation collapsible on smaller devices */
-  let clicked = false;
-  function toggleNav() {
-    clicked = !clicked;
-  }
+  /** make navigation collapsible on smaller devices */
+  let clicked: boolean = false;
+  let smallScreen: boolean = false;
+  $: if (browser) window.onresize = () => { smallScreen = window.screen.width < 768; }
 
   const hangleSignOut = async () => {
+    toggleNav();
     await logout();
     $authData = { user: null, isLoggedIn: false };
     $userStore = defaultUser;
@@ -28,6 +29,16 @@
     goto("/login");
     addToast("success", "Do visit us again :)");
   }
+
+  const toggleNav = () => {
+    if (smallScreen) {
+      const navbar = document.getElementById('navbar-container');
+      clicked = !clicked;
+      if (clicked) navbar?.classList.remove('hidden');
+      else navbar?.classList.add('hidden');
+      return true;
+    }
+  }
 </script>
 
 <!-- Insert title and meta content for SEO -->
@@ -37,170 +48,74 @@
 </svelte:head>
 
 <!-- Navigation Bar -->
-<nav class={clicked ? "responsive" : ""}>
-  <a href="/" class="logo">
-    <img src="/logo-xcelerate.svg" alt="Logo">
-  </a>
-  <ul>
-    {#if $authData.isLoggedIn}
-      <li>
-        <button on:click={() => goto("/account")}>
-          <img class="account" src={$userStore.userPhoto ? $userStore.userPhoto : "/default-photo.svg"} alt="Account Page Button">
-        </button>
-      </li>
-      <li> 
-        <a href="/" on:click|preventDefault={hangleSignOut}>Logout</a>
-      </li>
-      <li>
-        <a href="/garage">My Garage</a>
-      </li>
-      <li>
-        <a href="/events">Events</a>
-      </li>
-      <li>
-        <a href="/search">
-          <div class="search">
-            <p>Search</p>
-            <img src="/searchicon.svg" alt="Search Icon">
-          </div>
-        </a>
-      </li>
-    {:else}
-      <li>
-        <a href="/login">Sign In/Up</a>
-      </li>
-      <li>
-        <a href="/events">Events</a>
-      </li>
-    {/if}
-  </ul>
-  <button class="icon" on:click|preventDefault={toggleNav}>
-    <img alt="Menu Icon" src="/menu-icon.svg">
-  </button>
+<nav class="fixed bg-inherit z-10">
+  <div class="w-screen flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/" class="p-2 m-2"><img class="w-16 h-16" src="/logo-xcelerate.svg" alt="Logo"></a>
+    <button class="inline-flex items-center p-2 m-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button" on:click={toggleNav}>
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
+    </button>
+    <div class="hidden w-full md:block md:w-auto" id="navbar-container">
+      <ul class="text-lg flex flex-col justify-around md:w-auto md:items-center p-4 md:p-0 border border-white-100 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 bg-black md:bg-inherit">
+        {#if $authData.isLoggedIn}
+          <li class="w-full">
+            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/search" on:click={toggleNav}>Search</a>
+            <!-- <div class="inline-grid grid-cols-2 items-center">
+              <img class="w-5 h-5" src="/searchicon.svg" alt="Search Icon">
+              <p>Search</p>
+            </div> -->
+          </li>
+          <li class="w-full">
+            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/events" on:click={toggleNav}>Events</a>
+          </li>
+          <li class="w-full whitespace-nowrap">
+            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/garage" on:click={toggleNav}>My Garage</a>
+          </li>
+          {#if smallScreen}
+            <li class="w-full">
+              <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/account" on:click={toggleNav}>Account</a>
+            </li>
+            <li class="w-full"> 
+              <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/" on:click|preventDefault={hangleSignOut}>Logout</a>
+            </li>
+          {:else}
+            <li class="w-full"> 
+              <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/" on:click|preventDefault={hangleSignOut}>Logout</a>
+            </li>
+            <li class="w-full">
+              <button on:click={() => {toggleNav(); goto("/account"); }}>
+                <img class="rounded-3xl w-12 h-12" src={$userStore.userPhoto ? $userStore.userPhoto : "/default-photo.svg"} alt="Account Page Button">
+              </button>
+            </li>
+          {/if}
+        {:else}
+          <li class="w-full">
+            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/events" on:click={toggleNav}>Events</a>
+          </li>
+          <li class="w-full whitespace-nowrap">
+            <a class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" href="/login" on:click={toggleNav}>Sign In/Up</a>
+          </li>
+        {/if}
+      </ul>
+    </div>
+  </div>
 </nav>
 
+<!-- Toast -->
 {#if $toast}
-  <Toast type={$toast.type}>{$toast.message}</Toast>
+  <div class="absolute w-full my-20">
+    {#if $toast.type === "success"}
+      <article class="bg-[#3cb371] text-white flex items-center rounded-lg mx-auto my-6 lg:my-auto py-3 px-6 w-5/6 md:w-2/5" role="alert" transition:fade>
+        <img src="/success-icon.svg" alt="Success" />
+        <div class="ml-7">{$toast.message}</div>
+      </article>
+    {:else if $toast.type === "error"}
+      <article class="bg-[#cd5c5c] text-white flex items-center rounded-lg mx-auto my-6 lg:my-auto py-3 px-6 w-5/6 md:w-2/5" role="alert" transition:fade>
+        <img src="/error-icon.svg" alt="Error" />
+        <div class="ml-7">{$toast.message}</div>
+      </article>
+    {/if}
+  </div>
 {/if}
 
 <!-- Page Content will be automatically filled in the slot -->
 <slot />
-
-<style>
-  .logo {
-    padding: 0.5rem;
-    margin: 0.5rem;
-  }
-  .logo img {
-    width: 4rem;
-    height: 4rem;
-  }
-  nav {
-    overflow: hidden;
-    position: absolute;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-    max-height: 23vh;
-  }
-  nav ul {
-    width: 75%;
-  }
-  nav ul li {
-    padding: 0;
-    float: right;
-    list-style: none;
-    text-align: center;
-    padding: 0.75rem 1rem;
-    font-size: 1.25rem;
-    line-height: 50px;
-  }
-  nav ul li a {
-    text-decoration: none;
-    color: white;
-  }
-  nav .icon {
-    display: none;
-    background: none;
-    border: none;
-    margin: 1rem;
-  }
-  nav .icon img {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-  .account {
-    width: 50px;
-    height: 50px;
-    border-radius: 2rem;
-  }
-  @media screen and (max-width: 600px) {
-    nav ul {
-      width: 40%;
-    }
-    nav li a {
-      display: none;
-    }
-    nav ul li {
-      margin: 0;
-      padding: 0.25rem 0.5rem;
-      font-size: 1.25rem;
-      line-height: 1.5rem;
-    }
-    nav button.icon {
-      display: block;
-      padding: 0.25rem;
-    }
-    nav button:hover {
-      outline: 1px solid white;
-    }
-  }
-
-  @media screen and (max-width: 600px) {
-    nav.responsive {
-      position: absolute;
-      flex-wrap: wrap;
-      margin-bottom: auto;
-    }
-    nav.responsive :nth-child(1) {order: 1;}
-    nav.responsive :nth-child(2) {order: 3;}
-    nav.responsive :nth-child(3) {order: 2;}
-
-    nav.responsive ul li:nth-child(1) {order: 3;}
-    nav.responsive ul li:nth-child(2) {order: 2;}
-    nav.responsive ul li:nth-child(3) {order: 1;}
-
-    nav.responsive .icon {
-      position: relative;
-      top: 0;
-      right: 0;
-    }
-    nav.responsive ul {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-    nav.responsive li a {
-      float: none;
-      display: block;
-      text-align: right;
-    }
-  }
-  
-  /* search div container */
-  .search {
-    display: inline-grid; 
-    grid-template-columns: auto auto; 
-    column-gap: 0.5rem;
-    align-items: center;
-  }
-  .search p:hover {
-    text-decoration: underline;
-  }
-  .search img {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-</style>

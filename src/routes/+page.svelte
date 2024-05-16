@@ -18,7 +18,7 @@
 <div class="bg-[url('/bg-home.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center">
   <h1 class="text-3xl md:text-4xl lg:text-5xl p-1">Drive your passion</h1>
   <h2 class="text-base md:text-lg lg:text-xl p-1">Book, create and view events through Xcelerate. An all in one place for all car enthusiasts.</h2>
-  <button class="p-1" on:click={() => goto("/events")}>Explore Events</button>
+  <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg m-6" on:click={() => goto("/events")}>Explore Events</button>
 </div>
 
 <!-- What We Do -->
@@ -74,7 +74,7 @@
         <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index > 0 ? index - 1 : $allCarsStore.length - 1; }}>
           <img src="/chevron-left.svg" alt="Left Arrow">
         </button>
-        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-44 md:mt-32" on:click={() => goto(`/garage/${index+1}`)}>
+        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-auto" on:click={() => goto(`/garage/${index+1}`)}>
           <img src={$allCarsStore[index].coverPhoto} alt="My Garage Car">
         </button>
         <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index < $allCarsStore.length - 1 ? index + 1 : 0; }}>
