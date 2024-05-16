@@ -14,6 +14,16 @@
   let smallScreen: boolean = false;
   $: if (browser) window.onresize = () => { smallScreen = window.screen.width < 768; }
 
+  const toggleNav = () => {
+    if (smallScreen) {
+      const navbar = document.getElementById('navbar-container');
+      clicked = !clicked;
+      if (clicked) navbar?.classList.remove('hidden');
+      else navbar?.classList.add('hidden');
+      return true;
+    }
+  }
+
   const hangleSignOut = async () => {
     toggleNav();
     await logout();
@@ -28,16 +38,6 @@
     $bookedResultList = [];
     goto("/login");
     addToast("success", "Do visit us again :)");
-  }
-
-  const toggleNav = () => {
-    if (smallScreen) {
-      const navbar = document.getElementById('navbar-container');
-      clicked = !clicked;
-      if (clicked) navbar?.classList.remove('hidden');
-      else navbar?.classList.add('hidden');
-      return true;
-    }
   }
 </script>
 
