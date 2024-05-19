@@ -3,11 +3,6 @@
 @tailwind utilities;
 
 :root {
-  --homebg1: url('/bg-home.jpg');
-  --homebg2: url('/bg-what-we-do.jpg');
-  --homebg3: url('/bg-my-garage.jpg');
-  --homebg4: url('/bg-message-us.jpg');
-  --bgposition: center;
   --bgrepeat: no-repeat;
   --bgwidth: 100%;
   --bgheight: 100%;

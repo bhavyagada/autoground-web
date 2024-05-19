@@ -131,7 +131,7 @@
   onDestroy(() => phone_confirmation_store.set(null));
 </script>
 
-<div class="bg-[url('/bg-home.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat w-screen h-screen flex flex-col justify-center items-center">
+<div class="bg-[url('src/lib/assets/bg-home.avif')] bg-[length:100%_100%] bg-center bg-no-repeat w-screen h-screen flex flex-col justify-center items-center">
   {#if form === "login"}
     <div class="flex flex-col justify-center items-center rounded-2xl w-5/6 md:w-4/6 lg:w-1/2 xl:w-2/5 h-3/5 xl:h-4/6 bg-[#3b3b3be6]">
       <h1 class="text-white text-3xl">Sign In/Up</h1>
