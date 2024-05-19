@@ -1,5 +1,4 @@
 <script lang="ts">
-  import logo from "$lib/assets/logo-xcelerate.svg";
   import { goto } from "$app/navigation";
   import { add_toast, auth_store } from "$lib/stores/auth";
   import { all_cars_store } from "$lib/stores/car";
@@ -16,14 +15,14 @@
 </script>
 
 <!-- Main page-->
-<div class="bg-[url('/bg-home.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center">
+<div class="bg-[url('/src/lib/assets/bg-home.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center">
   <h1 class="text-3xl md:text-4xl lg:text-5xl p-1">Drive your passion</h1>
   <h2 class="text-base md:text-lg lg:text-xl p-1">Book, create and view events through Xcelerate. An all in one place for all car enthusiasts.</h2>
   <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg m-6" on:click={() => goto("/events")}>Explore Events</button>
 </div>
 
 <!-- What We Do -->
-<div class="bg-[url('/bg-what-we-do.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat flex flex-col justify-center items-center text-white">
+<div class="bg-[url('/src/lib/assets/bg-what-we-do.avif')] bg-[length:100%_100%] bg-center bg-no-repeat flex flex-col justify-center items-center text-white">
   <h1 class="text-2xl md:text-3xl lg:text-4xl p-1 mt-16">What We Do</h1>
   <div class="flex flex-col lg:flex-row w-4/5 lg:w-full lg:justify-evenly">
     <div class="flex flex-col justify-center items-center bg-white/20 text-lg rounded-2xl p-6 lg:p-8 my-8 lg:my-20 lg:w-[30%]">
@@ -62,7 +61,7 @@
 </div>
 
 <!-- My Garage -->
-<div class="bg-[url('/bg-my-garage.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center mygarage">
+<div class="bg-[url('/src/lib/assets/bg-my-garage.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center mygarage">
   <div class="justify-self-start mt-10 mb-8">
     <h1 class="text-2xl md:text-3xl lg:text-4xl p-1">My Garage</h1>
     {#if !$auth_store.isLoggedIn}
@@ -102,22 +101,22 @@
 </div>
 
 <!-- Message Us -->
-<div class="bg-[url('/bg-message-us.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white messageus">
+<div class="bg-[url('/src/lib/assets/bg-message-us.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white messageus">
   <h1 class="text-2xl md:text-3xl lg:text-4xl p-1 mt-16 mb-12">Message Us</h1>
   <form class="flex flex-col justify-center w-4/5 md:w-1/3 lg:w-1/2 xl:w-1/3">
     <label class="p-2 text-lg" for="name">Name</label>
-    <input class="p-2 bg-white/20 rounded-xl text-lg w-full h-12" type="text" name="name" />
+    <input class="p-2 bg-white/20 rounded-xl text-lg w-full h-12" type="text" id="name" />
     <label class="p-2 text-lg" for="email">Email</label>
-    <input class="p-2 bg-white/20 rounded-xl text-lg w-full h-12" type="email" name="email" />
+    <input class="p-2 bg-white/20 rounded-xl text-lg w-full h-12" type="email" id="email" />
     <label class="p-2 text-lg" for="message">Message</label>
-    <textarea class="p-2 bg-white/20 rounded-xl text-lg w-full" name="message" rows="8" cols="10"></textarea>
+    <textarea class="p-2 bg-white/20 rounded-xl text-lg w-full" id="message" rows="8" cols="10"></textarea>
     <button class="bg-white text-xl text-black rounded-2xl font-medium h-12 w-full my-12 p-2" type="submit">Submit</button>
   </form>
 </div>
 
 <!-- Footer -->
 <div class="flex flex-col lg:flex-row justify-evenly bg-black text-white p-4">
-  <img class="w-28 h-28 self-center" src={logo} alt="Xcelerate Logo">
+  <img class="w-28 h-28 self-center" src='/src/lib/assets/logo-xcelerate.svg' alt="Xcelerate Logo">
   <div>
     <p class="font-bold text-lg mt-auto text-center py-4">Contact</p>
     <address class="text-center py-1">
