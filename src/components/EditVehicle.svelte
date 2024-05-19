@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { callCloudFunction, uploadImage } from "$lib/functions/util";
+  import { call_cloud_function, upload_image } from "$lib/functions/util";
   import cars from "/src/data/cars.json";
   import bikes from "/src/data/bikes.json";
   import trucks from "/src/data/trucks.json";
   import Cropper from 'svelte-easy-crop';
-  import { addToast } from "$lib/stores/auth";
-  import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
+  import { add_toast } from "$lib/stores/auth";
+  import { all_cars_store, car_store, default_car } from "$lib/stores/car";
   import { CloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
-  import { userStore } from "$lib/stores/auth";
+  import { user_store } from "$lib/stores/auth";
   import { page } from "$app/stores";
   import { goto, replaceState } from "$app/navigation";
 
@@ -17,11 +17,11 @@
   const id = Number(carId);
   let isLoading: boolean = false;
 
-  let photos: string[] = $carStore.photos ? $carStore.photos : [];
+  let photos: string[] = $car_store.photos ? $car_store.photos : [];
   let otherPhoto1: any = photos.length >= 1 ? photos[0] : null;
   let otherPhoto2: any = photos.length >= 2 ? photos[1] : null;
   let otherPhoto3: any = photos.length >= 3 ? photos[2] : null;
-  let coverPhoto: any = $carStore.coverPhoto ? $carStore.coverPhoto : null;
+  let coverPhoto: any = $car_store.coverPhoto ? $car_store.coverPhoto : null;
   let pixelCrop: any;
   let cropContainer: any;
   let image: any = null;
@@ -29,13 +29,13 @@
   let zoom = 1;
   console.log(otherPhoto1, otherPhoto2, otherPhoto3);
 
-  let selectedType: string = $carStore.vehicleType ? $carStore.vehicleType : "car";
-  let selectedYear: string | number = $carStore.year ? $carStore.year : "";
-  let selectedMake: string = $carStore.make ? $carStore.make : "";
-  let selectedModel: string = $carStore.model ? $carStore.model : "";
-  let previousMake: string = $carStore.make ? $carStore.make : "";
-  let previousModel: string = $carStore.model ? $carStore.model : "";
-  let name: string = $carStore.name ? $carStore.name : "";
+  let selectedType: string = $car_store.vehicleType ? $car_store.vehicleType : "car";
+  let selectedYear: string | number = $car_store.year ? $car_store.year : "";
+  let selectedMake: string = $car_store.make ? $car_store.make : "";
+  let selectedModel: string = $car_store.model ? $car_store.model : "";
+  let previousMake: string = $car_store.make ? $car_store.make : "";
+  let previousModel: string = $car_store.model ? $car_store.model : "";
+  let name: string = $car_store.name ? $car_store.name : "";
 
   const getYears = () => {
     const startYear = 1900;
@@ -92,8 +92,8 @@
     document.addEventListener('click', (e: any) => {
       if (!e.target.closest('.crop-container')) {
         image = null;
-        if (!$carStore.coverPhoto && coverPhoto.includes("C:\\fakepath")) coverPhoto = null;
-        else coverPhoto = $carStore.coverPhoto;
+        if (!$car_store.coverPhoto && coverPhoto.includes("C:\\fakepath")) coverPhoto = null;
+        else coverPhoto = $car_store.coverPhoto;
         if (photos.length < 1 && otherPhoto1.includes("C:\\fakepath")) otherPhoto1 = null;
         else otherPhoto1 = photos[0];
         if (photos.length < 2 && otherPhoto2.includes("C:\\fakepath")) otherPhoto2 = null;
@@ -157,7 +157,7 @@
   }
 
   $: console.log(photos);
-  $: console.log($carStore);
+  $: console.log($car_store);
 
   const handleTypeChange = (type: string) => {
     selectedType = type;
@@ -167,12 +167,12 @@
   }
 
   const handleClientSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     return false;
   };
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
@@ -180,7 +180,7 @@
   const handleCloudUploadPhoto = async (photo: any) => {
     console.log(photo);
     const imageFile = dataURItoFile(photo);
-    return await uploadImage(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
+    return await upload_image(imageFile, `Users/${$user_store.userId}/CarPhotos/${Date.now()}`);
   }
 
   const handleCarEdit = async () => {
@@ -195,7 +195,7 @@
     isLoading = true;
     if (coverPhoto && !coverPhoto.startsWith("https://firebasestorage")) {
       coverPhoto = await handleCloudUploadPhoto(coverPhoto);
-      $carStore = { ...$carStore, coverPhoto };
+      $car_store = { ...$car_store, coverPhoto };
     }
     if (otherPhoto1 && !otherPhoto1.startsWith("https://firebasestorage")) {
       otherPhoto1 = await handleCloudUploadPhoto(otherPhoto1);
@@ -218,21 +218,21 @@
       const year = Number(selectedYear);
       const make = selectedMake;
       const model = selectedModel;
-      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName, photos }
+      $car_store = { ...$car_store, year, make, model, vehicleType, name, userId: $user_store.userId, userName: $user_store.userName, photos }
     }
     let makeModelChanged: boolean = false;
     if (previousMake !== selectedMake || previousModel !== selectedModel) {
       makeModelChanged = true;
     }
     try {
-      console.log($carStore);
-      const result = await callCloudFunction(CloudFunctions.UPDATE_CAR_IN_GARAGE, { carData: $carStore, makeModelChanged });
+      console.log($car_store);
+      const result = await call_cloud_function(CloudFunctions.UPDATE_CAR_IN_GARAGE, { carData: $car_store, makeModelChanged });
       if (result?.isError) {
         return handleServerSideError("Couldn't Edit Car! Please Try Again!");
       } else {
-        addToast("success", "Vehicle Updated Successfully!");
-        $carStore = result?.result.data.carData;
-        $allCarsStore[id-1] = $carStore;
+        add_toast("success", "Vehicle Updated Successfully!");
+        $car_store = result?.result.data.carData;
+        $all_cars_store[id-1] = $car_store;
         isLoading = false;
         replaceState('', { addVehicleModal: false, editVehicleModal: false });
         return true;
@@ -245,12 +245,12 @@
   const handleCarDelete = async () => {
     try {
       isLoading = true;
-      const result = await callCloudFunction(CloudFunctions.DELETE_CAR_IN_GARAGE, { carId: $carStore.carId });
+      const result = await call_cloud_function(CloudFunctions.DELETE_CAR_IN_GARAGE, { carId: $car_store.carId });
       if (result?.isError) {
         return handleServerSideError("Couldn't Delete Car! Please Try Again!");
       } else {
-        $allCarsStore = $allCarsStore.filter((car) => car.carId !== $carStore.carId);
-        $carStore = defaultCar;
+        $all_cars_store = $all_cars_store.filter((car) => car.carId !== $car_store.carId);
+        $car_store = default_car;
         isLoading = false;
         replaceState('', { addVehicleModal: false, editVehicleModal: false });
         goto("/garage");

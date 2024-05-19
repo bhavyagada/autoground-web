@@ -1,25 +1,25 @@
 <script lang="ts">
-  import { userStore } from "$lib/stores/auth";
-  import { callCloudFunction, uploadImage } from "$lib/functions/util";
-  import { addToast, authData } from "$lib/stores/auth";
+  import { user_store } from "$lib/stores/auth";
+  import { call_cloud_function, upload_image } from "$lib/functions/util";
+  import { add_toast, auth_store } from "$lib/stores/auth";
   import UpdateForm from "../../components/UpdateForm.svelte";
   import { AuthProviderId } from "$lib/types";
   import { CloudFunctions } from "$lib/functions/all";
 
-  let userPhoto: any = $userStore.userPhoto ? $userStore.userPhoto : "/default-photo.svg";
-  let name: string | null = $userStore.name ? $userStore.name : "";
-  let userName: string | null = $userStore.userName ? $userStore.userName : "";
-  let phoneNumber: string | null = $userStore.phone ? $userStore.phone : "";
-  let email: string | null = $userStore.email ? $userStore.email : "" ;
-  let bio: string | null = $userStore.bio ? $userStore.bio : "" ;
+  let userPhoto: any = $user_store.userPhoto ? $user_store.userPhoto : "/default-photo.svg";
+  let name: string | null = $user_store.name ? $user_store.name : "";
+  let userName: string | null = $user_store.userName ? $user_store.userName : "";
+  let phoneNumber: string | null = $user_store.phone ? $user_store.phone : "";
+  let email: string | null = $user_store.email ? $user_store.email : "" ;
+  let bio: string | null = $user_store.bio ? $user_store.bio : "" ;
   let type: any;
 
-  $: userPhoto = $userStore.userPhoto;
-  $: name = $userStore.name;
-  $: userName = $userStore.userName;
-  $: phoneNumber = $userStore.phone;
-  $: email = $userStore.email;
-  $: bio = $userStore.bio;
+  $: userPhoto = $user_store.userPhoto;
+  $: name = $user_store.name;
+  $: userName = $user_store.userName;
+  $: phoneNumber = $user_store.phone;
+  $: email = $user_store.email;
+  $: bio = $user_store.bio;
 
   let profilePhoto: HTMLElement;
   const handleFileUpload = () => {
@@ -28,13 +28,13 @@
 
   const loadFile = async (e: any) => {
     const imageFile: any = e.target.files[0];
-    userPhoto = await uploadImage(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
-    const result = await callCloudFunction(CloudFunctions.UPDATE_USER_PHOTO, { userPhoto: userPhoto });
+    userPhoto = await upload_image(imageFile, `UsersProfilePhoto/${$auth_store?.user?.uid}`);
+    const result = await call_cloud_function(CloudFunctions.UPDATE_USER_PHOTO, { userPhoto: userPhoto });
     if (result?.isError) {
-      addToast("error", "Server Error! Please Try Again!");
+      add_toast("error", "Server Error! Please Try Again!");
     } else {
-      addToast("success", "Photo updated successfully!");
-      $userStore = { ...$userStore, userPhoto };
+      add_toast("success", "Photo updated successfully!");
+      $user_store = { ...$user_store, userPhoto };
     }
   }
 
@@ -57,14 +57,14 @@
 </div>
 <div class="background">
   <div class={clicked ? "blured banner" : "banner"}>
-    <img class="banner-photo" alt="Profile" src={$userStore.userPhoto}>
+    <img class="banner-photo" alt="Profile" src={$user_store.userPhoto}>
     <div class="name-username">
-      <p>{$userStore.name}</p>
-      <p>{$userStore.userName}</p>
+      <p>{$user_store.name}</p>
+      <p>{$user_store.userName}</p>
     </div>
     <div class="points">
       <img alt="Points Icon" src="/points-icon.svg">
-      <p>{$userStore.points} points</p>
+      <p>{$user_store.points} points</p>
     </div>
     <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={userName}">
   </div>
@@ -84,14 +84,14 @@
           </div>
           <div class="phonenumber">
             <label for="phone">Phone Number</label>
-            <input bind:value={phoneNumber} on:click|preventDefault={openPhoneModal} id="phone" class={$authData.user?.providerData[0].providerId === AuthProviderId.PHONE ? "phone" : "phone edit"} type="tel" name="phonenumber" disabled={$authData.user?.providerData[0].providerId === AuthProviderId.PHONE}>
+            <input bind:value={phoneNumber} on:click|preventDefault={openPhoneModal} id="phone" class={$auth_store.user?.providerData[0].providerId === AuthProviderId.PHONE ? "phone" : "phone edit"} type="tel" name="phonenumber" disabled={$auth_store.user?.providerData[0].providerId === AuthProviderId.PHONE}>
           </div>
         </div>
       </div>
     </div>
     <div class="email">
       <label for="email">Email</label>
-      <input bind:value={email} on:click|preventDefault={openEmailModal} class={$authData.user?.providerData[0].providerId === AuthProviderId.GOOGLE || $authData.user?.providerData[0].providerId === AuthProviderId.APPLE ? "" : "edit"} type="email" name="email" disabled={$authData.user?.providerData[0].providerId === AuthProviderId.GOOGLE || $authData.user?.providerData[0].providerId === AuthProviderId.APPLE}>
+      <input bind:value={email} on:click|preventDefault={openEmailModal} class={$auth_store.user?.providerData[0].providerId === AuthProviderId.GOOGLE || $auth_store.user?.providerData[0].providerId === AuthProviderId.APPLE ? "" : "edit"} type="email" name="email" disabled={$auth_store.user?.providerData[0].providerId === AuthProviderId.GOOGLE || $auth_store.user?.providerData[0].providerId === AuthProviderId.APPLE}>
     </div>
     <div class="bio">
       <label for="bio">Bio</label>

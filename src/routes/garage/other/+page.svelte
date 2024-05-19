@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { otherUserStore } from "$lib/stores/auth";
-  import { otherAllCarsStore } from "$lib/stores/car";
+  import { other_user_store } from "$lib/stores/auth";
+  import { other_all_cars_store } from "$lib/stores/car";
   import { fade } from "svelte/transition";
   
   const vehicleIcons: any = {
@@ -11,21 +11,21 @@
 </script>
 <div class="background">
   <div class="banner">
-    <img class="banner-photo" alt="Profile" src={$otherUserStore.userPhoto}>
+    <img class="banner-photo" alt="Profile" src={$other_user_store.userPhoto}>
     <div class="name-username">
-      <p>{$otherUserStore.name}</p>
-      <p>@{$otherUserStore.userName}</p>
+      <p>{$other_user_store.name}</p>
+      <p>@{$other_user_store.userName}</p>
     </div>
     <div class="points">
       <img alt="Points Icon" src="/points-icon.svg">
-      <p>{$otherUserStore.points} points</p>
+      <p>{$other_user_store.points} points</p>
     </div>
-    <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$otherUserStore.userName}">
+    <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$other_user_store.userName}">
   </div>
   <div class="vehicles">
     <h1>Vehicles</h1>
     <div transition:fade class="vehicle-results-container">
-      {#each $otherAllCarsStore as result}
+      {#each $other_all_cars_store as result}
         <div id={result.userId} class="vehicle-results">
           <div class="car-name">
             <img src={result.vehicleType ? vehicleIcons[result.vehicleType] : vehicleIcons["car"]} alt="Vehicle Type">
@@ -43,7 +43,7 @@
           </div>
           <div class="points">
             <img alt="Points Icon" src="/points-icon.svg">
-            <p>{$otherUserStore.points} points</p>
+            <p>{$other_user_store.points} points</p>
           </div>
         </div>
       {/each}

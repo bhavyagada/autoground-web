@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { otherUserStore } from "$lib/stores/auth";
-  import { otherAllCarsStore } from "$lib/stores/car";
+  import { other_user_store } from "$lib/stores/auth";
+  import { other_all_cars_store } from "$lib/stores/car";
   import { fade } from "svelte/transition";
   
   const vehicleIcons: any = {
@@ -9,23 +9,34 @@
     truck: "/truck.svg"
   }
 </script>
-<div class="background">
-  <div class="banner">
-    <img class="banner-photo" alt="Profile" src={$otherUserStore.userPhoto}>
-    <div class="name-username">
-      <p>{$otherUserStore.name}</p>
-      <p>@{$otherUserStore.userName}</p>
+
+<div class="bg-[#181818] flex flex-col items-center w-screen h-screen text-white ">
+  <div class="flex flex-col md:flex-row justify-center items-center w-full md:w-1/2 xl:w-1/3 2xl:w-1/4 mt-32">
+    <img class="w-16 h-16 rounded-full" alt="Profile" src={$other_user_store.userPhoto}>
+    <div class="flex justify-evenly md:justify-between w-full my-4">
+      <div class="md:ml-4">
+        <p class="text-lg font-bold md:py-1">{$other_user_store.name}</p>
+        <p class="text-white/60 md:py-1">@{$other_user_store.userName}</p>
+      </div>
+      <div class="flex justify-center items-center md:mr-4">
+        <img class="w-6 h-6 self-center mr-2" alt="Points Icon" src="/points-icon.svg">
+        <p>{$other_user_store.points} points</p>
+      </div>
     </div>
-    <div class="points">
-      <img alt="Points Icon" src="/points-icon.svg">
-      <p>{$otherUserStore.points} points</p>
-    </div>
-    <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$otherUserStore.userName}">
+    <img class="qr" alt="Username QR Code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$other_user_store.userName}">
   </div>
+  <!-- .vehicles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    margin-top: 3rem;
+  } -->
   <div class="vehicles">
-    <h1>Vehicles</h1>
+    <h1 class="text-2xl">Vehicles</h1>
     <div transition:fade class="vehicle-results-container">
-      {#each $otherAllCarsStore as result}
+      {#each $other_all_cars_store as result}
         <div id={result.userId} class="vehicle-results">
           <div class="car-name">
             <img src={result.vehicleType ? vehicleIcons[result.vehicleType] : vehicleIcons["car"]} alt="Vehicle Type">
@@ -43,7 +54,7 @@
           </div>
           <div class="points">
             <img alt="Points Icon" src="/points-icon.svg">
-            <p>{$otherUserStore.points} points</p>
+            <p>{$other_user_store.points} points</p>
           </div>
         </div>
       {/each}
@@ -52,57 +63,14 @@
 </div>
 
 <style>
-  .background {
-    width: var(--bgwidth);
-    height: var(--bgheight);
-    background-color: rgb(24, 24, 24);
-    color: white;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
-    align-items: center;
-  }
-  .banner {
-    background-color: rgb(24, 24, 24);
-    border-radius: 1rem;
-    padding: 1rem 0;
-    width: 90vw;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    position: relative;
-  }
-  .banner-photo {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 3rem;
-    align-self: center;
-  }
-  .points {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .points img {
-    width: 1.5rem;
-    height: 1.5rem;
-    align-self: center;
-  }
-  h1 {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    margin-top: 4rem;
-  }
-  .vehicles {
+  /* .vehicles {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 95%;
     margin-top: 3rem;
-  }
+  } */
   .vehicle-results-container {
     display: flex;
     flex-wrap: wrap;
@@ -160,25 +128,7 @@
     width: 65px;
     height: 65px;
   }
-  @media all and (min-width: 600px) {
-    .background {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-    }
-  }
   @media all and (min-width: 900px) {
-    .banner {
-      width: 50%;
-      margin-top: 8rem;
-    }
-    .points {
-      flex-direction: row;
-    }
-    .points > p {
-      padding: 0 0.5rem;
-    }
     .vehicles {
       width: 90%;
     }
@@ -192,15 +142,6 @@
   @media all and (min-width: 1200px) {
     h1 {
       margin: 0;
-    }
-    .banner {
-      width: 40%;
-    }
-    .points {
-      flex-direction: row;
-    }
-    .points > p {
-      padding: 0 0.5rem;
     }
     .vehicle-results {
       padding: 0.75rem;

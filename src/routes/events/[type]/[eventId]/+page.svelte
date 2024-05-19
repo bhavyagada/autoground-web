@@ -3,36 +3,36 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { CloudFunctions } from "$lib/functions/all";
-  import { callCloudFunction } from "$lib/functions/util";
-  import { addToast, userStore } from "$lib/stores/auth";
-  import { allResultList, bookedResultList } from "$lib/stores/events";
+  import { call_cloud_function } from "$lib/functions/util";
+  import { add_toast, user_store } from "$lib/stores/auth";
+  import { all_result_list, booked_result_list } from "$lib/stores/events";
   import Loading from "../../../../components/Loading.svelte";
 
   const { type, eventId } = $page.params;
   const id = Number(eventId) - 1;
   if (browser) {
     if (id < 0) goto("/events");
-    if (type === "all" && (!$allResultList.length || id >= $allResultList.length)) goto("/events");
-    else if (type === "booked" && (!$bookedResultList.length || id >= $bookedResultList.length)) goto("/events");
+    if (type === "all" && (!$all_result_list.length || id >= $all_result_list.length)) goto("/events");
+    else if (type === "booked" && (!$booked_result_list.length || id >= $booked_result_list.length)) goto("/events");
   }
   let eventDetails: any;
-  if (type === "all") eventDetails = $allResultList[id];
-  else if (type === "booked") eventDetails = $bookedResultList[id].eventDescription;
+  if (type === "all") eventDetails = $all_result_list[id];
+  else if (type === "booked") eventDetails = $booked_result_list[id].eventDescription;
 
   let booked: boolean = false;
   let isLoading: boolean = false;
   let clicked: boolean = false;
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
 
   const handleEventBooking = async () => {
-    const eventsData = $allResultList[id];
+    const eventsData = $all_result_list[id];
     const sendData = { 
-      userId: $userStore.userId, 
+      userId: $user_store.userId, 
       eventId: eventsData.eventId,
       created: 0,
       totalPrice: 0,
@@ -50,7 +50,7 @@
     }
     try {
       isLoading = true;
-      const response = await callCloudFunction(CloudFunctions.BOOK_FREE_EVENT, sendData);
+      const response = await call_cloud_function(CloudFunctions.BOOK_FREE_EVENT, sendData);
       if (response.isError) {
         if (response.errorType === "[already_booked]") return handleServerSideError("You are already attending this event!");
         else return handleServerSideError("Server Error! Please Try Again!");
@@ -67,7 +67,7 @@
 
   const handleCancelConfirmation = () => {
     if (type === "booked") {
-      if ($bookedResultList[id].status === "cancelled") addToast("error", "Your ticket is already Cancelled!");
+      if ($booked_result_list[id].status === "cancelled") add_toast("error", "Your ticket is already Cancelled!");
       else clicked = !clicked;
     }
   }
@@ -75,14 +75,14 @@
   const handleCancelTicket = async () => {
     try {
       isLoading = true;
-      const data = $bookedResultList[id];
-      const res = await callCloudFunction(CloudFunctions.CANCEL_FREE_EVENT_TICKET, { ticketsBooked: data.ticketsBooked, bookingId: data.bookingId, eventId: data.eventId });
+      const data = $booked_result_list[id];
+      const res = await call_cloud_function(CloudFunctions.CANCEL_FREE_EVENT_TICKET, { ticketsBooked: data.ticketsBooked, bookingId: data.bookingId, eventId: data.eventId });
       if (res?.isError) return handleServerSideError("Error Loading Data! Try Again!");
       else {
-        $bookedResultList[id] = { ...data, status: "cancelled"};
+        $booked_result_list[id] = { ...data, status: "cancelled"};
         isLoading = false;
         clicked = false;
-        addToast("success", "Event Ticket Cancelled Successfully!");
+        add_toast("success", "Event Ticket Cancelled Successfully!");
         return true;
       }
     } catch (err) {

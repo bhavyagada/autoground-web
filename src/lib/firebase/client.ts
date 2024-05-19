@@ -13,7 +13,7 @@ import {
   PUBLIC_FIREBASE_MEASUREMENT_ID
 } from "$env/static/public";
 import { browser } from "$app/environment";
-import { authData } from "$lib/stores/auth";
+import { auth_store } from "$lib/stores/auth";
 
 // initialize firebase client app
 const makeApp = (): FirebaseApp => {
@@ -54,7 +54,7 @@ if (browser) {
       secure: true
     });
 
-    authData.update((curr) => { 
+    auth_store.update((curr) => { 
       return { ...curr, user: newUser };
     });
   });

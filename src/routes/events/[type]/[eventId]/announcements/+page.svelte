@@ -1,12 +1,12 @@
 <script lang="ts">
   import { CloudFunctions } from "$lib/functions/all";
-  import { callCloudFunction } from "$lib/functions/util";
-  import { addToast } from "$lib/stores/auth";
+  import { call_cloud_function } from "$lib/functions/util";
+  import { add_toast } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
   import Loading from "../../../../../components/Loading.svelte";
   import { page } from "$app/stores";
-  import { bookedResultList } from "$lib/stores/events";
+  import { booked_result_list } from "$lib/stores/events";
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
 
@@ -22,12 +22,12 @@
   const { eventId } = $page.params;
   const id = Number(eventId) - 1;
   if (browser) {
-    if (id < 0 || id >= $bookedResultList.length) goto("/events");
+    if (id < 0 || id >= $booked_result_list.length) goto("/events");
   }
   let isLoading: boolean = false;
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
@@ -35,7 +35,7 @@
   const getAnnouncements = async () => {
     try {
       isLoading = true;
-      const results = await callCloudFunction(CloudFunctions.GET_EVENT_ANNOUNCEMENTS, { eventId: $bookedResultList[id].eventId });
+      const results = await call_cloud_function(CloudFunctions.GET_EVENT_ANNOUNCEMENTS, { eventId: $booked_result_list[id].eventId });
       if (results?.isError) return handleServerSideError("Error Loading Data! Try Again!");
       else {
         $announcementData = results?.result.data.announcements;;

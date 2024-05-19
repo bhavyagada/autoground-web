@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { allCarsStore } from "$lib/stores/car";
+  import { all_cars_store } from "$lib/stores/car";
   import AddModification from "../../../../components/AddModification.svelte";
   import type { CarData, CarModificationData } from "$lib/types";
 
@@ -16,7 +16,7 @@
   }
 
   let add: boolean = false;
-  let thisCar: CarData = $allCarsStore[id-1];
+  let thisCar: CarData = $all_cars_store[id-1];
   let mods: CarModificationData[] = [];
 
   $: thisCarMods = thisCar.modifications ? thisCar.modifications : [];

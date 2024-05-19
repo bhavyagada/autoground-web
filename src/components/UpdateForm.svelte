@@ -1,8 +1,8 @@
 <script lang="ts">
   import { CloudFunctions } from "$lib/functions/all";
-  import { callCloudFunction } from "$lib/functions/util";
-  import { addToast } from "$lib/stores/auth";
-  import { userStore } from "$lib/stores/auth";
+  import { call_cloud_function } from "$lib/functions/util";
+  import { add_toast } from "$lib/stores/auth";
+  import { user_store } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import Loading from "./Loading.svelte";
 
@@ -16,11 +16,11 @@
   const usernameRegex = /^[^\s]{2,20}$/;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
-  let name: string = $userStore.name ? $userStore.name : "";
-  let userName: string = $userStore.userName ? $userStore.userName : "";
-  let bio: string = $userStore.bio ? $userStore.bio : "" ;
-  let phone: string = $userStore.phone ? $userStore.phone : "";
-  let email: string = $userStore.email ? $userStore.email : "";
+  let name: string = $user_store.name ? $user_store.name : "";
+  let userName: string = $user_store.userName ? $user_store.userName : "";
+  let bio: string = $user_store.bio ? $user_store.bio : "" ;
+  let phone: string = $user_store.phone ? $user_store.phone : "";
+  let email: string = $user_store.email ? $user_store.email : "";
   let isLoading = false;
   let size = '60';
   let isValidName: boolean = false;
@@ -51,29 +51,29 @@
   }
 
   const handleClientSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     return false;
   };
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
 
   const handleToggleModal = (input: string) => {
-    addToast("success", `${input} updated successfully!`);
+    add_toast("success", `${input} updated successfully!`);
     isLoading = false;
     toggleModal();
   }
 
   const handleUpdate = async (input: string, valid: boolean, validMessage: string, cloudFunction: string) => {
     let same;
-    if (input === "name") same = name === $userStore.name;
-    else if (input === "userName") same = userName === $userStore.userName;
-    else if (input === "bio") same = bio === $userStore.bio;
-    else if (input === "phone") same = phone === $userStore.phone;
-    else if (input === "email") same = email === $userStore.email;
+    if (input === "name") same = name === $user_store.name;
+    else if (input === "userName") same = userName === $user_store.userName;
+    else if (input === "bio") same = bio === $user_store.bio;
+    else if (input === "phone") same = phone === $user_store.phone;
+    else if (input === "email") same = email === $user_store.email;
     if (!valid) {
       return handleClientSideError(validMessage);
     } else if (same) {
@@ -87,15 +87,15 @@
       else if (input === "phone") update = { phone: phone };
       else if (input === "email") update = { email: email };
       try {
-        const result = await callCloudFunction(cloudFunction, update);
+        const result = await call_cloud_function(cloudFunction, update);
         if (result?.isError) {
           return handleServerSideError("Server Error! Please Try Again!");
         } else {
-          if (input === "name") $userStore = { ...$userStore, name };
-          else if (input === "userName") $userStore = { ...$userStore, userName };
-          else if (input === "bio") $userStore = { ...$userStore, bio };
-          else if (input === "phone") $userStore = { ...$userStore, phone: iti.getNumber(), countryCode: iti.getSelectedCountryData().dialCode };
-          else if (input === "email") $userStore = { ...$userStore, email };
+          if (input === "name") $user_store = { ...$user_store, name };
+          else if (input === "userName") $user_store = { ...$user_store, userName };
+          else if (input === "bio") $user_store = { ...$user_store, bio };
+          else if (input === "phone") $user_store = { ...$user_store, phone: iti.getNumber(), countryCode: iti.getSelectedCountryData().dialCode };
+          else if (input === "email") $user_store = { ...$user_store, email };
           handleToggleModal(input.charAt(0).toUpperCase() + input.slice(1));
         }
       } catch (err) {

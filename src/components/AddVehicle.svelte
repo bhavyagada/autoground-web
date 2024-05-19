@@ -1,15 +1,15 @@
 <script lang="ts">
-  import { callCloudFunction, uploadImage } from "$lib/functions/util";
+  import { call_cloud_function, upload_image } from "$lib/functions/util";
   import cars from "/src/data/cars.json";
   import bikes from "/src/data/bikes.json";
   import trucks from "/src/data/trucks.json";
   import Cropper from 'svelte-easy-crop';
-  import { addToast } from "$lib/stores/auth";
-  import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
+  import { add_toast } from "$lib/stores/auth";
+  import { all_cars_store, car_store, default_car } from "$lib/stores/car";
   import { CloudFunctions } from "$lib/functions/all";
   import Loading from "./Loading.svelte";
   import { VehicleType } from "$lib/types";
-  import { userStore } from "$lib/stores/auth";
+  import { user_store } from "$lib/stores/auth";
   import { goto, replaceState } from "$app/navigation";
 
   let isLoading: boolean = false;
@@ -145,7 +145,7 @@
   }
 
   $: console.log(photos);
-  $: console.log($carStore);
+  $: console.log($car_store);
 
   const handleTypeChange = (type: string) => {
     selectedType = type;
@@ -155,19 +155,19 @@
   }
 
   const handleClientSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     return false;
   };
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
 
   const handleCloudUploadPhoto = async (photo: any) => {
     const imageFile = dataURItoFile(photo);
-    return await uploadImage(imageFile, `Users/${$userStore.userId}/CarPhotos/${Date.now()}`);
+    return await upload_image(imageFile, `Users/${$user_store.userId}/CarPhotos/${Date.now()}`);
   }
 
   const handleSubmit = async () => {
@@ -182,7 +182,7 @@
     isLoading = true;
     if (coverPhoto) {
       coverPhoto = await handleCloudUploadPhoto(coverPhoto);
-      $carStore = { ...$carStore, coverPhoto };
+      $car_store = { ...$car_store, coverPhoto };
     }
     if (otherPhoto1) {
       otherPhoto1 = await handleCloudUploadPhoto(otherPhoto1);
@@ -205,16 +205,16 @@
       const year = Number(selectedYear);
       const make = selectedMake;
       const model = selectedModel;
-      $carStore = { ...$carStore, year, make, model, vehicleType, name, userId: $userStore.userId, userName: $userStore.userName, photos }
+      $car_store = { ...$car_store, year, make, model, vehicleType, name, userId: $user_store.userId, userName: $user_store.userName, photos }
     }
     try {
-      const result = await callCloudFunction(CloudFunctions.ADD_CAR_TO_GARAGE, { carData: $carStore });
+      const result = await call_cloud_function(CloudFunctions.ADD_CAR_TO_GARAGE, { carData: $car_store });
       if (result?.isError) {
         return handleServerSideError("Server Error! Please Try Again!");
       } else {
-        addToast("success", "Vehicle Added Successfully!");
-        $carStore = defaultCar;
-        $allCarsStore = [ ...$allCarsStore, result?.result.data];
+        add_toast("success", "Vehicle Added Successfully!");
+        $car_store = default_car;
+        $all_cars_store = [ ...$all_cars_store, result?.result.data];
         isLoading = false;
         replaceState('', { addVehicleModal: false, editVehicleModal: false });
         goto("/garage");

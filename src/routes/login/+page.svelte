@@ -2,10 +2,10 @@
   import { onMount, onDestroy } from "svelte";
   import { goto } from "$app/navigation";
   import { CloudFunctions } from "$lib/functions/all";
-  import { callCloudFunction } from "$lib/functions/util";
-  import { userStore } from "$lib/stores/auth";
-  import { addToast, authData, phoneConfirmationStore, phoneSignup, googleSignup, appleSignup, phoneVerify, resendCodeSignUp } from "$lib/stores/auth";
-  import { allCarsStore } from "$lib/stores/car";
+  import { call_cloud_function } from "$lib/functions/util";
+  import { user_store } from "$lib/stores/auth";
+  import { add_toast, auth_store, phone_confirmation_store, phone_sign_up, google_sign_up, apple_sign_up, phone_verify, resend_code_sign_up } from "$lib/stores/auth";
+  import { all_cars_store } from "$lib/stores/car";
   import Loading from "../../components/Loading.svelte";
   import OtpForm from "../../components/OtpForm.svelte";
   import CreateUserForm from "../../components/CreateUserForm.svelte";
@@ -33,18 +33,18 @@
   const handlePhoneAuth = async () => {
     if (!iti.isValidNumber()) {
       const errorMap = ["Invalid number", "Invalid country code", "Number is too short", "Number is too long", "Invalid number"];
-      addToast("error", errorMap[iti.getValidationError()] || "Invalid number");
+      add_toast("error", errorMap[iti.getValidationError()] || "Invalid number");
       return;
     }
     try {
       isLoading = true;
-      await phoneSignup(iti.getNumber());
-      if ($phoneConfirmationStore?.confirmation) {
-        addToast("success", "Great! Now please verify your contact!");
+      await phone_sign_up(iti.getNumber());
+      if ($phone_confirmation_store?.confirmation) {
+        add_toast("success", "Great! Now please verify your contact!");
         form = "verify"
       }
     } catch (err) {
-      addToast("error", "Server Error! Please try again!");
+      add_toast("error", "Server Error! Please try again!");
     } finally {
       isLoading = false;
     }
@@ -54,27 +54,27 @@
     try {
       isLoading = true;
       const newUser = await providerSignUpFunction();
-      $authData = { user: newUser?.user, isLoggedIn: false };
-      const userResult = await callCloudFunction(CloudFunctions.GET_USER_PROFILE, {});
+      $auth_store = { user: newUser?.user, isLoggedIn: false };
+      const userResult = await call_cloud_function(CloudFunctions.GET_USER_PROFILE, {});
       if (userResult.isError) {
         if (userResult.errorType === "[user_not_exists]") {
-          addToast("success", "Welcome! Please create your account!");
+          add_toast("success", "Welcome! Please create your account!");
           form = "create";
         } else {
-          addToast("error", "Server Error! Please try again!");
+          add_toast("error", "Server Error! Please try again!");
           form = "login";
         }
       } else {
-        $authData = { ...$authData, isLoggedIn: true };
-        $userStore = userResult.result.data;
-        const carsResult = await callCloudFunction(CloudFunctions.GET_GARAGE_DATA, {});
-        if (carsResult.isError) addToast("error", "Server Error in fetching Garage Data!");
-        else $allCarsStore = carsResult.result.data.cars;
+        $auth_store = { ...$auth_store, isLoggedIn: true };
+        $user_store = userResult.result.data;
+        const carsResult = await call_cloud_function(CloudFunctions.GET_GARAGE_DATA, {});
+        if (carsResult.isError) add_toast("error", "Server Error in fetching Garage Data!");
+        else $all_cars_store = carsResult.result.data.cars;
         goto("/");
-        addToast("success", "Successfully Signed In!");
+        add_toast("success", "Successfully Signed In!");
       }
     } catch (err) {
-      addToast("error", "Server Error! Please try again!");
+      add_toast("error", "Server Error! Please try again!");
     } finally {
       isLoading = false;
     }
@@ -82,12 +82,12 @@
 
   // verify
   const handleResendCode = async () => {
-    if (!$phoneConfirmationStore) return;
-    if ($phoneConfirmationStore.confirmation) {
+    if (!$phone_confirmation_store) return;
+    if ($phone_confirmation_store.confirmation) {
       try {
-        await resendCodeSignUp($phoneConfirmationStore.phoneNumber);
+        await resend_code_sign_up($phone_confirmation_store.phoneNumber);
       } catch (err) {
-        addToast("error", "Server Error! Please try again!");
+        add_toast("error", "Server Error! Please try again!");
       }
     }
   }
@@ -96,39 +96,39 @@
     if (!/[0-9]{6}/.test(value)) return;
     try {
       isLoading = true;
-      const newUser: any = await phoneVerify(value);
-      $authData = { user: newUser?.user, isLoggedIn: false };
+      const newUser: any = await phone_verify(value);
+      $auth_store = { user: newUser?.user, isLoggedIn: false };
       try {
-        const userResult = await callCloudFunction(CloudFunctions.GET_USER_PROFILE, {});
+        const userResult = await call_cloud_function(CloudFunctions.GET_USER_PROFILE, {});
         if (userResult.isError) {
           if (userResult.errorType === "[user_not_exists]") {
-            addToast("success", "Welcome! Please create your account!");
+            add_toast("success", "Welcome! Please create your account!");
             form = "create";
           } else {
-            addToast("error", "Server Error! Please try again!");
+            add_toast("error", "Server Error! Please try again!");
             form = "login";
           }
         } else {
-          $userStore = userResult.result.data;
-          const carsResult = await callCloudFunction(CloudFunctions.GET_GARAGE_DATA, {});
-          if (carsResult.isError) addToast("error", "Server Error in fetching Garage Data!");
-          else $allCarsStore = carsResult.result.data.cars;
-          $authData = { ...$authData, isLoggedIn: true };
+          $user_store = userResult.result.data;
+          const carsResult = await call_cloud_function(CloudFunctions.GET_GARAGE_DATA, {});
+          if (carsResult.isError) add_toast("error", "Server Error in fetching Garage Data!");
+          else $all_cars_store = carsResult.result.data.cars;
+          $auth_store = { ...$auth_store, isLoggedIn: true };
           goto("/");
-          addToast("success", "Successfully Signed In!");
+          add_toast("success", "Successfully Signed In!");
         }
       } catch (err) {
-        addToast("error", "Server Error! Please try again!");
+        add_toast("error", "Server Error! Please try again!");
         form = "login";
       }
     } catch (err) {
-      addToast("error", "Incorrect Verification Code! Please Try Again!");
+      add_toast("error", "Incorrect Verification Code! Please Try Again!");
     } finally {
       isLoading = false;
     }
   }
 
-  onDestroy(() => phoneConfirmationStore.set(null));
+  onDestroy(() => phone_confirmation_store.set(null));
 </script>
 
 <div class="bg-[url('/bg-home.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat w-screen h-screen flex flex-col justify-center items-center">
@@ -149,10 +149,10 @@
             <div class="grow border-t border-white"></div>
           </div>
           <div class="flex justify-evenly py-8">
-            <button type="button" on:click={() => handleProviderAuth(googleSignup)}>
+            <button type="button" on:click={() => handleProviderAuth(google_sign_up)}>
               <img src="/logo-google.svg" alt="Google Logo">
             </button>
-            <button type="button" on:click={() => handleProviderAuth(appleSignup)}>
+            <button type="button" on:click={() => handleProviderAuth(apple_sign_up)}>
               <img src="/logo-apple.svg" alt="Apple Logo">
             </button>
           </div>
@@ -163,7 +163,7 @@
     <form class="flex flex-col justify-evenly items-center rounded-2xl w-5/6 md:w-4/6 lg:w-1/2 xl:w-2/5 h-3/5 xl:h-4/6 bg-[#3b3b3be6] text-white p-4 md:p-12">
       <h1 class="text-3xl text-center">Verification Code</h1>
       <p class="text-center mt-4">Please enter the code that we have sent to your phone number</p>
-      <p>{$userStore.phone}</p>
+      <p>{$user_store.phone}</p>
       <div class="py-8">
         {#key numOfInputs}
           <OtpForm {numOfInputs} {numberOnly} bind:value />

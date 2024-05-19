@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto, pushState } from "$app/navigation";
   import { page } from "$app/stores";
-  import { allCarsStore } from "$lib/stores/car";
+  import { all_cars_store } from "$lib/stores/car";
   import AddVehicle from "../../components/AddVehicle.svelte";
 
   let coverPhotos: Array<string | null> = [];
@@ -13,13 +13,13 @@
   let points: Array<number | null> = [];
   let index: number = 0;
 
-  console.log($allCarsStore);
-  $allCarsStore.forEach(car => coverPhotos.push(car.coverPhoto));
-  $allCarsStore.forEach(car => years.push(car.year));
-  $allCarsStore.forEach(car => makes.push(car.make));
-  $allCarsStore.forEach(car => models.push(car.model));
-  $allCarsStore.forEach(car => modificationCounts.push(car.modifications?.length));
-  $allCarsStore.forEach(car => points.push(car.points));
+  console.log($all_cars_store);
+  $all_cars_store.forEach(car => coverPhotos.push(car.coverPhoto));
+  $all_cars_store.forEach(car => years.push(car.year));
+  $all_cars_store.forEach(car => makes.push(car.make));
+  $all_cars_store.forEach(car => models.push(car.model));
+  $all_cars_store.forEach(car => modificationCounts.push(car.modifications?.length));
+  $all_cars_store.forEach(car => points.push(car.points));
   photosLength = coverPhotos.length;
 
   const onPrev = () => {
@@ -42,7 +42,7 @@
 {:else}
   <div class="background mygarage" data-sveltekit-reload>
     <div class="car-container">
-      {#if $allCarsStore.length > 0}
+      {#if $all_cars_store.length > 0}
         <div class="carwitharrows">
           <button class="arrow" on:click={onPrev}><img src="/chevron-left.svg" alt="Left Arrow" class="lefticon"></button>
           <button class="car" on:click={handleCarClick}><img src={coverPhotos[index]} alt="My Garage Example Car"></button>

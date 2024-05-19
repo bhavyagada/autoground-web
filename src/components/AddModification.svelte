@@ -1,12 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { addToast } from "$lib/stores/auth";
-  import { allCarsStore, defaultCarModification, modificationStore } from "$lib/stores/car";
+  import { add_toast } from "$lib/stores/auth";
+  import { all_cars_store, default_car_modification, modification_store } from "$lib/stores/car";
   import bikeParts from "/src/data/bikeParts.json";
   import carParts from "/src/data/carParts.json";
   import truckParts from "/src/data/truckParts.json";
   import Loading from "./Loading.svelte";
-  import { callCloudFunction } from "$lib/functions/util";
+  import { call_cloud_function } from "$lib/functions/util";
   import { CloudFunctions } from "$lib/functions/all";
 
   export let add: boolean = true;
@@ -24,7 +24,7 @@
   $: selectedCategories = [selectedCategory];
   let subCategory: any;
   let parts: any;
-  const thiscar = $allCarsStore[id-1];
+  const thiscar = $all_cars_store[id-1];
 
   const partsList = {
     "bike": bikeParts,
@@ -67,12 +67,12 @@
   $: console.log(`selected categories ${selectedCategories}`);
 
   const handleClientSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     return false;
   };
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
@@ -84,22 +84,22 @@
       return handleClientSideError("No Part Selected!");
     }
 
-    $modificationStore = { ...$modificationStore, category: modification, part: selectedPart, categories: selectedCategories, brand, subCategory };
+    $modification_store = { ...$modification_store, category: modification, part: selectedPart, categories: selectedCategories, brand, subCategory };
     const carId = thiscar.carId;
     const vehicleType = thiscar.vehicleType;
     const carName = thiscar.name;
-    const addModificationData = { carId, vehicleType, carName, modificationData: $modificationStore };
+    const addModificationData = { carId, vehicleType, carName, modificationData: $modification_store };
     console.log(`final modification data sent: ${addModificationData}`);
     try {
       isLoading = true;
-      const result = await callCloudFunction(CloudFunctions.ADD_MODIFICATION_IN_CAR, addModificationData);
+      const result = await call_cloud_function(CloudFunctions.ADD_MODIFICATION_IN_CAR, addModificationData);
       if (result?.isError) {
         return handleServerSideError("Server Error! Please Try Again!");
       } else {
-        addToast("success", "Modification Added Successfully!");
-        $allCarsStore[id-1].modifications?.push(result?.result.data);
-        $allCarsStore[id-1] = { ...$allCarsStore[id-1] };
-        $modificationStore = defaultCarModification;
+        add_toast("success", "Modification Added Successfully!");
+        $all_cars_store[id-1].modifications?.push(result?.result.data);
+        $all_cars_store[id-1] = { ...$all_cars_store[id-1] };
+        $modification_store = default_car_modification;
         isLoading = false;
         history.back();
         return true;

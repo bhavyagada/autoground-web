@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto, pushState } from "$app/navigation";
   import { page } from "$app/stores";
-  import { allCarsStore, carStore, defaultCar } from "$lib/stores/car";
+  import { all_cars_store, car_store, default_car } from "$lib/stores/car";
   import EditVehicle from "../../../components/EditVehicle.svelte";
   import type { CarData } from "$lib/types";
   import bikeParts from "/src/data/bikeParts.json";
@@ -10,16 +10,16 @@
   import { browser } from "$app/environment";
 
   if (browser) {
-    if ($allCarsStore.length === 0) goto("/garage");
+    if ($all_cars_store.length === 0) goto("/garage");
   }
   const { carId } = $page.params;
   const id = Number(carId);
   console.log(`car id: ${carId}`);
 
-  let thiscar: CarData = $allCarsStore[id-1] !== undefined ? $allCarsStore[id-1] : defaultCar;
-  let photos: any = thiscar.photos !== undefined ? $allCarsStore[id-1] : [];
+  let thiscar: CarData = $all_cars_store[id-1] !== undefined ? $all_cars_store[id-1] : default_car;
+  let photos: any = thiscar.photos !== undefined ? $all_cars_store[id-1] : [];
   console.log("this car after edit nav: ", thiscar);
-  $: thiscar = $allCarsStore[id-1] !== undefined ? $allCarsStore[id-1] : defaultCar;
+  $: thiscar = $all_cars_store[id-1] !== undefined ? $all_cars_store[id-1] : default_car;
   $: photos = thiscar.photos !== undefined ? thiscar.photos : [];
   console.log(photos);
 
@@ -42,7 +42,7 @@
   }
 
   const handleCarEdit = () => {
-    $carStore = $allCarsStore[id-1];
+    $car_store = $all_cars_store[id-1];
     pushState('', { addVehicleModal: false, editVehicleModal: true });
   }
 </script>

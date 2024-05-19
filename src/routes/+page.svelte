@@ -1,13 +1,14 @@
 <script lang="ts">
+  import logo from "$lib/assets/logo-xcelerate.svg";
   import { goto } from "$app/navigation";
-  import { addToast, authData } from "$lib/stores/auth";
-  import { allCarsStore } from "$lib/stores/car";
+  import { add_toast, auth_store } from "$lib/stores/auth";
+  import { all_cars_store } from "$lib/stores/car";
 
   let index: number = 0; // index state for cars in virtual garage
 
   const handleEventButtonClick = () => {
-    if (!$authData.isLoggedIn) {
-      addToast("error", "Please Sign in to Book or Host Events!");
+    if (!$auth_store.isLoggedIn) {
+      add_toast("error", "Please Sign in to Book or Host Events!");
       goto("/login");
     } 
     else goto("/events");
@@ -64,25 +65,25 @@
 <div class="bg-[url('/bg-my-garage.jpg')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center mygarage">
   <div class="justify-self-start mt-10 mb-8">
     <h1 class="text-2xl md:text-3xl lg:text-4xl p-1">My Garage</h1>
-    {#if !$authData.isLoggedIn}
+    {#if !$auth_store.isLoggedIn}
       <h2 class="text-base md:text-lg lg:text-xl p-1">Sign in to see your cars in My Garage. Record all your modifications in one place to increase your points and allow others to see.</h2>
     {/if}
   </div>
-  {#if $authData.isLoggedIn}
-    {#if $allCarsStore.length > 0}
+  {#if $auth_store.isLoggedIn}
+    {#if $all_cars_store.length > 0}
       <div class="flex justify-evenly w-5/6 h-3/5">
-        <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index > 0 ? index - 1 : $allCarsStore.length - 1; }}>
+        <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index > 0 ? index - 1 : $all_cars_store.length - 1; }}>
           <img src="/chevron-left.svg" alt="Left Arrow">
         </button>
-        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-auto" on:click={() => goto(`/garage/${index+1}`)}>
-          <img src={$allCarsStore[index].coverPhoto} alt="My Garage Car">
+        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-56 lg:mt-32" on:click={() => goto(`/garage/${index+1}`)}>
+          <img src={$all_cars_store[index].coverPhoto} alt="My Garage Car">
         </button>
-        <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index < $allCarsStore.length - 1 ? index + 1 : 0; }}>
+        <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index < $all_cars_store.length - 1 ? index + 1 : 0; }}>
           <img src="/chevron-right.svg" alt="Right Arrow">
         </button>
       </div>
-      <p class="text-xl md:text-2xl">{$allCarsStore[index].year} {$allCarsStore[index].make} {$allCarsStore[index].model}</p>
-      <p>{$allCarsStore[index].points} points</p>
+      <p class="text-xl md:text-2xl">{$all_cars_store[index].year} {$all_cars_store[index].make} {$all_cars_store[index].model}</p>
+      <p>{$all_cars_store[index].points} points</p>
     {:else}
       <p>Cars added to Your Garage will be shown here!</p>
     {/if}
@@ -116,7 +117,7 @@
 
 <!-- Footer -->
 <div class="flex flex-col lg:flex-row justify-evenly bg-black text-white p-4">
-  <img class="w-28 h-28 self-center" src="/logo-xcelerate.svg" alt="Xcelerate Logo">
+  <img class="w-28 h-28 self-center" src={logo} alt="Xcelerate Logo">
   <div>
     <p class="font-bold text-lg mt-auto text-center py-4">Contact</p>
     <address class="text-center py-1">

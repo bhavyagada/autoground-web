@@ -2,9 +2,9 @@ import { get, writable } from "svelte/store";
 import { browser } from "$app/environment";
 import { auth } from "$lib/firebase/client";
 import { RecaptchaVerifier, signInWithPhoneNumber, signOut, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
-import { AuthenticationType, type AuthData, type PhoneVerificationData, type ToastData, type UserData } from "$lib/types";
+import { AuthenticationType, type PhoneVerificationData, type ToastData } from "$lib/types";
 
-export const defaultUser = {
+export const default_user = {
   created: 0,
   modified: 0,
   userId: "",
@@ -28,73 +28,38 @@ export const defaultUser = {
   badges: []
 }
 
-// authentication state stores
-let userAuth = { user: null, isLoggedIn: false };
-let user = defaultUser;
-let otheruser = null;
+export const auth_store = writable(browser && JSON.parse(localStorage.getItem("auth")!) || { user: null, isLoggedIn: false });
+export const user_store = writable(browser && JSON.parse(localStorage.getItem("user")!) || default_user);
+export const other_user_store = writable(browser && JSON.parse(localStorage.getItem("otheruser")!) || null);
 if (browser) {
-  const storedUserAuth: string | null = localStorage.getItem("auth");
-  const storedUser: string | null = localStorage.getItem("user");
-  const storedOtherUser: string | null = localStorage.getItem("otheruser");
-  userAuth = storedUserAuth ? JSON.parse(storedUserAuth) : userAuth;
-  user = storedUser ? JSON.parse(storedUser) : user;
-  otheruser = storedOtherUser ? JSON.parse(storedOtherUser) : null;
-}
-export const authData = writable<AuthData>(userAuth);
-export const userStore = writable<UserData>(user);
-export const otherUserStore = writable<any | null>(otheruser);
-if (browser) {
-  authData.subscribe((value) => localStorage.setItem("auth", JSON.stringify(value)));
-  userStore.subscribe((value) => localStorage.setItem("user", JSON.stringify(value)));
-  otherUserStore.subscribe((value) => localStorage.setItem("otheruser", JSON.stringify(value)));
+  auth_store.subscribe((value) => (localStorage.auth = JSON.stringify(value)));
+  user_store.subscribe((value) => (localStorage.user = JSON.stringify(value)));
+  other_user_store.subscribe((value) => (localStorage.otheruser = JSON.stringify(value)));
 }
 
-export const phoneConfirmationStore = writable<PhoneVerificationData | null>(null);
 export const toast = writable<ToastData | null>(null);
-
-export const addToast = (type: string, message: string) => {
+export const add_toast = (type: string, message: string) => {
   toast.set({ type, message });
-  setTimeout(dismissToast, 5000);
+  setTimeout(dismiss_toast, 5000);
 };
-export const dismissToast = () => toast.set(null);
+export const dismiss_toast = () => toast.set(null);
 
-export const phoneSignup = async (phoneNumber: string) => {
-  const recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
+export const phone_confirmation_store = writable<PhoneVerificationData | null>(null);
+const handle_phone_recaptcha = async (phone_number: string, container_id: string) => {
+  const recaptcha_verifier = new RecaptchaVerifier(auth, container_id, {});
   try {
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
-    phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
+    const confirmation_result = await signInWithPhoneNumber(auth, phone_number, recaptcha_verifier);
+    phone_confirmation_store.set({ confirmation: confirmation_result, phoneNumber: phone_number });
   } catch (error) {
-    recaptchaVerifier.clear();
-    console.error(error);
+    recaptcha_verifier.clear();
   }
 }
-
-export const resendCodeSignUp = async (phoneNumber: string) => {
-  const recaptchaVerifier = new RecaptchaVerifier(auth, "verify-recaptcha-container", {});
-  try {
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
-    phoneConfirmationStore.set({ confirmation: confirmationResult, phoneNumber: phoneNumber });
-  } catch (error) {
-    recaptchaVerifier.clear();
-    console.error(error);
-  }
+export const phone_sign_up = async (phone_number: string) => await handle_phone_recaptcha(phone_number, "recaptcha-container");
+export const resend_code_sign_up = async (phone_number: string) => await handle_phone_recaptcha(phone_number, "verify-recaptcha-container");
+export const phone_verify = async (code: string) => {
+  const confirmation_result = get(phone_confirmation_store);
+  if (confirmation_result?.confirmation) return confirmation_result.confirmation.confirm(code);
 }
-
-export const phoneVerify = async (code: string) => {
-  const confirmationResult = get(phoneConfirmationStore);
-  if(!confirmationResult) return;
-  if (!confirmationResult.confirmation) return;
-  return confirmationResult.confirmation.confirm(code);
-}
-
-export const googleSignup = async () => {
-  return await signInWithPopup(auth, new GoogleAuthProvider());
-}
-
-export const appleSignup = async () => {
-  return await signInWithPopup(auth, new OAuthProvider("apple.com"));
-}
-
-export const logout = async () => {
-  return await signOut(auth);
-}
+export const google_sign_up = async () => await signInWithPopup(auth, new GoogleAuthProvider());
+export const apple_sign_up = async () => await signInWithPopup(auth, new OAuthProvider("apple.com"));
+export const logout = async () => await signOut(auth);

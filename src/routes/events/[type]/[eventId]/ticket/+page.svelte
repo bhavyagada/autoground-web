@@ -2,15 +2,15 @@
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
-  import { bookedResultList } from "$lib/stores/events";
+  import { booked_result_list } from "$lib/stores/events";
 
   const { type, eventId } = $page.params;
   const id = Number(eventId) - 1;
   if (browser) {
-    if (id < 0 || id >= $bookedResultList.length) goto("/events");
+    if (id < 0 || id >= $booked_result_list.length) goto("/events");
   }
-  const eventBooking = $bookedResultList[id];
-  const eventDetails = $bookedResultList[id].eventDescription;
+  const eventBooking = $booked_result_list[id];
+  const eventDetails = $booked_result_list[id].eventDescription;
   const eventTicket = eventDetails.tickets[0];
 </script>
 

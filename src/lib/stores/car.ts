@@ -1,8 +1,8 @@
 import { writable } from "svelte/store";
 import { browser } from "$app/environment";
-import { VehicleType, type CarData, type CarModificationData } from "$lib/types";
+import { VehicleType } from "$lib/types";
 
-export const defaultCarModification = {
+export const default_car_modification = {
   modificationId: "",
   category: "",
   subCategory: "",
@@ -13,7 +13,7 @@ export const defaultCarModification = {
   coverPhoto: ""
 }
 
-export const defaultCar = {
+export const default_car = {
   created: 0,
   modified: 0,
   carId: "",
@@ -31,28 +31,13 @@ export const defaultCar = {
   modifications: []
 }
 
-let car: CarData = defaultCar;
-let cars: CarData[] = [];
-let mod: CarModificationData = defaultCarModification;
-let othercars: CarData[] = [];
+export const car_store = writable(browser && JSON.parse(localStorage.getItem("car")!) || default_car);
+export const all_cars_store = writable(browser && JSON.parse(localStorage.getItem("cars")!) || []);
+export const modification_store = writable(browser && JSON.parse(localStorage.getItem("mod")!) || default_car_modification);
+export const other_all_cars_store = writable(browser && JSON.parse(localStorage.getItem("othercars")!) || []);
 if (browser) {
-  const storedCar: string | null = localStorage.getItem("car");
-  const storedCars: string | null = localStorage.getItem("cars");
-  const storedMod: string | null = localStorage.getItem("mod");
-  const storedOtherCars: string | null = localStorage.getItem("othercars");
-  car = storedCar ? JSON.parse(storedCar) : car;
-  cars = storedCars ? JSON.parse(storedCars) : cars;
-  mod = storedMod ? JSON.parse(storedMod) : mod;
-  othercars = storedOtherCars ? JSON.parse(storedOtherCars) : othercars;
-}
-export const carStore = writable<CarData>(car);
-export const allCarsStore = writable<CarData[]>(cars);
-export const modificationStore = writable<CarModificationData>(mod);
-export const otherAllCarsStore = writable<CarData[]>(othercars);
-
-if (browser) {
-  carStore.subscribe((value) => localStorage.setItem("car", JSON.stringify(value)));
-  allCarsStore.subscribe((value) => localStorage.setItem("cars", JSON.stringify(value)));
-  modificationStore.subscribe((value) => localStorage.setItem("mod", JSON.stringify(value)));
-  otherAllCarsStore.subscribe((value) => localStorage.setItem("othercars", JSON.stringify(value)));
+  car_store.subscribe((value) => (localStorage.car = JSON.stringify(value)));
+  all_cars_store.subscribe((value) => (localStorage.cars = JSON.stringify(value)));
+  modification_store.subscribe((value) => (localStorage.mod = JSON.stringify(value)));
+  other_all_cars_store.subscribe((value) => (localStorage.othercars = JSON.stringify(value)));
 }

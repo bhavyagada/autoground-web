@@ -1,11 +1,11 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { CloudFunctions } from "$lib/functions/all";
-  import { callCloudFunction } from "$lib/functions/util";
-  import { addToast, authData } from "$lib/stores/auth";
+  import { call_cloud_function } from "$lib/functions/util";
+  import { add_toast, auth_store } from "$lib/stores/auth";
   import { onDestroy, onMount } from "svelte";
   import { writable } from "svelte/store";
-  import { allResultList, bookedResultList, selectedEventType } from "$lib/stores/events";
+  import { all_result_list, booked_result_list, selected_event_type } from "$lib/stores/events";
   import EventCard from "../../components/EventCard.svelte";
   import Loading from "../../components/Loading.svelte";
 
@@ -21,7 +21,7 @@
   let startAfter: string | null = null;
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
@@ -30,20 +30,20 @@
     isLoading = true;
     try {
       if (type === "all") {
-        const allResults = await callCloudFunction(CloudFunctions.GET_EVENTS, $allEventData);
+        const allResults = await call_cloud_function(CloudFunctions.GET_EVENTS, $allEventData);
         if (allResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
-          $allResultList = allResults?.result.data.events;
+          $all_result_list = allResults?.result.data.events;
           $allHasMore = allResults?.result.data.hasMore;
           $allEventData = { ...$allEventData, startAfter: allResults?.result.data.startAfter };
         }
       } else if (type === "booked") {
-        const bookedResults = await callCloudFunction(CloudFunctions.GET_BOOKED_EVENTS, $bookedEventData);
+        const bookedResults = await call_cloud_function(CloudFunctions.GET_BOOKED_EVENTS, $bookedEventData);
         if (bookedResults?.isError) {
           return handleServerSideError("Error Loading Data! Try Again!");
         } else {
-          $bookedResultList = bookedResults?.result.data.events;
+          $booked_result_list = bookedResults?.result.data.events;
           $bookedHasMore = bookedResults?.result.data.hasMore;
           $bookedEventData = { ...$bookedEventData, startAfter: bookedResults?.result.data.startAfter };
         }
@@ -56,22 +56,22 @@
   }
 
   onMount(() => {
-    const storedAllResults = localStorage.getItem("allevents");
-    const storedBookedResults = localStorage.getItem("bookedevents");
-    $allResultList = storedAllResults ? JSON.parse(storedAllResults) : [];
-    $bookedResultList = storedBookedResults ? JSON.parse(storedBookedResults) : [];
+    // const storedAllResults = localStorage.getItem("allevents");
+    // const storedBookedResults = localStorage.getItem("bookedevents");
+    // $all_result_list = storedAllResults ? JSON.parse(storedAllResults) : [];
+    // $booked_result_list = storedBookedResults ? JSON.parse(storedBookedResults) : [];
     const getResultsFirstTime = async () => {
       await getEvents("all");
-      if ($authData.isLoggedIn) await getEvents("booked");
+      if ($auth_store.isLoggedIn) await getEvents("booked");
     }
     getResultsFirstTime();
   });
 
-  $: if ($selectedEventType === "all") {
-    results = $allResultList;
+  $: if ($selected_event_type === "all") {
+    results = $all_result_list;
     startAfter = $allEventData.startAfter;
-  } else if ($selectedEventType === "booked") {
-    results = $bookedResultList;
+  } else if ($selected_event_type === "booked") {
+    results = $booked_result_list;
     startAfter = $bookedEventData.startAfter;
   }
 
@@ -80,8 +80,8 @@
       for (const entry of entries) {
         if (entry.isIntersecting) {
           observer.disconnect();
-          if ($selectedEventType === "all") await getEvents("all");
-          else if ($selectedEventType === "booked") await getEvents("booked");
+          if ($selected_event_type === "all") await getEvents("all");
+          else if ($selected_event_type === "booked") await getEvents("booked");
         }
       };
     });
@@ -94,9 +94,9 @@
 
 <div class="background">
   <div class="headings">
-    <button on:click={() => $selectedEventType = "all"} class={$selectedEventType === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
-    {#if $authData.isLoggedIn}
-      <button on:click={() => $selectedEventType = "booked"} class={$selectedEventType === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
+    <button on:click={() => $selected_event_type = "all"} class={$selected_event_type === "all" ? "selected" : ""} type="button"><h1>Events</h1></button>
+    {#if $auth_store.isLoggedIn}
+      <button on:click={() => $selected_event_type = "booked"} class={$selected_event_type === "booked" ? "selected" : ""} type="button"><h1>My Booked Events</h1></button>
     {/if}
   </div>
   {#if isLoading}

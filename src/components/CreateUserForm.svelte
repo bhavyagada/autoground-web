@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { addToast, authData } from "$lib/stores/auth";
+  import { add_toast, auth_store } from "$lib/stores/auth";
   import { onMount } from "svelte";
   import { AuthProviderId, AuthenticationType } from "$lib/types";
-  import { userStore } from "$lib/stores/auth";
-  import { callCloudFunction, uploadImage } from "$lib/functions/util";
+  import { user_store } from "$lib/stores/auth";
+  import { call_cloud_function, upload_image } from "$lib/functions/util";
   import { CloudFunctions } from "$lib/functions/all";
   import { goto } from "$app/navigation";
   import Loading from "./Loading.svelte";
@@ -15,10 +15,10 @@
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
   let userPhoto: any = "/default-photo.svg";
-  let name: string = $authData.user?.displayName ? $authData.user?.displayName : "";
+  let name: string = $auth_store.user?.displayName ? $auth_store.user?.displayName : "";
   let userName: string = "";
-  let phoneNumber: string = $authData.user?.phoneNumber ? $authData.user?.phoneNumber : "";
-  let email: string = $authData.user?.email ? $authData.user?.email : "" ;
+  let phoneNumber: string = $auth_store.user?.phoneNumber ? $auth_store.user?.phoneNumber : "";
+  let email: string = $auth_store.user?.email ? $auth_store.user?.email : "" ;
   let bio: string = "";
   let selectedUserName: boolean = false;
   let isValidName: boolean = false;
@@ -48,8 +48,8 @@
 
   const loadFile = async (e: any) => {
     const imageFile: any = e.target.files[0];
-    userPhoto = await uploadImage(imageFile, `UsersProfilePhoto/${$authData?.user?.uid}`);
-    $userStore = { ...$userStore, userPhoto };
+    userPhoto = await upload_image(imageFile, `UsersProfilePhoto/${$auth_store?.user?.uid}`);
+    $user_store = { ...$user_store, userPhoto };
   }
 
   $: isValidName = name.trim().length > 0 && name.trim().length < 51;
@@ -68,12 +68,12 @@
   createUniqueUsername();
 
   const handleClientSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     return false;
   };
 
   const handleServerSideError = (errorMessage: string): boolean => {
-    addToast("error", errorMessage);
+    add_toast("error", errorMessage);
     isLoading = false;
     return false;
   };
@@ -104,9 +104,9 @@
       }
 
       let authenticationType = "";
-      if ($authData.user?.providerData[0].providerId === AuthProviderId.PHONE) {
+      if ($auth_store.user?.providerData[0].providerId === AuthProviderId.PHONE) {
         authenticationType = AuthenticationType.phone;
-      } else if ($authData.user?.providerData[0].providerId === AuthProviderId.GOOGLE) {
+      } else if ($auth_store.user?.providerData[0].providerId === AuthProviderId.GOOGLE) {
         authenticationType = AuthenticationType.google;
       } else {
         authenticationType = AuthenticationType.email;
@@ -116,7 +116,7 @@
       console.log(checkUniqueFields);
       try {
         isLoading = true;
-        const result = await callCloudFunction(CloudFunctions.CHECK_UNIQUE_USER_FIELDS, checkUniqueFields);
+        const result = await call_cloud_function(CloudFunctions.CHECK_UNIQUE_USER_FIELDS, checkUniqueFields);
         if (result?.isError) {
           return handleServerSideError("Server Error! Please Try Again!");
         } 
@@ -135,8 +135,8 @@
         return handleServerSideError("Server Error! Please Try Again!");
       }
 
-      $userStore = {
-        ...$userStore,
+      $user_store = {
+        ...$user_store,
         name,
         userName,
         email,
@@ -145,15 +145,15 @@
         phone: iti.getNumber(),
         countryCode: iti.getSelectedCountryData().dialCode,
       };
-      const createUserData = { user: $userStore, selectedUserName: selectedUserName };
+      const createUserData = { user: $user_store, selectedUserName: selectedUserName };
       console.log(createUserData);
       try {
-        const result = await callCloudFunction(CloudFunctions.CREATE_USER_PROFILE, createUserData);
+        const result = await call_cloud_function(CloudFunctions.CREATE_USER_PROFILE, createUserData);
         if (result?.isError) {
           return handleServerSideError("Server Error! Please Try Again!");
         } else {
-          addToast("success", "Account Created Successfully!");
-          $authData = { ...$authData, isLoggedIn: true };
+          add_toast("success", "Account Created Successfully!");
+          $auth_store = { ...$auth_store, isLoggedIn: true };
           isLoading = false;
           goto("/");
           return true;
@@ -183,14 +183,14 @@
           </div>
           <div class="phonenumber">
             <label for="phonenumber">Phone Number</label>
-            <input bind:value={phoneNumber} id="phone" type="tel" name="phonenumber" disabled={$authData.user?.providerData[0].providerId === AuthProviderId.PHONE}>
+            <input bind:value={phoneNumber} id="phone" type="tel" name="phonenumber" disabled={$auth_store.user?.providerData[0].providerId === AuthProviderId.PHONE}>
           </div>
         </div>
       </div>
     </div>
     <div class="email">
       <label for="email">Email</label>
-      <input bind:value={email} type="email" name="email" disabled={$authData.user?.providerData[0].providerId === AuthProviderId.GOOGLE || $authData.user?.providerData[0].providerId === AuthProviderId.APPLE}>
+      <input bind:value={email} type="email" name="email" disabled={$auth_store.user?.providerData[0].providerId === AuthProviderId.GOOGLE || $auth_store.user?.providerData[0].providerId === AuthProviderId.APPLE}>
     </div>
     <div class="bio">
       <label for="bio">Bio</label>

@@ -1,22 +1,22 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { addToast, authData } from "$lib/stores/auth";
-  import { selectedEventType } from "$lib/stores/events";
+  import { add_toast, auth_store } from "$lib/stores/auth";
+  import { selected_event_type } from "$lib/stores/events";
 
   export let result: any;
   export let index: number;
   let resultList: any;
-  $: if ($selectedEventType === "all") {
+  $: if ($selected_event_type === "all") {
     resultList = result;
-  } else if ($selectedEventType === "booked") {
+  } else if ($selected_event_type === "booked") {
     resultList = result.eventDescription;
   }
 
   const handleEventClick = (e: any) => {
     const eventId = e.currentTarget.id;
-    if ($authData.isLoggedIn) goto(`/events/${$selectedEventType}/${eventId}`);
+    if ($auth_store.isLoggedIn) goto(`/events/${$selected_event_type}/${eventId}`);
     else {
-      addToast("error", "Please Sign In to Book the Event");
+      add_toast("error", "Please Sign In to Book the Event");
       goto("/login");
     }
   }
@@ -29,7 +29,7 @@
     <p>{new Date(resultList.date).toDateString()} | {new Date(resultList.date).toLocaleTimeString()}</p>
     <p>{resultList.eventAddress || "Address Coming Soon"}</p>
   </button>
-  {#if $selectedEventType === "all"}
+  {#if $selected_event_type === "all"}
     {#if resultList.tickets[0].freeTicket}
       <p class="free">Free</p>
     {:else}
@@ -38,7 +38,7 @@
   {:else}
     <div class="view-ticket">
       <p>Ticket</p>
-      <button class="submit" on:click={() => { goto(`/events/${$selectedEventType}/${String(index+1)}/ticket`); }}>View</button>
+      <button class="submit" on:click={() => { goto(`/events/${$selected_event_type}/${String(index+1)}/ticket`); }}>View</button>
     </div>
   {/if}
 </div>
