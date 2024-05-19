@@ -43,7 +43,7 @@
     color: white;
   }
   .ticketbg {
-    background: url('/bg-ticket.jpg') center / var(--bgsize) var(--bgrepeat);
+    background: url('/bg-ticket.avif') center / var(--bgsize) var(--bgrepeat);
     display: flex;
     flex-direction: column;
     justify-content: center;
