@@ -118,7 +118,7 @@
 
 <!-- Footer -->
 <div class="flex flex-col lg:flex-row justify-evenly bg-black text-white p-4">
-  <img class="w-28 h-28 self-center" src='/src/lib/assets/logo-xcelerate.svg' alt="Xcelerate Logo">
+  <img class="w-28 h-28 self-center" src='/logo-xcelerate.svg' alt="Xcelerate Logo">
   <div>
     <p class="font-bold text-lg mt-auto text-center py-4">Contact</p>
     <address class="text-center py-1">

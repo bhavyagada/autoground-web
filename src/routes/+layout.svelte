@@ -47,7 +47,7 @@
 <!-- Navigation Bar -->
 <nav class="fixed bg-inherit z-10">
   <div class="w-screen flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="/" class="p-2 m-2"><img class="w-16 h-16" src="src/lib/assets/logo-xcelerate.svg" alt="Logo"></a>
+    <a href="/" class="p-2 m-2"><img class="w-16 h-16" src="/logo-xcelerate.svg" alt="Logo"></a>
     <button class="inline-flex items-center p-2 m-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button" aria-label="Menu" on:click={toggle_nav}>
       <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
     </button>
@@ -98,12 +98,12 @@
   <div class="absolute w-full my-20">
     {#if $toast.type === "success"}
       <article class="bg-[#3cb371] text-white flex items-center rounded-lg mx-auto my-6 lg:my-auto py-3 px-6 w-5/6 md:w-2/5" role="alert" transition:fade>
-        <img src="src/lib/assets/success-icon.svg" alt="Success" />
+        <img src="/success-icon.svg" alt="Success" />
         <div class="ml-7">{$toast.message}</div>
       </article>
     {:else if $toast.type === "error"}
       <article class="bg-[#cd5c5c] text-white flex items-center rounded-lg mx-auto my-6 lg:my-auto py-3 px-6 w-5/6 md:w-2/5" role="alert" transition:fade>
-        <img src="src/lib/assets/error-icon.svg" alt="Error" />
+        <img src="/error-icon.svg" alt="Error" />
         <div class="ml-7">{$toast.message}</div>
       </article>
     {/if}
