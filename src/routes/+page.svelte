@@ -1,16 +1,18 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { add_toast, auth_store } from "$lib/stores/auth";
   import { all_cars_store } from "$lib/stores/car";
 
   let index: number = 0; // index state for cars in virtual garage
 
-  const handleEventButtonClick = () => {
-    if (!$auth_store.isLoggedIn) {
-      add_toast("error", "Please Sign in to Book or Host Events!");
-      goto("/login");
-    } 
-    else goto("/events");
+  const handle_event_button_click = () => {
+    if ($auth_store.isLoggedIn) { navigate("/events"); return; }
+    add_toast("error", "Please Sign in to Book or Host Events!");
+    navigate("/login");
+  }
+
+  const navigate = async (pathname: string) => {
+    const { goto } = await import("$app/navigation");
+    goto(pathname);
   }
 </script>
 
@@ -18,7 +20,7 @@
 <div class="bg-[url('/src/lib/assets/bg-home.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center">
   <h1 class="text-3xl md:text-4xl lg:text-5xl p-1">Drive your passion</h1>
   <h2 class="text-base md:text-lg lg:text-xl p-1">Book, create and view events through Xcelerate. An all in one place for all car enthusiasts.</h2>
-  <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg m-6" on:click={() => goto("/events")}>Explore Events</button>
+  <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg m-6" on:click={() => navigate("/events")}>Explore Events</button>
 </div>
 
 <!-- What We Do -->
@@ -40,7 +42,7 @@
         world. Join us and elevate your car show experience today.
       </p>
       <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg mt-auto m-6" 
-        on:click={handleEventButtonClick}>Book Events</button>
+        on:click={handle_event_button_click}>Book Events</button>
     </div>
     <div class="flex flex-col justify-center items-center bg-white/20 text-lg rounded-2xl p-6 lg:p-8 my-8 lg:my-20 lg:w-[30%]">
       <img src="/eventshost.svg" alt="Host Events" class="h-16 w-16">
@@ -55,13 +57,13 @@
         the event creation process, ensuring a smooth experience for both organizers and participants.
       </p>
       <button class="border border-white border-solid rounded-lg h-16 w-44 text-lg mt-auto m-6" 
-        on:click={handleEventButtonClick}>Host Events</button>
+        on:click={handle_event_button_click}>Host Events</button>
     </div>
   </div>
 </div>
 
 <!-- My Garage -->
-<div class="bg-[url('/src/lib/assets/bg-my-garage.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center mygarage">
+<div class="bg-[url('/src/lib/assets/bg-my-garage.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center">
   <div class="justify-self-start mt-10 mb-8">
     <h1 class="text-2xl md:text-3xl lg:text-4xl p-1">My Garage</h1>
     {#if !$auth_store.isLoggedIn}
@@ -74,7 +76,7 @@
         <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index > 0 ? index - 1 : $all_cars_store.length - 1; }}>
           <img src="/chevron-left.svg" alt="Left Arrow">
         </button>
-        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-56 lg:mt-32" on:click={() => goto(`/garage/${index+1}`)}>
+        <button class="w-2/4 md:w-2/6 h-1/5 md:h-1/5 mt-56 lg:mt-32" on:click={() => navigate(`/garage/${index+1}`)}>
           <img src={$all_cars_store[index].coverPhoto} alt="My Garage Car">
         </button>
         <button class="w-5 md:w-6 h-5 md:h-6 self-center mx-8" on:click={() => { index = index < $all_cars_store.length - 1 ? index + 1 : 0; }}>
@@ -87,7 +89,7 @@
       <p>Cars added to Your Garage will be shown here!</p>
     {/if}
     <button class="border border-white border-solid rounded-xl h-14 w-44 text-lg m-6"
-      on:click={() => { goto("/garage"); }}>View My Garage</button>
+      on:click={() => { navigate("/garage"); }}>View My Garage</button>
   {:else}
     <div class="flex justify-center h-2/5 mt-auto">
       <img class="w-5 md:w-6 h-5 md:h-6 self-center" src="/chevron-left.svg" alt="Left Arrow">
