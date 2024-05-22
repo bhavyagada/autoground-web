@@ -1,7 +1,7 @@
 [{
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
-    "namespace": "com.theautoground.autoground",
+    "namespace": "android_app",
     "package_name": "com.theautoground.autoground",
     "sha256_cert_fingerprints":
     ["6f:12:93:b0:32:f0:b2:8f:b4:53:ab:ed:3c:b8:f9:a8:0c:aa:5f:25:cb:67:cd:81:c2:0e:d2:0b:60:fd:5c:21"]
