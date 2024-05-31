@@ -3,15 +3,6 @@ import { getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
 import { getFunctions, type Functions } from "firebase/functions";
-import {
-  PUBLIC_FIREBASE_APIKEY,
-  PUBLIC_FIREBASE_AUTH_DOMAIN,
-  PUBLIC_FIREBASE_PROJECT_ID,
-  PUBLIC_FIREBASE_STORAGE_BUCKET,
-  PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  PUBLIC_FIREBASE_APP_ID,
-  PUBLIC_FIREBASE_MEASUREMENT_ID
-} from "$env/static/public";
 import { browser } from "$app/environment";
 import { auth_store } from "$lib/stores/auth";
 
@@ -23,13 +14,13 @@ const makeApp = (): FirebaseApp => {
   }
 
   return initializeApp({
-    apiKey: PUBLIC_FIREBASE_APIKEY,
-    authDomain: PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: PUBLIC_FIREBASE_APP_ID,
-    measurementId: PUBLIC_FIREBASE_MEASUREMENT_ID
+    apiKey: import.meta.env.VITE_PUBLIC_FIREBASE_APIKEY,
+    authDomain: import.meta.env.VITE_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_PUBLIC_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_PUBLIC_FIREBASE_MEASUREMENT_ID
   });
 }
 
