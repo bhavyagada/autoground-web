@@ -11,9 +11,9 @@ const makeApp = (): App => {
 
   return initializeApp({
     credential: admin.credential.cert({
-      privateKey: import.meta.env.FB_ADMIN_PRIVATE_KEY,
-      clientEmail: import.meta.env.FB_ADMIN_CLIENT_EMAIL,
-      projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID
+      privateKey: process.env.FB_ADMIN_PRIVATE_KEY,
+      clientEmail: process.env.FB_ADMIN_CLIENT_EMAIL,
+      projectId: import.meta.env.VITE_PUBLIC_FIREBASE_PROJECT_ID
     })
   });
 }
