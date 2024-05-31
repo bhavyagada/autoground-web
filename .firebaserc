@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "autoground-nonprod"
-  }
+    "default": "autoground-nonprod",
+    "production": "xcelerate-fb463"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
