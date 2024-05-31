@@ -14,12 +14,12 @@
   let index: number = 0;
 
   console.log($all_cars_store);
-  $all_cars_store.forEach(car => coverPhotos.push(car.coverPhoto));
-  $all_cars_store.forEach(car => years.push(car.year));
-  $all_cars_store.forEach(car => makes.push(car.make));
-  $all_cars_store.forEach(car => models.push(car.model));
-  $all_cars_store.forEach(car => modificationCounts.push(car.modifications?.length));
-  $all_cars_store.forEach(car => points.push(car.points));
+  $all_cars_store.forEach((car: any) => coverPhotos.push(car.coverPhoto));
+  $all_cars_store.forEach((car: any) => years.push(car.year));
+  $all_cars_store.forEach((car: any) => makes.push(car.make));
+  $all_cars_store.forEach((car: any) => models.push(car.model));
+  $all_cars_store.forEach((car: any) => modificationCounts.push(car.modifications?.length));
+  $all_cars_store.forEach((car: any) => points.push(car.points));
   photosLength = coverPhotos.length;
 
   const onPrev = () => {
@@ -40,7 +40,7 @@
 {#if $page.state.addVehicleModal}
   <svelte:component this={AddVehicle} />
 {:else}
-  <div class="background mygarage" data-sveltekit-reload>
+  <div class="bg-[url('/src/lib/assets/bg-my-garage.avif')] bg-[length:100%_100%] bg-center bg-no-repeat h-screen flex flex-col justify-center items-center text-white text-center" data-sveltekit-reload>
     <div class="car-container">
       {#if $all_cars_store.length > 0}
         <div class="carwitharrows">
@@ -70,21 +70,6 @@
     border-radius: 1rem;
     padding: 0.5rem 3rem;
     margin-bottom: auto;
-  }
-  .background {
-    width: var(--bgwidth);
-    height: var(--bgheight);
-    position: relative;
-    z-index: 1; 
-    color: white;
-  }
-  .mygarage {
-    background: var(--homebg3) center / var(--bgsize) var(--bgrepeat);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 100vh;
   }
   .car-container {
     display: flex;
