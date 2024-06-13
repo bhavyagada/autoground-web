@@ -2,8 +2,7 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "com.theautoground.autoground",
-    "sha256_cert_fingerprints":
-    ["6f:12:93:b0:32:f0:b2:8f:b4:53:ab:ed:3c:b8:f9:a8:0c:aa:5f:25:cb:67:cd:81:c2:0e:d2:0b:60:fd:5c:21"]
+    "package_name": "com.xcelerate.xcelerate",
+    "sha256_cert_fingerprints":["69:24:F1:FE:CD:86:F5:7E:F5:CD:FA:D0:95:B5:A4:20:1B:FA:17:F9:C9:71:03:48:B6:CF:B3:1C:4B:56:A0:12"]
   }
 }]
