@@ -9,11 +9,14 @@
   import { call_cloud_function } from "$lib/functions/util";
   import { add_toast, other_user_store, user_store } from "$lib/stores/auth";
   import { default_car, other_all_cars_store } from "$lib/stores/car";
+  import { all_result_list } from "$lib/stores/events";
   import Loading from "../../components/Loading.svelte";
 
   const search_data = writable<{searchKeyword: string, batchSize: number, startAfter: string | null, afterDateEvent?: number }>({ searchKeyword: "", batchSize: 6, startAfter: null });
   const has_more = writable<boolean>(false);
   const result_list = writable<any>([]);
+  const all_events_data = writable<{batchSize: number, startAfter: string | null, afterDateEvent: number }>({ batchSize: 9, startAfter: null, afterDateEvent: Date.now() });
+  const all_events_has_more = writable<boolean>(false);
 
   const vehicle_icons: any = { bike: "/bike.svg", car: "/car.svg", truck: "/truck.svg" }
   let is_loading: boolean = false;
@@ -81,13 +84,30 @@
   const handle_event_click = async (e: MouseEvent) => {
     const button = e.currentTarget as HTMLButtonElement;
     const id = button.id;
-    console.log(id);
-    
-    // const currentEventIndex = $all_result_list.findIndex((event: any) => event.eventId === id);
-    // if ($all_result_list.length > currentEventIndex) goto(`/events/all/${currentEventIndex + 1}`);
-    // else {
-      
-    // }
+
+    const current_event_index = $all_result_list.findIndex((event: any) => event.eventId === id);
+    if ($all_result_list.length > current_event_index) goto(`/events/all/${current_event_index + 1}`);
+    else {
+      try {
+        is_loading = true;
+        const all_results = await call_cloud_function(CloudFunctions.GET_EVENTS, $all_events_data);
+        if (all_results?.isError) {
+          add_toast("error", "Error Loading Data! Try Again!");
+        } else {
+          $all_result_list = all_results?.result.data.events;
+          $all_events_has_more = all_results?.result.data.hasMore;
+          $all_events_data = { ...$all_events_data, startAfter: all_results?.result.data.startAfter };
+          if ($navigating?.type === "popstate" || $navigating?.type === "link") return;
+          const event_index = $all_result_list.findIndex((event: any) => event.eventId === id);
+          if ($all_result_list > event_index) goto(`/events/all/${event_index + 1}`);
+          else add_toast("error", "Error Loading data! Try Again!");
+        }
+      } catch (err) {
+        add_toast("error", "Server Error! Please Try Again!");
+      } finally {
+        is_loading = false;
+      }
+    }
   }
 
   onMount(() => {
@@ -145,7 +165,7 @@
     {:else}
       <div transition:fade class="flex flex-wrap w-11/12 md:w-2/3 mt-12">
         {#each $result_list as result}
-          <button id={result.data.userId} class="bg-[#333740] flex flex-col justify-center items-center w-full md:w-1/2 lg:w-1/3 rounded-xl" on:click={(e) => { handle_other_car_or_user_click(e, "car"); } }>
+          <button id={result.data.userId} class="bg-[#333740] flex flex-col justify-between items-center m-2 w-full md:w-1/2 lg:w-1/3 rounded-xl" on:click={(e) => { handle_other_car_or_user_click(e, "car"); } }>
             <div class="flex items-center mt-1">
               <img class="w-8 h-6 mr-1" src={result.data.vehicleType ? vehicle_icons[result.data.vehicleType] : vehicle_icons["car"]} alt="Vehicle Type">
               <p>{result.data.name}</p>
@@ -168,10 +188,14 @@
     {#if is_loading}
       <Loading />
     {:else}
-      <div transition:fade class="flex flex-wrap justify-between w-11/12 md:w-2/3 mt-12">
+      <div transition:fade class="flex flex-wrap justify-start gap-4 w-11/12 md:w-2/3 mt-12">
         {#each $result_list as event}
           <button id={event.id} class="bg-[#333740] flex flex-col w-full md:w-1/2 lg:w-1/3 rounded-xl" on:click={handle_event_click}>
-            <img class="w-full h-80 rounded-xl" src={event.data.eventPhoto} alt="Event Cover">
+            {#if event.data.eventPhoto}
+              <img class="w-full h-full rounded-xl" src={event.data.eventPhoto} alt="Event Cover" />
+            {:else}
+              <img class="w-full h-full rounded-xl" src="/default-event.svg" alt="Event Cover" />
+            {/if}
             <p class="text-2xl text-left my-2 mx-3">{event.data.eventName}</p>
             <p class="text-left my-2 mx-3">{new Date(event.data.eventStartTime).toDateString()} | {new Date(event.data.eventStartTime).toLocaleTimeString()}</p>
             <p class="text-lg text-left my-2 mx-3">{event.data.eventAddress}</p>

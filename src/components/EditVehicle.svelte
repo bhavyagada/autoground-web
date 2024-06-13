@@ -249,7 +249,7 @@
       if (result?.isError) {
         return handleServerSideError("Couldn't Delete Car! Please Try Again!");
       } else {
-        $all_cars_store = $all_cars_store.filter((car) => car.carId !== $car_store.carId);
+        $all_cars_store = $all_cars_store.filter((car: any) => car.carId !== $car_store.carId);
         $car_store = default_car;
         isLoading = false;
         replaceState('', { addVehicleModal: false, editVehicleModal: false });
@@ -445,7 +445,7 @@
   }
   form {
     position: relative;
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -485,6 +485,13 @@
     display: flex;
     flex-direction: column;
     margin: 0.125rem 0;
+    width: 100%;
+  }
+  .year div, .make div, .model div {
+    width: 100%;
+  }
+  .year select, .make select, .model select {
+    width: 100%;
   }
   form label {
     color: white;
@@ -508,8 +515,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 90%;
+    width: 100%;
     margin: 0.25rem 0;
+  }
+  .nickname input {
+    width: 100%;
   }
   @media all and (min-width:700px) {
     h1 {
@@ -529,7 +539,7 @@
     }
     .types {
       width: 20%;
-      height: 50%;
+      height: 55%;
       flex-direction: column;
       justify-content: space-evenly;
     }
@@ -548,11 +558,23 @@
     form button {
       align-self: flex-start;
     }
+    .year, .make, .model {
+      width: 100%;
+    }
+    .year select, .make select, .model select {
+      width: 100%;
+    }
+    .model {
+      margin-left: 0;
+    }
+    .nickname, .nickname input {
+      width: 100%
+    }
   }
   @media all and (min-width:1200px) {
     .types {
       width: 15%;
-      height: 45%;
+      height: 55%;
     }
     .selected {
       padding: 0.5rem 2rem;

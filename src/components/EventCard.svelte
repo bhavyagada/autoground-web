@@ -24,7 +24,11 @@
 
 <div>
   <button id={String(index+1)} class="event" on:click={handleEventClick}>
-    <img alt="Event" src={resultList.eventPhoto || "/default-event.svg"}>
+    {#if resultList.eventPhoto}
+      <img src={resultList.eventPhoto} alt="Event Cover" />
+    {:else}
+      <img src="/default-event.svg" alt="Event Cover" />
+    {/if}
     <h1>{resultList.eventName}</h1>
     <p>{new Date(resultList.date).toDateString()} | {new Date(resultList.date).toLocaleTimeString()}</p>
     <p>{resultList.eventAddress || "Address Coming Soon"}</p>

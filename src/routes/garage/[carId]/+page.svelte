@@ -105,7 +105,7 @@
   }
   .photos {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     margin-top: 5rem;
   }
@@ -219,7 +219,7 @@
       flex-direction: row;
       flex-wrap: wrap;
       align-self: center;
-      width: 75%;
+      width: 90%;
     }
     .category {
       flex: 35%;
