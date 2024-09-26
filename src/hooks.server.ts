@@ -4,6 +4,11 @@ export const handle: Handle = async ({ event, resolve }) => {
   console.log(`New request running from ${event.url.pathname}`);
   const token = event.cookies.get("token");
 
+  // Check if the URL contains '/DriveShareLobby'
+  if (event.url.pathname.includes('/DriveShareLobby')) {
+    throw redirect(302, 'https://www.autolnkusa.com/DriveShareLobby/');
+  }
+
   // If not authorized, do not allow to visit application routes
   if (!token && (event.route.id?.startsWith("/garage") || event.route.id?.startsWith("/search"))) {
     throw redirect(303, "/login");
