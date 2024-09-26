@@ -6,7 +6,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   // Check if the URL contains '/DriveShareLobby'
   if (event.url.pathname.includes('/DriveShareLobby')) {
-    throw redirect(302, 'https://www.autolnkusa.com/DriveShareLobby/');
+    throw redirect(302, 'https://www.autolnkusa.com/download/');
   }
 
   // If not authorized, do not allow to visit application routes
